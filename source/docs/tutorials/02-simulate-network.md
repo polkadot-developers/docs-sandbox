@@ -1,18 +1,15 @@
 ---
-title: Simulate a private two-node network
-slug: /tutorials/v3/private-network
-hideNav: true
-version: '3.0' 
-sideNav: simulateNetwork
+title: Simulate a two-node network
+slug: /tutorials/02-simulate-network
+version: '3.0'
 section: tutorials
-category: private network
-keywords: permissioned, consortium, authority, network
+category: substrate chain
+keywords: node template, basics, consortium, authority, aura, private network
 difficulty: 1
-duration: 2 Hour
-relevantSkills: 
-  - Rust 
+duration: 1 Hour
+relevantSkills:
+  - Rust
   - Blockchain basics
-  - FRAME
 ---
 
 This tutorial provides a basic introduction to how to start a private blockchain network with an **authority set** of private **validators**.
@@ -172,21 +169,21 @@ To view node operations using the Polkadot-JS application:
 
 1. Click the network icon displayed in the top left corner of the Polkadot-JS Explorer page.
 
-  ![Display the list of networks](../img/tutorials/05-private-network/private-network-top-left-network-icon.png)
+  ![Display the list of networks](../../../src/images/tutorials/05-private-network/private-network-top-left-network-icon.png)
 
 1. Expand **DEVELOPMENT** in the list of networks available.
 
-  ![Display DEVELOPMENT networks](../img/tutorials/05-private-network/polkadot-list-networks.png)
+  ![Display DEVELOPMENT networks](../../../src/images/tutorials/05-private-network/polkadot-list-networks.png)
 
 1. Verify the custom endpoint is set to your local host and the port number you specified for incoming WebSocket traffic.
   
     You can use a single instance of the Polkadot-JS application to connect to different networks, nodes, and endpoints.
 
-    ![Custom endpoint](../img/tutorials/05-private-network/private-network-custom-endpoint.png)
+    ![Custom endpoint](../../../src/images/tutorials/05-private-network/private-network-custom-endpoint.png)
 
     You should now see something like this displayed in the Polkadot-JS Explorer **Network** page.
 
-    ![No blocks displayed in Polkadot-JS](../img/tutorials/05-private-network/private-network-no-blocks.png)-->
+    ![No blocks displayed in Polkadot-JS](../../../src/images/tutorials/05-private-network/private-network-no-blocks.png)-->
 
 ## Add a second node to the blockchain network
 
@@ -286,7 +283,7 @@ To verify blocks are being finalized:
 <!-- MOVED OUT was step 3 
 1. Open the [Polkadot-JS Explorer](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9945#/explorer) to verify the network is producing and finalizing blocks.
     
-    ![Blocks are produced and finalized](../img/tutorials/05-private-network/private-network-displays-blocks.png) 
+    ![Blocks are produced and finalized](../../../src/images/tutorials/05-private-network/private-network-displays-blocks.png) 
 
 END OF HIDDEN Step -->
 
@@ -312,4 +309,3 @@ In [Start a private network](./start-a-private-network.md), you'll learn:
 * How to create a custom chain specification that uses the keys you generated.
 
 * How to add validators to a private network that uses your custom chain specification.
-

@@ -1,11 +1,10 @@
 ---
 title: Start a private network
-slug: /tutorials/v3/private-network
-hideNav: true
+slug: /tutorials/03-private-network
 version: 3.0 
 section: tutorials
 category: private network
-keywords: private blockchain, consortium, authority, network
+keywords: private blockchain, consortium, authority, aura, round robin, validators,network
 difficulty: 1
 duration: 2 Hour
 relevantSkills: 

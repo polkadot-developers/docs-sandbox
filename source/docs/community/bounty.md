@@ -1,13 +1,13 @@
 ---
 title: Submitting articles to receive a bounty
-slug: /v3/contribute/bounties
+slug: /community/03-bounty
 version: '3.0'
-section: docs
-category: style guide
+section: community
+category:
 keywords: contribute, style guide, bounties
 ---
 
-IMPORTANT: This section is still work in progress. 
+IMPORTANT: This section is still work in progress.
 There is no official Substrate Developer Hub bounty program at this time.
 
 To encourage community support and contributions to the developer ecosystem, we have established a bounty program.

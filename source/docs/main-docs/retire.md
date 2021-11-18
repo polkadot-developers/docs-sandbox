@@ -1,3 +1,0 @@
-# Retire
-
-Release your slot?

@@ -1,6 +1,6 @@
 ---
-title: Using this guide for writing and style
-slug: /v3/contribute/writing
+title: Writing style guidelines
+slug: /community/01-writing-guide
 version: '3.0'
 section: docs
 category: style guide
@@ -11,9 +11,6 @@ This guide focuses on best practices for writing technical documentation and on 
 developing documentation for Parity Technologies products and audiences.
 The goal of this guide is to help members of the documentation team and any one interested in contributing to documentation
 write material that is clear, concise, and consistent.
-
-This guide also includes peculiarities to working with this repo specifically for active
-contributors to be aware of available in the [Builder notes](#builder-notes) section.
 
 If you can't find the answer to a style, voice, or terminology question in this guide, consult the following resources:
 

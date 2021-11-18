@@ -1,4 +1,10 @@
-# Fundamentals
+---
+title: Fundamentals
+slug: /docs/02-fundamentals
+version: '3.0'
+section: docs
+keywords: blockchain, consensus, substrate, architecture
+---
 
 It probably needs to be a section, not a page.
 

@@ -12,7 +12,7 @@ framework. The docs are written in pure [markdown](https://www.markdownguide.org
 
 ## 🦾 Docs Migration Instructions:
 
-The `./old-docs-migration` folder has all the ported docs, renamed for convenience to be `.md` files via [this method](#bash-magic).
+The `./old-docs-migration` folder has all the ported docs, renamed for convenience to be `.md` files via [this method](#bash-file-migration-magic).
 
 Now our mission, if we choose to accept it... (we do!), is to port all the files here into the new **framework** outlined in our team Notion:
 
@@ -64,7 +64,9 @@ TBD
 
 <!-- Substrate **documentation** is license under the [Apache 2 license](./LICENSE). -->
 
-### `bash` magic
+---
+
+### `bash` file migration magic
 
 To migrate old `v3` dir dumped into `old-docs-migration`
 

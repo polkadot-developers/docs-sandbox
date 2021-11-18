@@ -1,4 +1,10 @@
-# FAQ dropbox
+---
+title: FAQ dropbox
+slug: <replace>
+version: '3.0'
+section: faq-dropbox
+keywords: contribute, troubleshoot
+---
 
 This section provides answers to commonly-asked questions and a collection box for solutions to common problems, troubleshooting suggestions, and tips and tricks from the Parity development team and community members.
 

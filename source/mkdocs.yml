@@ -1,5 +1,7 @@
 # Project information
 site_name: Substrate Doc Sandbox
+#repo_url: https://github.com/example/repository/
+#docs_dir: 'docs-sandbox'
 
 # Copyright
 copyright: 'Copyright &copy; 2021. All rights reserved.'
@@ -20,37 +22,37 @@ theme:
 # Navigation
 nav:
    - 'Welcome to Substrate': 'index.md'
-   - 'Quick start': 'quickstart.md'
+   - 'Quick start': 'quickstart/index.md'
    - 'Docs':
         - main-docs/index.md
-        - 'Why Substrate?': 'main-docs/vision/choose-a-dev-platform.md'
+        - 'Why Substrate?': 'main-docs/01-why-substrate/index.md'
         - 'Fundamentals': 
-             - 'main-docs/fundamentals/index.md'
-             #- 'Blockchain basics': 'main-docs/fundamentals/blockchain-basic.md'
+             - 'main-docs/02-fundamentals/index.md'
+             - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
              #- 'Anatomy of a node': 'main-docs/fundamentals/substrate-client.md'
         - 'Install': 
-             - 'main-docs/install/index.md'
-        - 'Explore': 'main-docs/explore.md'
-        - 'Design': 'main-docs/design.md'
-        - 'Build': 'main-docs/build.md'
-        - 'Test': 'main-docs/test.md'
-        - 'Deploy': 'main-docs/deploy.md'
-        #- 'Migrate': 'main-docs/migrate.md'
-        #- 'Monitor': 'main-docs/monitor.md'
-        #- 'Operate': 'main-docs/operate.md'
-        - 'Upgrade': 'main-docs/upgrade.md'
+             - 'main-docs/03-install/index.md'
+             - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
+        - 'Explore': 'main-docs/04-explore/explore.md'
+        - 'Design': 'main-docs/05-design/index.md'
+        - 'Build': 'main-docs/06-build/build.md'
+        - 'Test': 'main-docs/07-test/test.md'
+        - 'Deploy': 'main-docs/08-deploy/deploy.md'
+        #- 'Migrate': 'main-docs/08-deploy/migrate.md'
+        #- 'Monitor': 'main-docs/08-deploy/monitor.md'
+        #- 'Operate': 'main-docs/08-deploy/operate.md'
+        - 'Upgrade': 'main-docs/09-upgrade/upgrade.md'
         #- 'Retire': 'main-docs/retire.md'
    - 'Tutorials':
         - tutorials/index.md
-        - 'Build a local blockchain': 'tutorials/build-local-blockchain.md'
-        - 'Simulate a network': 'tutorials/simulate-two-node-network.md'
-        - 'Start a private network': 'tutorials/start-a-private-network.md'
-   #- 'How-to guides':
-        #- 'how-to-guides/index.md'
-        #- 'Connect endpoint': 'how-to-guides/change-endpoint-polkadot-js.md'
+        - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
+        - 'Simulate a network': 'tutorials/02-simulate-network.md'
+        - 'Start a private network': 'tutorials/03-private-network.md'
    - 'Reference':
         - 'reference/index.md'
         - 'Rust crates': 'https://docs.substrate.io/rustdocs/"target="_blank'
+        - 'How-to quick reference guides': 
+             - 'reference/how-to-guides/index.md'
         - 'Polkadot-JS': 'reference/polkadot-js.md'
         - 'Client libraries': 'reference/client-lib.md'
         - 'Glossary': 'reference/glossary.md'

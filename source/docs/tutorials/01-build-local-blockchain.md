@@ -1,6 +1,19 @@
-# Build a local blockchain
+---
+title: Build a local blockchain
+slug: /tutorials/01-build-local-blockchain
+version: '3.0'
+sideNav: firstChain
+section: tutorials
+category: substrate chain
+keywords: node template, basics
+difficulty: 1
+duration: 1 Hour
+relevantSkills:
+  - Rust
+  - Blockchain basics
+---
 
-As you learned in [Blockchain basics](../main-docs/blockchain-basics.md), a blockchain consists of decentralized computers—called nodes—to form a network.
+As you learned in [Blockchain basics](../../docs/fundamentals/blockchain-basics), a blockchain consists of decentralized computers—called nodes—to form a network.
 
 Substrate provides a flexible, open, and extensible development environment that allows you to design and build fully-customized blockchain nodes to suit your application or business model needs.
 
@@ -45,13 +58,13 @@ By completing this tutorial, you will accomplish the following objectives:
 
 By completing this tutorial, you will accomplish the following objectives:
 
-* Set up a Substrate development environment on your computer.
+- Set up a Substrate development environment on your computer.
 
-* Install the node template to start a Substrate-based blockchain.
+- Install the node template to start a Substrate-based blockchain.
 
-* Install a front-end template to interact with the local blockchain node.
+- Install a front-end template to interact with the local blockchain node.
 
-* Use the front-end template to submit a transaction and view the result.
+- Use the front-end template to submit a transaction and view the result.
 
 ## Install required packages
 
@@ -75,7 +88,7 @@ To install required packages on macOS or Linux:
 
 If you are using macOS and do not have Homebrew installed, run the following command to install Homebrew:
 
-```
+```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
@@ -87,41 +100,41 @@ To install and configure Rust manually:
 
 1. Install `rustup` by running the following command:
 
-```
-curl https://sh.rustup.rs -sSf | sh
-```
+   ```bash
+   curl https://sh.rustup.rs -sSf | sh
+   ```
 
 1. Configure your current shell to reload your PATH environment variable so that it includes the Cargo `bin` directory by running the following command:
 
-```
-source ~/.cargo/env
-```
+   ```bash
+   source ~/.cargo/env
+   ```
 
 1. Configure the Rust toolchain to default to the latest `stable` version by running the following commands:
 
-```
-rustup default stable
-rustup update
-```
+   ```bash
+   rustup default stable
+   rustup update
+   ```
 
 1. Add the `nightly` release and the `nightly` WebAssembly (`wasm`) targets by running the following commands:
 
-```
-rustup update nightly
-rustup target add wasm32-unknown-unknown --toolchain nightly
-```
+   ```bash
+   rustup update nightly
+   rustup target add wasm32-unknown-unknown --toolchain nightly
+   ```
 
 1. Verify your installation by running the following commands:
 
-```
-rustc --version
-rustup show
-```
+   ```bash
+   rustc --version
+   rustup show
+   ```
 
-    The previous steps walked you through the installation and configuration of Rust and the Rust toolchain so that you could see the full process for yourself.
+   The previous steps walked you through the installation and configuration of Rust and the Rust toolchain so that you could see the full process for yourself.
 
-    It is also possible to automate the steps using a script.
-    If you want to try installing and configuring Rust using a script, see the [`getsubstrate`](https://getsubstrate.io) automation script.
+   It is also possible to automate the steps using a script.
+   If you want to try installing and configuring Rust using a script, see the [`getsubstrate`](https://getsubstrate.io) automation script.
 
 ## Set up a development environment
 
@@ -137,19 +150,19 @@ To compile the Substrate node template:
 
 1. Clone the node template repository using the version `latest` branch by running the following command:
 
-   ```
+   ```bash
    git clone -b latest --depth 1 https://github.com/substrate-developer-hub/substrate-node-template
    ```
 
 1. Change to the root of the node template directory by running the following command:
 
-   ```
+   ```bash
    cd substrate-node-template
    ```
 
 1. Compile the node template by running the following command:
 
-   ```
+   ```bash
    cargo build --release
    ```
 
@@ -166,7 +179,7 @@ To install the front-end template:
 
 1. Check whether `node` is installed on your local computer by running the following command:
 
-   ```
+   ```bash
    node --version
    ```
 
@@ -176,33 +189,33 @@ To install the front-end template:
 
 1. Check whether `yarn` is installed on your local computer by running the following command:
 
-   ```
+   ```bash
    yarn --version
    ```
-      
+
    The `yarn` version should be at least **v3** to run the front-end template.
 
    If the command doesn’t return a version number, download and install `yarn` by running the following command:
 
-   ```
+   ```bash
    npm install -g yarn
    ```
 
 1. Clone the front-end template repository by running the following command:
 
-   ```
+   ```bash
    git clone -b latest --depth 1 https://github.com/substrate-developer-hub/substrate-front-end-template
    ```
 
 1. Change to the root of the front-end template directory by running the following command:
 
-   ```
+   ```bash
    cd substrate-front-end-template
    ```
 
 1. Install the dependencies for the front-end template by running the following command:
 
-   ```
+   ```bash
    yarn install
    ```
 
@@ -218,7 +231,7 @@ To start the local Substrate node:
 
 1. Start the node in development mode by running the following command:
 
-   ```
+   ```bash
    ./target/release/node-template --dev --tmp
    ```
 
@@ -236,7 +249,7 @@ To start the local Substrate node:
 
    The terminal should display output similar to this:
 
-   ```
+   ```text
    2021-03-16 10:56:51  Running in --dev mode, RPC CORS has been disabled.
    2021-03-16 10:56:51  Substrate Node
    2021-03-16 10:56:51  ✌️  version 3.0.0-8370ddd-x86_64-linux-gnu
@@ -277,7 +290,7 @@ To use the front-end template:
 
 1. Start the Front-end template by running the following command:
 
-   ```
+   ```bash
    yarn start
    ```
 
@@ -287,13 +300,13 @@ To use the front-end template:
    want to perform on-chain operations. The top section of the template also displays information
    about the chain to which you're connected.
 
-   ![Front-end template top section](../img/tutorials/01-create-your-first-chain/blockchain-top.png)
+   ![Front-end template top section](../../../src/images/tutorials/01-create-your-first-chain/blockchain-top.png)
 
    You might also notice that the front-end template displays a Balances table with some
    predefined accounts and that a few of those accounts are preconfigured with funds.
    You can use this sample data to try out operations like transferring funds.
 
-   ![Predefined accounts and balances](../img/tutorials/01-create-your-first-chain/balances.png)
+   ![Predefined accounts and balances](../../../src/images/tutorials/01-create-your-first-chain/balances.png)
 
 ## Transfer funds from an account
 
@@ -307,7 +320,7 @@ To transfer funds to an account:
 
 1. In the Balances table, notice the predefined accounts—such as dave—that have no funds associated with them.
 
-   ![Locate an account with zero funds](../img/tutorials/01-create-your-first-chain/dave-account.png)
+   ![Locate an account with zero funds](../../../src/images/tutorials/01-create-your-first-chain/dave-account.png)
 
    Under the Balances table, the front-end template also displays a **Transfer** component.
    You use this component to transfer funds from one account to another.
@@ -316,11 +329,11 @@ To transfer funds to an account:
 
 1. Specify at least **1000000000000** as the amount to transfer, then click **Submit**.
 
-   ![Transfer funds to an account](../img/tutorials/01-create-your-first-chain/transfer-filled.png)
+   ![Transfer funds to an account](../../../src/images/tutorials/01-create-your-first-chain/transfer-filled.png)
 
 1. Notice that the values in Balances table is updated with the transfer.
 
-   ![Updated balance displayed](../img/tutorials/01-create-your-first-chain/balance-result.png)
+   ![Updated balance displayed](../../../src/images/tutorials/01-create-your-first-chain/balance-result.png)
 
 1. Check the **Events** component to see events related to the transfer you just completed.
 
@@ -328,7 +341,7 @@ To transfer funds to an account:
    use the Events components to see details about each operation performed as part of the transfer.
    For example:
 
-   ![Events recorded as results from asynchronous operations](../img/tutorials/01-create-your-first-chain/event-panel.png)
+   ![Events recorded as results from asynchronous operations](../../../src/images/tutorials/01-create-your-first-chain/event-panel.png)
 
 1. When the transaction has been completed and included in a block, you see a confirmation message similar to the following:
 

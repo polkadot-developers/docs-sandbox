@@ -14,11 +14,21 @@ framework. The docs are written in pure [markdown](https://www.markdownguide.org
 
 The `./old-docs-migration` folder has all the ported docs, renamed for convenience to be `.md` files via [this method](#bash-file-migration-magic).
 
-Now our mission, if we choose to accept it... (we do!), is to port all the files here into the new **framework** outlined in our team Notion:
+Now our mission, if we choose to accept it... (we do!), is to port all the files in `./old-docs-migration` into the new **framework** outlined in our team Notion:
 
 - [Notion Documentation Plan](https://www.notion.so/paritytechnologies/Documentation-plan-dcb201be22474ee294a9078e29b1e97a).
 
 The framework will be implemented in the `./source/docs` folder.
+
+### 📑 Workflow
+
+1. Select a _new_ page you want to write, and mark youself as managing this in the [tracker spreadsheet](https://docs.google.com/spreadsheets/d/1cdUK7fPV9CIHG9Xi1P31FHwGM3TTd3BUNd_-8sVNNUA/edit#gid=1810433834)
+1. Make a new file in the `/source/docs` dir for this work _or_ drag a page from `./old-docs-migration` into the right place in the `/source/docs` dir.
+1. **Cut** the contents of any file that you are migrating from `./old-docs-migration` into the `/source/docs` files so that it **no longer remains in the `./old-docs-migration` files**.
+1. **Delete** any duplicated content in `./old-docs-migration` you run into while pulling from multipole locations.
+1. **Selectively reword as needed** existing content in `/source/docs` when you find it already in place in `./old-docs-migration`. The *delete it from `./old-docs-migration`.
+
+**This way our definition of done with the migration is when `./old-docs-migration` is empty!**
 
 ## 🚀 Quick start
 

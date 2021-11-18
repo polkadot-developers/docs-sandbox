@@ -7,8 +7,8 @@
 <h3 align="center"> <a href="https://substrate-developer-hub.github.io/docs-sandbox/">https://substrate-developer-hub.github.io/docs-sandbox/</a> </h3>
 <br/>
 
-This repository serves as the **developer hub SANDBOX** for the **[Substrate](https://substrate.io)** blockchain
-framework. The docs are written in pure [markdown](https://www.markdownguide.org/), processed by [MKdocs](https://www.mkdocs.org/).
+This repository serves as the **developer hub SANDBOX** for the **[Substrate](https://substrate.io)** blockchain framework.
+The docs are written in pure [markdown](https://www.markdownguide.org/), processed by [MKdocs](https://www.mkdocs.org/).
 
 ## 🦾 Docs Migration Instructions:
 
@@ -32,7 +32,6 @@ The framework will be implemented in the `./source/docs` folder.
 
 ## 🚀 Quick start
 
-
 1. Clone the repo
 
    ```bash
@@ -42,7 +41,7 @@ The framework will be implemented in the `./source/docs` folder.
 
 1. Install `mkdocs`
 
-   https://www.mkdocs.org/getting-started/
+    https://www.mkdocs.org/getting-started/
 
 1. Serve the site
 
@@ -52,15 +51,31 @@ The framework will be implemented in the `./source/docs` folder.
    # options for `--theme [mkdocs|material|readthedocs]`
    mkdocs serve
    ```
-   The site should be ready to view at <http://127.0.0.1:8000/> and/or <http://localhost:8000/>
 
-1. Make edits... See they look nice... commit... make a PR...
+    The site should be ready to view at <http://127.0.0.1:8000/> and/or <http://localhost:8000/>
 
-   ```bash
-   # *fancy* gh CLI use here....
+1. Make edits...
+
+1. Update `source/mkdocs.yml` to render site
+
+   Should be relatively self explanatory
+
+   ```yml
+   # Navigation
+   nav:
+     - 'Some section':
+       - 'Page Title': 'some/path/to-a-file.md'
+       - 'Subsection':
+         - 'some/path/to-a-file.md
    ```
 
-1. Deploy to `gh-pages` 
+1. See they changes look nice and there are no `mkdocs serve` warnings/errors...
+
+1. Commit changes...
+
+1. Make a PR...
+
+1. Deploy to `gh-pages`
 
    ```bash
    mkdocs gh-deploy
@@ -81,9 +96,10 @@ TBD
 To migrate old `v3` dir dumped into `old-docs-migration`
 
 To get old dir `<folder>/index.mdx` to `<folder>.md`:
+
 ```bash
 # move all `<folder>/index.mdx` to `<folder>.md`
 find ./ -depth -name "*.mdx" -exec sh -c 'mv $1 "${1%/index.mdx}.md"' _ {} \;
-# delete all empty folders  
+# delete all empty folders
 find /path/ -empty -type d -delete
 ```

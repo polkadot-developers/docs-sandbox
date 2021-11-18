@@ -7,28 +7,12 @@
 <h3 align="center"> <a href="https://substrate-developer-hub.github.io/docs-sandbox/">https://substrate-developer-hub.github.io/docs-sandbox/</a> </h3>
 <br/>
 
-<!-- Badges -->
-
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://docs.substrate.io/v3/contribute/style-guide/) [![Matrix](https://img.shields.io/matrix/frontier:matrix.org)](https://matrix.to/#/#substrate-technical:matrix.org)
-
-<!-- Description -->
-
 This repository serves as the **developer hub SANDBOX** for the **[Substrate](https://substrate.io)** blockchain
 framework. The docs are written in pure [markdown](https://www.markdownguide.org/), processed by [MKdocs](https://www.mkdocs.org/).
 
 ## 🦾 Docs Migration Instructions:
 
-The `./old-docs-migration` folder has all the ported docs, renamed for convenience to be `.md` files via this method:
-
-> ###  TIL to migrate old `v3` dir dumped here:
-> 
-> To get old dir `<folder>/index.mdx` to `<folder>.md`:
-> ```bash
-> # move all `<folder>/index.mdx` to `<folder>.md`
-> find ./ -depth -name "*.mdx" -exec sh -c 'mv $1 "${1%/index.mdx}.md"' _ {} \;
-> # delete all empty folders  
-> find /path/ -empty -type d -delete
-> ```
+The `./old-docs-migration` folder has all the ported docs, renamed for convenience to be `.md` files via [this method](#bash-magic).
 
 Now our mission, if we choose to accept it... (we do!), is to port all the files here into the new **framework** outlined in our team Notion:
 
@@ -79,3 +63,15 @@ The framework will be implemented in the `./source/docs` folder.
 TBD
 
 <!-- Substrate **documentation** is license under the [Apache 2 license](./LICENSE). -->
+
+### `bash` magic
+
+To migrate old `v3` dir dumped into `old-docs-migration`
+
+To get old dir `<folder>/index.mdx` to `<folder>.md`:
+```bash
+# move all `<folder>/index.mdx` to `<folder>.md`
+find ./ -depth -name "*.mdx" -exec sh -c 'mv $1 "${1%/index.mdx}.md"' _ {} \;
+# delete all empty folders  
+find /path/ -empty -type d -delete
+```

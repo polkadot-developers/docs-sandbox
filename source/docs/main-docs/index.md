@@ -1,5 +1,5 @@
 # Substrate empowers developers
-source/docs/main-docs/index.md
+
 Substrate takes a modular and flexible approach to blockchain development.
 With every design decision, you can choose between the complexity of technical freedom and the ease of developing with predefined modules.
 

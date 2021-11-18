@@ -4,7 +4,7 @@
   </a>
 </h1>
 <h1 align="center"> Substrate Developer Hub SANDBOX </h1>
-<h3 align="center"> TDB hosted github pages </h3>
+<h3 align="center"> <a href="https://substrate-developer-hub.github.io/docs-sandbox/">https://substrate-developer-hub.github.io/docs-sandbox/</a> </h3>
 <br/>
 
 <!-- Badges -->
@@ -46,30 +46,31 @@ The framework will be implemented in the `./source/docs` folder.
    git clone git@github.com:substrate-developer-hub/docs-sandbox.git
    ```
 
-1. Serve the site with `livereload` for local development
+1. Install `mkdocs`
 
-   Navigate into your new site’s directory and install all dependencies.
+   https://www.mkdocs.org/getting-started/
+
+1. Serve the site
 
    ```bash
-   cd docs-sandbox/
+   # move to the source dir that includes `mkdocs.yml`
+   cd docs-sandbox/source
    # options for `--theme [mkdocs|material|readthedocs]`
-   mkdocs serve --theme material  --livereload 
+   mkdocs serve
    ```
-   The site should be ready to view at
+   The site should be ready to view at <http://127.0.0.1:8000/> and/or <http://localhost:8000/>
 
-1. Make edits... make a PR
+1. Make edits... See they look nice... commit... make a PR...
 
    ```bash
-   # fancy gh CLI use here....
+   # *fancy* gh CLI use here....
    ```
 
 1. Deploy to `gh-pages` 
 
-
    ```bash
-   # fancy gh CLI use here....
+   mkdocs gh-deploy
    ```
-
 
 1. Profit 😎
 

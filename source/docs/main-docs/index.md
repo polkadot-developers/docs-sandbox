@@ -27,9 +27,9 @@ Explore the following resources to learn more.
 
 #### Guide me (related tutorials)
 
-* [Build a local blockchain](../tutorials/build-local-blockchain.md)
-* [Simulate a two-node network](../tutorials/simulate-two-node-network.md)
-* [Start a private network](../tutorials/start-a-private-network.md)
+* [Build a local blockchain](../tutorials/01-build-local-blockchain.md)
+* [Simulate a two-node network](../tutorials/02-simulate-network.md)
+* [Start a private network](../tutorials/03-private-network.md)
 
 #### Show me (related video content)
 

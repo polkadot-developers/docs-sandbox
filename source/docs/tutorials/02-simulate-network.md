@@ -26,7 +26,7 @@ Before you begin, verify the following:
 
 * You have configured your environment for Substrate development by installing [Rust and the Rust toolchain](/v3/getting-started/installation).
 
-* You have completed [Build a local blockchain](./build-local-blockchain.md) and have the Substrate node template installed locally.
+* You have completed [Build a local blockchain](./01-build-local-blockchain.md) and have the Substrate node template installed locally.
 
 * You are generally familiar with software development and using command-line interfaces.
 
@@ -302,7 +302,7 @@ You learned:
 
 The next tutorial builds on the information you learned in this tutorial to illustrate how you can start a private network with other participants and nodes running on separate computers.
 
-In [Start a private network](./start-a-private-network.md), you'll learn:
+In [Start a private network](./03-private-network.md), you'll learn:
 
 * How to generate your own secret key pairs.
 

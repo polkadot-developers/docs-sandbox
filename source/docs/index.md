@@ -1,43 +1,18 @@
 ---
-title: Substrate empowers developers
+title: Welcome to Substrate
 slug: 
 ---
 
-Substrate takes a modular and flexible approach to blockchain development.
-With every design decision, you can choose between the complexity of technical freedom and the ease of developing with predefined modules.
+The Substrate Developer Hub provides a centralized location for developer resources and documentation to serve the Substrate developer community.
 
-The following diagram illustrates the nature of this flexibility.
+The topics here are intended to help you learn what's possible when you build a Substrate blockchain and how Substrate can help you build a blockchain that best serves your specific project requirements or business model.
 
-![Technical freedom vs development ease](../src/images/docs/getting-started/technical-freedom.png)
+Before you start building, though, you want to make sure you are in the right place.
 
-The main use cases for Substrate blockchains reflect tis sliding scale between technical freedom and development ease.
-At one end of the spectrum, you can deploy predefined Substrate nodes with minimal configuration and launch a blockchain with virtually no development effort.
-At the other end of the spectrum, you can design and implement a Substrate-based blockchain from scratch, giving you the technical freedom to innovate.
+* In [Choosing a development platform](), you'll learn how developing on a traditional smart contract platform differs from developing with Substrate and why Substrate might—or might not—suit your project requirements and goals.
 
-Naturally, the most common use case falls between these two extremes.
-In the middle of the spectrum, you can use [FRAME](/docs/fundamentals/frame)—an acronym for Framework for Runtime Aggregation of Modularized Entities—to create a customized Substrate **runtime**. 
-With this approach, you can choose how much control you have over the blockchain logic by selecting and configuring the modules—called **pallets**—that you want to use from a library.
-If a pallet doesn't exist for the functionality you need, you can use FRAME to create your own custom pallet, then add it to your customized runtime.
+* [Blockchain basics](./blockchain-basics.md) provides context about the complexity associated with blockchain development and how Substrate simplifies the process by taking an approach that is modular, flexible, and interoperable.
 
-## Where to go next
+* Topics in [Fundamentals](./fundamentals.md) explain many of the core principles of the Substrate development environment and the design decisions that influence how you develop applications to run on a Substrate-based blockchain.
 
-Explore the following resources to learn more.
-
-#### Tell me (read related topics)
-
-* [FRAME and runtime development](/fundamentals/runtime)
-* [Polkadot-JS](../reference/polkadot-js.md)
-
-#### Guide me (related tutorials)
-
-* [Build a local blockchain](../tutorials/build-local-blockchain.md)
-* [Simulate a two-node network](../tutorials/simulate-2-node-network.md)
-* [Start a private network](../tutorials/start-a-private-network.md)
-
-#### Show me (related video content)
-
-* 
-
-#### Teach me (related how to content)
-
-* 
+After you digest the information in these introductory sections, you'll be ready to start designing, building, and testing your own custom blockchain solution.

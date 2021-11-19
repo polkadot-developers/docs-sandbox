@@ -15,7 +15,7 @@ relevantSkills:
 
 This tutorial illustrates how you can start a small, standalone blockchain network with an **authority set** of private **validators**.
 
-As you learned in [Blockchain basics](), all blockchains require the nodes in the network to agree on the state of data at any specific point in time and this agreement about the state is called **consensus**.
+As you learned in [Blockchain basics](../../main-docs/02-fundamentals/blockchain-basics), all blockchains require the nodes in the network to agree on the state of data at any specific point in time and this agreement about the state is called **consensus**.
 
 The Substrate node template uses a proof of authority consensus model also referred to as **authority round** or **Aura** consensus.
 The Aura consensus protocol limits block production to a rotating list of authorized accounts.
@@ -30,9 +30,9 @@ Before you begin, verify the following:
 
 * You have configured your environment for Substrate development by installing [Rust and the Rust toolchain](/v3/getting-started/installation).
 
-* You have completed [Build a local blockchain](./build-local-blockchain.md) and have the Substrate node template installed locally.
+* You have completed [Build a local blockchain](./01-build-local-blockchain.md) and have the Substrate node template installed locally.
 
-* You have used predefined accounts as described in [Simulate a private two-node network](./simulate-two-node-network.md) to start nodes on a single computer.
+* You have used predefined accounts as described in [Simulate a private two-node network](./02-simulate-network.md) to start nodes on a single computer.
 
 * You are generally familiar with software development and using command-line interfaces.
 

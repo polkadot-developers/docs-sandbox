@@ -9,9 +9,9 @@ keywords:
 
 # Smart Contracts vs. Runtime Development
 
-Developing Substrate runtimes and smart contracts are two different approaches to building "decentralized applications" using Substrate.
+Developing Substrate runtimes and Smart Contracts are two different approaches to building "decentralized applications" using Substrate.
 
-The following topics provide insight on reasons for choosing smart contract development over runtime development for your on-chain logic.
+The following topics provide insight on reasons for choosing Smart Contract development over runtime development for your on-chain logic.
 
 
 ### Choosing the right approach

@@ -1,9 +1,6 @@
 
-
-This article gives an overview of the different ways to implement
-smart contracts for Substrate-based blockchains. 
-
-## Smart contracts
+# Smart contracts development
+This article gives an overview of the different ways to implement smart contracts for Substrate-based blockchains.
 
 A traditional smart contract platform allows users to publish additional logic on top of some core blockchain logic. Becaus smart contract logic can be published by anyone, including malicious actors and inexperienced developers, there are a number of intentional safe guards built around these public smart contract platform.
 

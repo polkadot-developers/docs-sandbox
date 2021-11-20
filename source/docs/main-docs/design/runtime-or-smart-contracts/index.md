@@ -13,16 +13,12 @@ Developing Substrate runtimes and Smart Contracts are two different approaches t
 
 The following topics provide insight on reasons for choosing Smart Contract development over runtime development for your on-chain logic.
 
-
-### Choosing the right approach
-
+## Choosing the right approach
 Substrate runtime development and Smart Contracts each provide solutions designed to solve different problems. There is likely some amount of overlap in the kinds of problems each one can solve, but there is also a clear set of problems suited for only one of the two. To give just one example in each category:
 
 - **Runtime Development:** Building a privacy layer on top of transactions in your blockchain.
 - **Smart Contract:** Introducing multi-signature wallets over the currency of your blockchain.
-- **Use Case Specific:** Building a gaming dApp which may need to build up a community of users (leaning towards a
-  Smart Contract), or may need to scale to millions of transactions a day (leaning more towards Runtime
-  Development).
+- **Use Case Specific:** Building a gaming dApp which may need to build up a community of users (Smart Contract), or may need to scale to millions of transactions a day (runtime development).
 
 ### Cost 
 Another consideration is the cost associated with building your dApp using each approach. Deploying a contract is a relatively simple and easy process because you take advantage of the existing network. The only costs to you are the fees which you pay to deploy and maintain your contract.

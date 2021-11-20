@@ -1,18 +1,13 @@
 ---
-title: Smart Contract Toolkits
-slug: /v3/runtime/smart-contracts
+title: Smart Contract vs runtime
+slug: 
 version: '3.0'
 section: docs
-category: smart contracts
-keywords: contracts, evm, ethereum
+category: 
+keywords: 
 ---
 
-Intro to topics
-
-## Solo chain or parachain?
-
-need info
-
+Intro 
 
 ## Smart Contracts vs. Runtime Development
 

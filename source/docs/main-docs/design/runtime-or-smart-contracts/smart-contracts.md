@@ -26,3 +26,5 @@ as a testing ground for future runtime changes, but done in a way that isolates 
 - Have computational overhead to support graceful failures in logic.
 - Have a lower bar to entry for development.
 - Enable fast-pace community interaction through a playground to write new logic.
+
+For a comparison of Smart Contract and runtime development, see [link](link).

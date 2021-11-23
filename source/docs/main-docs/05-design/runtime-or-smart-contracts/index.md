@@ -36,17 +36,3 @@ To learn more about developing with Smart Contracts, see [link](link). <br>
 To learn more about runtime development, see [link](link).
 
 > **NOTE:** If you are building on Polkadot, you can also [deploy smart contracts on its parachain](https://wiki.polkadot.network/docs/en/build-smart-contracts). See [The Polkadot Wiki](https://wiki.polkadot.network/docs/build-build-with-polkadot#what-is-the-difference-between-building-a-parachain-a-parathread-or-a-smart-contract) for a comparison between developing on a parachain, parathread, and smart contracts.
-
-
-# Design
-
-* Smart contract platform - done.
-* Runtime platform - done.
-* Smart contract pallet
-* EVM pallet
-* Prototype using smart contracts
-* Plan how to compose a runtime
-* Design a pallet
-* Storage design decisions
-* Query and update efficiency
-* Ecomonic models

@@ -127,90 +127,7 @@ contract logic. This could enable behavior like what
 [`create2`](https://eips.ethereum.org/EIPS/eip-1014) provided to Ethereum or even enable repairable
 or upgradeable contracts on a Substrate based blockchain.
 
-## EVM pallet
-
-The [**FRAME EVM pallet**](https://docs.rs/pallet_evm/) provides an EVM execution environment for Substrate's Ethereum
-compatibility layer, known as [Frontier](https://github.com/paritytech/frontier). It allows unmodified EVM
-code to be executed in a Substrate-based blockchain, designed to closely emulate the
-functionality of executing contracts on the Ethereum mainnet within the Substrate runtime.
-
-It works alongside with the [Ethereum pallet](https://docs.rs/pallet-ethereum) and the
-[Dynamic Fee pallet](https://docs.rs/pallet-dynamic-fee) to enable the creation of runtimes
-capable of fully emulating Ethereum block production and transaction processing.
-
-<AccentButton
-  text={`Start the Frontier workshop`}
-  link={`/tutorials/v3/frontier`}
-/>
-
-### EVM engine
-
-The EVM pallet uses [SputnikVM](https://github.com/rust-blockchain/evm) as the underlying EVM engine.
-The engine is overhauled so that it's [modular](https://github.com/corepaper/evm). In the future, we
-will want to allow users to swap out components like gasometer, and inject their own customized
-ones.
-
-### Execution lifecycle
-
-There are a separate set of accounts managed by the EVM pallet. Substrate based accounts can call
-the EVM pallet to deposit or withdraw balance from the Substrate base-currency into a different
-balance managed and used by the EVM pallet. Once a user has populated their balance, they can create
-and call smart contracts using this pallet.
-
-There's one-to-one mapping from Substrate accounts and EVM external accounts that is defined by a
-conversion function.
-
-### EVM pallet vs. Ethereum network
-
-The EVM pallet should be able to produce nearly identical results compared to the Ethereum mainnet,
-including gas cost and balance changes.
-
-Observable differences include:
-
-- The available length of block hashes may not be 256 depending on the configuration of the
-  [System pallet](/rustdocs/latest/frame_system/index.html#system-pallet) in the Substrate runtime.
-- Difficulty and coinbase, which do not make sense in this pallet and is currently hard coded to
-  zero.
-
-We currently do not aim to make unobservable behaviors, such as state root, to be the same. We also
-don't aim to follow the exact same transaction / receipt format. However, given one Ethereum
-transaction and one Substrate account's private key, one should be able to convert any Ethereum
-transaction into a transaction compatible with this pallet.
-
-The gas configurations are currently hard-coded to the Istanbul hard fork. It can later be expanded
-to support earlier hard fork configurations.
-
-<Message
-  type={`gray`}
-  title={`Note`}
-  text={`Substrate is built to enable developers to extend what's provided out of the box.
-  We encourage further development of alternative smart contract platforms on top of the Substrate
-  runtime.
-  Use these pre-built pallets to inform how you might design your own system or how you could port over an
-  existing system to work on a Substrate-based chain.`}
-/>
-
-## FAQ
-
-#### What is the difference between memory and storage?
-
-In ink! we refer `memory` to being the computer memory that is commonly known to programmers while
-with `storage` we refer to the contract instance's memory. The `storage` is backed up by the runtime
-in a database. Accesses to it are considered to be slow.
-
-#### How do I run tests?
-
-When building a smart contract with ink, you can define a set of tests.
-
-For example, in the minimal
-[flipper contract](https://github.com/paritytech/ink/blob/master/examples/flipper/lib.rs),
-you can find a small test at the bottom of the contract.
-
-To run this test, type the following command:
-
-```bash
-cargo +nightly test
-```
+<**EVM moved by Eve**>
 
 #### How do I add the Contracts pallet to my custom chain?
 
@@ -222,23 +139,16 @@ and other FRAME pallets to your blockchain's runtime.
 
 - Learn more about [why Rust is an ideal smart contract language](https://paritytech.github.io/ink-docs/why-rust-for-smart-contracts).
 - Follow a [tutorial to add a pallet to your FRAME runtime](/tutorials/v3/add-a-pallet/).
-- Read [ink!'s documentation](https://paritytech.github.io/ink-docs/).
+
 
 ### Examples
 
 - Follow a
   [this guide](/how-to-guides/v3/pallet-design/contracts-pallet) to learn how to add the Contracts pallet to your FRAME runtime.
-- Learn how to
-  [start developing with the Contracts pallet and ink!](/tutorials/v3/ink-workshop/pt1).
 
 ### References
 
 - Visit the reference docs for the
   [Contracts pallet](/rustdocs/latest/pallet_contracts/index.html).
-- View source code and documentation of the
-  [EVM pallet](https://github.com/paritytech/frontier/tree/master/frame/evm).
-- Visit the
-  [ink! repository to look at the source](https://github.com/paritytech/ink).
-- Visit the reference docs for the [EVM pallet](https://docs.rs/pallet_evm) and [`fp_evm`](https://docs.rs/fp-evm/).
-- Visit the reference docs for [SputnikVM's `evm` crate](https://docs.rs/evm/).
+
 - Take a look at the [repository for `wasmi`](https://github.com/paritytech/wasmi).

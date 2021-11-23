@@ -20,7 +20,7 @@ Substrate runtime development and Smart Contracts each provide solutions designe
 - **Smart Contract:** Introducing multi-signature wallets over the currency of your blockchain.
 - **Use Case Specific:** Building a gaming dApp which may need to build up a community of users (Smart Contract), or may need to scale to millions of transactions a day (runtime development).
 
-### Cost 
+## Cost 
 Another consideration is the cost associated with building your dApp using each approach. Deploying a contract is a relatively simple and easy process because you take advantage of the existing network. The only costs to you are the fees which you pay to deploy and maintain your contract.
 
 Setting up your own blockchain, on the other hand, incurs the cost of building a community who find value in the service you provide, or the additional costs associated with establishing a private network with the overhead of a Cloud computing-based architecture and general network maintenance.
@@ -40,7 +40,8 @@ To learn more about runtime development, see [link](link).
 
 # Design
 
-* Smart contract platform
+* Smart contract platform - done.
+* Runtime platform - done.
 * Smart contract pallet
 * EVM pallet
 * Prototype using smart contracts

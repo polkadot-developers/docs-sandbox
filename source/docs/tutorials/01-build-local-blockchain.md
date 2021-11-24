@@ -236,16 +236,16 @@ To start the local Substrate node:
    ```
 
    The `node-template` command-line options specify how you want the running node to operate.
-   In this case, the `--dev` option specifies that the node is run as a developer node chain specification.
+   In this case, the `--dev` option specifies that the node runs in developer mode using the predefined `development` chain specification.
    By default, this option also deletes all active data—such as keys, the blockchain database, and networking information when you stop the node by pressing Control-c.
-   Usins the `--dev` option ensures that you have a clean working state any time you stop and restart the node.
+   Using the `--dev` option ensures that you have a clean working state any time you stop and restart the node.
 
 1. Verify your node is up and running successfully by reviewing the output displayed in the terminal.
 
    The terminal should display output similar to this:
 
    ```
-      2021-11-24 15:36:35 Running in --dev mode, RPC CORS has been disabled.    
+   2021-11-24 15:36:35 Running in --dev mode, RPC CORS has been disabled.    
    2021-11-24 15:36:35 Substrate Node    
    2021-11-24 15:36:35 ✌️  version 4.0.0-dev-82b7c2c-aarch64-macos    
    2021-11-24 15:36:35 ❤️  by Substrate DevHub <https://github.com/substrate-developer-hub>, 2017-2021    
@@ -280,10 +280,9 @@ with the Substrate node and perform a few common tasks.
 
 To use the front-end template:
 
-1. Open a new terminal shell on your computer, change to the root directory where you installed the
-   front-end template.
+1. Open a new terminal shell on your computer, change to the root directory where you installed the front-end template.
 
-1. Start the Front-end template by running the following command:
+1. Start the front-end template by running the following command:
 
    ```
    yarn start
@@ -291,22 +290,19 @@ To use the front-end template:
 
 1. Open **http://localhost:8000** in a browser to view the front-end template.
 
-   The top section has an Account selection list for selecting the account to work with when you
-   want to perform on-chain operations. The top section of the template also displays information
-   about the chain to which you're connected.
+   The top section has an Account selection list for selecting the account to work with when you want to perform on-chain operations. 
+   The top section of the template also displays information about the chain to which you're connected.
 
    ![Front-end template top section](../img/tutorials/01-create-your-first-chain/blockchain-top.png)
 
-   You might also notice that the front-end template displays a Balances table with some
-   predefined accounts and that a few of those accounts are preconfigured with funds.
+   You might also notice that the front-end template displays a Balances table with some predefined accounts and that a few of those accounts are preconfigured with funds.
    You can use this sample data to try out operations like transferring funds.
 
    ![Predefined accounts and balances](../img/tutorials/01-create-your-first-chain/balances.png)
 
 ## Transfer funds from an account
 
-Now that you have a blockchain node running on your local computer and you have a front-end template
-available for performing on-chain operations, you are ready to explore different ways to interact with the blockchain.
+Now that you have a blockchain node running on your local computer and you have a front-end template available for performing on-chain operations, you are ready to explore different ways to interact with the blockchain.
 
 By default, the front-end template includes several components that allow you to try different common tasks.
 For this tutorial, you can perform a simple transfer operation that moves funds from one account to another.
@@ -344,10 +340,8 @@ To transfer funds to an account:
 
 ## Stop the local node
 
-After a successful transfer, you can continue to explore the front-end template components or
-stop the local Substrate node the state changes you made.
-Because you specified the `--dev` option when you started the node, stopping the local node stops the
-blockchain and purges all persistent block data so that you can start with a clean state next time you start the node.
+After a successful transfer, you can continue to explore the front-end template components or stop the local Substrate node the state changes you made.
+Because you specified the `--dev` option when you started the node, stopping the local node stops the blockchain and purges all persistent block data so that you can start with a clean state next time you start the node.
 
 To stop the local Substrate node:
 

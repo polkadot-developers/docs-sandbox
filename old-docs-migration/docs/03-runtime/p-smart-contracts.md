@@ -109,14 +109,7 @@ The Contracts pallet iterates on existing ideas in the smart contract ecosystem,
 Ethereum and the EVM.
 
 The most obvious difference between the Contracts pallet and the EVM is the underlying execution
-engine used to run smart contracts. The EVM is a good theoretical execution environment, but it is
-not very practical to use with modern hardware. For example, manipulation of 256 bit integers on
-modern architectures is significantly more complex than standard types. Even the Ethereum team has
-investigated the use of [Wasm](https://github.com/ewasm/design) for the next generation of the
-network.
-
-The EVM charges for storage fees only at the time of storage. This one-time cost results in some
-permanent amount of storage being used on the blockchain, _forever_, which is economically unsound.
+engine used to run smart contracts. 
 The Contracts pallet attempts to repair this through [storage deposit](#storage-deposit) which ensures
 that any data that persists on the blockchain is appropriately charged for those resources.
 
@@ -137,6 +130,22 @@ and other FRAME pallets to your blockchain's runtime.
 
 ## Learn more
 
+## FAQ
+
+### What is the difference between memory and storage?
+
+In ink! `memory` is the computer memory that is commonly known to programmers, while `storage` is the contract instance memory. The `storage` is backed up by the runtime in a database. <!--Accesses to it are considered to be slow.-->
+
+### How do I run tests?
+
+When building a smart contract with ink!, you can define a set of tests. For example, in the [flipper contract](https://github.com/paritytech/ink/blob/master/examples/flipper/lib.rs), you can find a small test at the bottom of the contract.
+
+To run this test, type the following command:
+
+```bash
+cargo +nightly test
+```
+
 - Learn more about [why Rust is an ideal smart contract language](https://paritytech.github.io/ink-docs/why-rust-for-smart-contracts).
 - Follow a [tutorial to add a pallet to your FRAME runtime](/tutorials/v3/add-a-pallet/).
 
@@ -152,3 +161,11 @@ and other FRAME pallets to your blockchain's runtime.
   [Contracts pallet](/rustdocs/latest/pallet_contracts/index.html).
 
 - Take a look at the [repository for `wasmi`](https://github.com/paritytech/wasmi).
+
+- For more information on ink!, see https://paritytech.github.io/ink-docs/ .
+
+- Learn how to start developing with the Contracts pallet and ink! see https://tutorials/v3/ink-workshop/pt1.
+
+- To view the source code and documentation for the EVM pallet, see https://github.com/paritytech/frontier/tree/master/frame/evm.
+  
+- To view the ink! repository, see https://github.com/paritytech/ink.

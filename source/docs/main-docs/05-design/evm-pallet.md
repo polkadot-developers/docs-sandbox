@@ -6,7 +6,7 @@ For more information on the FRAME EVM, see [FRAME EVM pallet reference](https://
 
 To download Frontier, go to https://github.com/paritytech/frontier.
 
-The Substrate runtime works alongside with the [Ethereum pallet](https://docs.rs/pallet-ethereum) and the [Dynamic Fee pallet](https://docs.rs/pallet-dynamic-fee) to enable the creation of runtimes capable of fully emulating Ethereum block production and transaction processing.
+The Substrate runtime works alongside the [Ethereum pallet](https://docs.rs/pallet-ethereum) and the [Dynamic Fee pallet](https://docs.rs/pallet-dynamic-fee) to enable the creation of runtimes capable of fully emulating Ethereum block production and transaction processing.
 
 <AccentButton
   text={`Start the Frontier workshop`}
@@ -16,6 +16,12 @@ The Substrate runtime works alongside with the [Ethereum pallet](https://docs.rs
 ## EVM engine
 
 The EVM pallet uses [SputnikVM](https://github.com/rust-blockchain/evm) as the underlying EVM engine. The engine is overhauled to be modular. For more information see [Core Paper Project of EVM](https://github.com/corepaper/evm)
+
+The EVM is a good theoretical execution environment, but it is not very practical to use with modern hardware. For example, manipulation of 256 bit integers on modern architectures is significantly more complex than standard types. The Ethereum team has investigated the use of [Wasm](https://github.com/ewasm/design) for the next generation of the network.
+
+## Cost
+
+The EVM charges for storage fees only at the time of storage. This one-time cost results in some permanent amount of storage being used on the blockchain, forever, which is not economically sound.
 
 ## Execution lifecycle
 
@@ -39,31 +45,7 @@ The gas configurations are currently hard-coded to the Istanbul hard fork. It ca
 
 Substrate is built to enable you to extend what's provided out of the box. We encourage further development of alternative smart contract platforms on top of the Substrate runtime. Use these pre-built pallets to inform how you might design your own system or how you could port over an existing system to work on a Substrate-based chain.
 
-## FAQ
-
-### What is the difference between memory and storage?
-
-In ink! `memory` is the computer memory that is commonly known to programmers, while `storage` is the contract instance memory. The `storage` is backed up by the runtime in a database. <!--Accesses to it are considered to be slow.-->
-
-### How do I run tests?
-
-When building a smart contract with ink!, you can define a set of tests. For example, in the [flipper contract](https://github.com/paritytech/ink/blob/master/examples/flipper/lib.rs), you can find a small test at the bottom of the contract.
-
-To run this test, type the following command:
-
-```bash
-cargo +nightly test
-```
-
 ## Resources
-
-- For more information on ink!, see https://paritytech.github.io/ink-docs/ .
-
-- Learn how to start developing with the Contracts pallet and ink! see https://tutorials/v3/ink-workshop/pt1.
-
-- To view the source code and documentation for the EVM pallet, see https://github.com/paritytech/frontier/tree/master/frame/evm.
-  
-- To view the ink! repository, see https://github.com/paritytech/ink.
 
 - To view the reference documentation for the EVM pallet, see https://docs.rs/pallet_evm and https://docs.rs/fp-evm/.
   

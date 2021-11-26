@@ -17,7 +17,11 @@ The Substrate runtime works alongside the [Ethereum pallet](https://docs.rs/pall
 
 The EVM pallet uses [SputnikVM](https://github.com/rust-blockchain/evm) as the underlying EVM engine. The engine is overhauled to be modular. For more information see [Core Paper Project of EVM](https://github.com/corepaper/evm)
 
-The EVM is a good theoretical execution environment, but it is not very practical to use with modern hardware. For example, manipulation of 256 bit integers on modern architectures is significantly more complex than standard types. The Ethereum team has investigated the use of [Wasm](https://github.com/ewasm/design) for the next generation of the network.
+The EVM is a good theoretical execution environment, but it is not very practical to use with modern hardware. For example, manipulation of 256 bit integers on modern architectures is significantly more complex than standard types. The Ethereum team has investigated the use of [Wasm](https://github.com/ewasm/design) for the next generation of the network. 
+
+An alternative to using the EVM is adding the Contracts pallet. The Contracts pallet iterates on existing ideas in the smart contract ecosystem, particularly Ethereum and the EVM.
+
+The most obvious difference between the Contracts pallet and the EVM is the underlying execution engine used to run smart contracts. To learn more about the Contracts pallet, see [link](link) 
 
 ## Cost
 

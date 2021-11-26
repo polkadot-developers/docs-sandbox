@@ -103,13 +103,8 @@ Similar to the `gas_limit` argument there is also a `storage_limit` argument wit
 can limit the amount of deposit that can be incurred. The argument is denominated in native
 chain balance and hence the user must have at least that amount of free balance.
 
-### Contracts pallet vs. EVM
+### Contracts pallet
 
-The Contracts pallet iterates on existing ideas in the smart contract ecosystem, particularly
-Ethereum and the EVM.
-
-The most obvious difference between the Contracts pallet and the EVM is the underlying execution
-engine used to run smart contracts. 
 The Contracts pallet attempts to repair this through [storage deposit](#storage-deposit) which ensures
 that any data that persists on the blockchain is appropriately charged for those resources.
 

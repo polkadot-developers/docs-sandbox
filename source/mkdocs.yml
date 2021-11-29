@@ -35,7 +35,11 @@ nav:
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
         - 'Explore': 'main-docs/04-explore/explore.md'
         - 'Design': 'main-docs/05-design/index.md'
-        - 'Build': 'main-docs/06-build/build.md'
+        - 'Build': 
+             - 'main-docs/06-build/intro.md'
+             - 'main-docs/06-build/rust-basics.md'
+             - 'main-docs/06-build/custom-pallets.md'
+             - 'main-docs/06-build/frontend.md'
         - 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'

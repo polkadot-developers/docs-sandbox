@@ -34,7 +34,9 @@ nav:
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
         - 'Explore': 'main-docs/04-explore/explore.md'
-        - 'Design': 'main-docs/05-design/index.md'
+        - 'Design': 
+             - 'main-docs/05-design/index.md'
+             - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
         - 'Build': 'main-docs/06-build/build.md'
         - 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
@@ -62,5 +64,5 @@ nav:
         - 'Site builder guidelines': 'community/site-building.md'
         - 'How-to topic template': 'https://github.com/substrate-developer-hub/substrate-docs/blob/main/static/assets/contribute-templates/how-to-template.md/"target="_blank'
         - 'Bounties': 'community/bounty.md'
-   - 'FAQ dropbox': 'faq-dropbox/index.md'
+   - 'Dropbox': 'faq-dropbox/index.md'
    - 'Playground': 'https://docs.substrate.io/playground/"target="_blank'

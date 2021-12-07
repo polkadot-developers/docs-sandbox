@@ -1,8 +1,6 @@
 ---
 title: Add a simple pallet to the runtime
 slug: /tutorials/07-add-a-pallet
-version: '3.0'
-hideNav: true
 sideNav: addPallet
 section: tutorials
 category: add a pallet
@@ -44,11 +42,11 @@ Before you begin, verify the following:
 
 By completing this tutorial, you will use the Nicks pallet to accomplish the following objectives:
 
-- Learn how to update runtime dependencies to include a new pallet.
+* Learn how to update runtime dependencies to include a new pallet.
 
-- Learn how to configure a pallet-specific Rust trait.
+* Learn how to configure a pallet-specific Rust trait.
 
-- See changes to the runtime by interacting with the new pallet using the front-end template.
+* See changes to the runtime by interacting with the new pallet using the front-end template.
 
 ## Add the Nicks pallet dependencies
 
@@ -58,9 +56,9 @@ For Rust programs, you use the `Cargo.toml` file to define the configuration set
 Because the Substrate runtime compiles to both a native Rust binary that includes standard library functions and a [WebAssembly (Wasm)](https://webassembly.org/) binary that does not include the standard library, the `Cargo.toml` file controls two important pieces of information:
 
 * The pallets to be imported as dependencies for the runtime, including the location and version of the pallets to import.
-* The features in each pallet that should be enabled when compiling the native Rust binary as extensions to the standard (`std`) feature set so that they can be included in the WebAssembly binary.
+* The features in each pallet that should be enabled when compiling the native Rust binary. By enabling the standard (`std`) feature set from each pallet, you can compile the runtime to include functions, types, and primitives that would otherwise be missing when you build the WebAssembly binary.
 
-For information about adding dependencies in `Cargo.toml` files, see [Dependencies](https://doc.rust-lang.org/cargo/guide/dependencies.html) and [Specifying Dependencies](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html) in the Cargo documentation.
+For information about adding dependencies in `Cargo.toml` files, see [Dependencies](https://doc.rust-lang.org/cargo/guide/dependencies.html) in the Cargo documentation.
 For information about enabling and managing features from dependent packages, see [Features](https://doc.rust-lang.org/cargo/reference/features.html) in the Cargo documentation.
 
 To add the dependencies for the Nicks pallet to the runtime:
@@ -101,9 +99,9 @@ To add the dependencies for the Nicks pallet to the runtime:
     
     This section specifies the default feature set to compile for this runtime is the `std` features set. 
     When the runtime is compiled using the `std` feature set, the `std` features from all of the pallets listed as dependencies are enabled.
-    For more detailed information about how the runtime is compiled as a native Rust binary with the standard library and as a WebAssembly binary using the `no_std` attribute, see [Building the runtime]().
+    For more detailed information about how the runtime is compiled as a native Rust binary with the standard library and as a WebAssembly binary using the `no_std` attribute, see [Building the runtime](../main-docs/06-build/build-runtime.md).
     
-    If you forget to update the `features` section, you might see `cannot find function` errors when you compile the runtime binary.
+    If you forget to update the `features` section in the `Cargo.toml` file, you might see `cannot find function` errors when you compile the runtime binary.
 
 1. Check that the new dependencies resolve correctly by running the following command:
 
@@ -308,7 +306,9 @@ To start the local Substrate node:
    ./target/release/node-template --dev
    ```
 
-   >>>>
+   In this case, the `--dev` option specifies that the node runs in developer mode using the predefined `development` chain specification.
+   By default, this option also deletes all active data—such as keys, the blockchain database, and networking information—when you stop the node by pressing Control-c.
+   Using the `--dev` option ensures that you have a clean working state any time you stop and restart the node.
    
 1. Verify your node is up and running successfully by reviewing the output displayed in the terminal.
 
@@ -348,7 +348,7 @@ To set a nickname for an account:
 
 1. Select the [`setName` dispatchable](/rustdocs/latest/pallet_nicks/pallet/enum.Call.html#variant.set_name) as the function to call from the `nicks` pallet.
 
-1. Type a name that is longer than the `MinNickLength` (8 characters)and no longer than the `MaxNickLength` (32 characters).
+1. Type a name that is longer than the `MinNickLength` (8 characters) and no longer than the `MaxNickLength` (32 characters).
 
 1. Click `Signed` to execute the function.
 
@@ -378,7 +378,7 @@ To return the information stored for Alice:
 
    - The amount that was reserved from Alice's account to secure the nickname.
 
-   If you were to query the Nicks pallet for the nameOf for Bob's account, you would see the `None` value returned because Bob has not invoked the `setName` function to reserve a nickname.
+   If you were to query the Nicks pallet for the `nameOf` for Bob's account, you would see the `None` value returned because Bob has not invoked the `setName` function to reserve a nickname.
 
    ![Read an empty name](../img/tutorials/07-add-a-pallet/name-of-bob.png)
 

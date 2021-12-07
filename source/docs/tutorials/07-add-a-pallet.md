@@ -393,7 +393,7 @@ If you want to explore additional features exposed through the Nicks and Sudo pa
 
 ## Next steps
 
-There are several [tutorials](/tutorials) that can serve as next steps for learning more about Substrate development.
+There are several [tutorials](../tutorials) that can serve as next steps for learning more about Substrate development.
 
 * [Specify the origin for invoking a function]() explores calling functions using different originating accounts.
 * [Configure the contracts pallet]() demonstrates more complex configuration requirements by adding the Contracts pallet to the runtime.
@@ -402,5 +402,5 @@ There are several [tutorials](/tutorials) that can serve as next steps for learn
 ### References
 
 * [Basic Example Pallet](https://github.com/paritytech/substrate/tree/master/frame/examples/basic) provides detailed comments about what you can access within FRAME.
-* [The Cargo book](https://doc.rust-lang.org/stable/cargo/)
-* [Rust and WebAssembly](https://rustwasm.github.io/)
+* [The Cargo book](https://doc.rust-lang.org/stable/cargo/) introduces the Cargo package manager, including reference information for Cargo features and commands.
+* [Rust and WebAssembly Documentation](https://rustwasm.github.io/docs.html) highlights several resources for learning about Rust and WebAssembly.

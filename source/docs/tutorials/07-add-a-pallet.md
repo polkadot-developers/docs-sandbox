@@ -396,8 +396,8 @@ If you want to explore additional features exposed through the Nicks and Sudo pa
 There are several [tutorials](/tutorials) that can serve as next steps for learning more about Substrate development.
 
 * [Specify the origin for invoking a function]() explores calling functions using different originating accounts.
-* []() demonstrates more complex configuration requirements by adding the Contracts pallet to the runtime.
-* []() 
+* [Configure the contracts pallet]() demonstrates more complex configuration requirements by adding the Contracts pallet to the runtime.
+* [Create a custom pallet using macros]() 
 
 ### References
 

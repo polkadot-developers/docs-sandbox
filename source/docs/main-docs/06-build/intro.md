@@ -2,9 +2,12 @@ Section: Build
 Type: reference 
 Index: 1
 
+Building a Substrate node and building _with_ Substrate are two different things.
+The first part of this article will describe what happens under the hood when building a Substrate node.
+The second part of this article will go over the different tools and libraries available for building blockchains with Substrate. 
 ## Introduction to languages and tools
 
-Written in the Rust programming language, Substrate comes with powerful out-of-the-box utilities.
+Substrate is written in Rust which gives it powerful utilities out-of-the-box.
 These include using `cargo` for documentation, testing and managing dependencies, as well as leveraging the portability and adaptability provided by Web Assembly.
 This section outlines the reference documentation about the libraries that are used to build with Substrate as well other tools and libraries written in other programming languages.
 
@@ -55,7 +58,7 @@ A crate responsible for building the networking layer for Substrate blockchains,
 
 `substrate_frame_rpc_system`
 
-### Runtime 
+### Runtime crates
 Libraries in this category are denoted `sp_`, or "Substrate primitives" and do the heavy lifting for building highly customizable runtimes.
 
 [`sp_std`](https://docs.substrate.io/rustdocs/latest/sp_std/index.html): A crate that handles low-level primitive types for Substrate runtimes.
@@ -91,7 +94,7 @@ Read more on various environment variables to configure [here](https://docs.subs
 
 `sp_consensus_aura`
 
-### SCALE and FRAME
+### SCALE and FRAME crates
 
 [ this section isn't meant for FRAME pallets, but the lower level FRAME crates ]
 

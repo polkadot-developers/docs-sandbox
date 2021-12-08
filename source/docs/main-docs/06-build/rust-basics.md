@@ -61,3 +61,13 @@ Links:
 
 Also about std vs. no_std: https://github.com/substrate-developer-hub/substrate-docs/issues/531.
 
+Also: #[cfg(feature = "std")] - feauture flags. 
+
+## Toolchains (nightly vs. stable)
+
+- Native vs. and wasm only runtimes (link to)
+- What is a Rust std program vs. no_std program? What does it mean to have no_std support? (link to Wasm Runtime).
+- Why we need nightly?
+- https://github.com/paritytech/substrate/issues/1252: defining "lang" for use of "oom" in no_std program is an unstable feauture (see: https://github.com/rust-lang/rust/issues/51540)
+- Note that this builds only the runtime with the specified toolchain. 
+    The rest of project will be compiled with your default toolchain, which is usually the latest installed stable toolchain.

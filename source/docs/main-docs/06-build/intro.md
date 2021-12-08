@@ -2,9 +2,8 @@ Section: Build
 Type: reference 
 Index: 1
 
-Building a Substrate node and building _with_ Substrate are two different things.
-The first part of this article will describe what happens under the hood when building a Substrate node.
-The second part of this article will go over the different tools and libraries available for building blockchains with Substrate. 
+This article goes over the different libraries and tools available for building blockchains with Substrate. 
+
 ## Introduction to languages and tools
 
 Substrate is written in Rust which gives it powerful utilities out-of-the-box.

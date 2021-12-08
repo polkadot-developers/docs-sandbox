@@ -33,6 +33,12 @@ There are several architectural considerations to be made when writing a pallet.
 - Hooks. Will your pallet be making calls to any runtime hooks?
 - Weights. What considerations must be taken into account to generate the correct weights for your disptachables?
 
+### Useful FRAME traits
+
+- Pallet Origin
+- Origins: EnsureOrigin, EnsureOneOf
+...
+
 ### Runtime implementation 
 
 Writing a pallet and implementing it for a runtime go hand in hand.

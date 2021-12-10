@@ -4,16 +4,14 @@ Index: 1
 
 This article goes over the different libraries and tools available for building blockchains with Substrate. 
 
-## Introduction to languages and tools
+## Substrate libraries
 
 Substrate is written in Rust which gives it powerful utilities out-of-the-box.
-These include using `cargo` for documentation, testing and managing dependencies, as well as leveraging the portability and adaptability provided by Web Assembly.
-This section outlines the reference documentation about the libraries that are used to build with Substrate as well other tools and libraries written in other programming languages.
+These include compiling to multiple targets, `cargo` for documentation, testing and managing dependencies, aas well as capabilities provided by compiling to Web Assembly.
 
-## Substrate core libraries 
+The diagram below depicts how the Substrate codebase is made of a multitude of Rust crates, each belonging to a specific bundle of core libraries. 
 
-Substrate's core libraries include all crates necessary to build and run runtimes in a Substrate node.
-Although some libraries are cross functional in how they can be used, each of them can be put in the following categories:
+[ todo: diagram]
 
 - **Client**: Libraries which enable the client and networking layer, including consensus and block execution. 
 - **Runtime**: Libraries responsible for calling into a runtime, creating the transaction pool and building blocks for the block executor.

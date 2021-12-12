@@ -43,21 +43,23 @@ nav:
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'
         #- 'Monitor': 'main-docs/08-deploy/monitor.md'
         #- 'Operate': 'main-docs/08-deploy/operate.md'
-        - 'Upgrade': 'main-docs/09-upgrade/upgrade.md'
+        - 'Maintain': 
+             - 'main-docs/09-maintain/index.md'
+             - 'Upgrade': 'main-docs/09-maintain/upgrade.md'
         #- 'Retire': 'main-docs/retire.md'
    - 'Tutorials':
         - tutorials/index.md
         - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
         - 'Simulate a network': 'tutorials/02-simulate-network.md'
         - 'Start a trusted validator network': 'tutorials/03-private-network.md'
-        #- 'Grant permissions to specific nodes in a network':
-        #- 'Monitor a network and view node metrics':
-        #- 'Upgrade your runtime'
-        #- 'Add a simple pallet to your runtime':
-        #- 'Configure the contracts pallet': 
-        #- 'Write a smart contract with ink!':
-        #- 'Create a custom pallet using macros':
-        #- 'Publish a custom pallet':
+        #- 'Grant permissions to specific nodes in a network': 'tutorials/04-permissions.md
+        #- 'Monitor a network and view node metrics': 'tutorials/05-monitor.md
+        - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
+        #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
+        #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
+        #- 'Create a custom pallet using macros': 'tutorials/proof-of-existence.md'
+        #- 'Publish a custom pallet': 'tutorials/publish-pallet.md'
+        #- 'Upgrade the runtime': 'tutorials/forkless-upgrade.md'
         #- 'Connect to a local relay chain':
         #- 'Connect a parachain to Polkadot':
         #- 'Connect a Substrate blockchain to Ethereum':

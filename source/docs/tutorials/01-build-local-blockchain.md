@@ -50,10 +50,6 @@ For this tutorial, you download and use working code. Before you begin, verify t
 
 - You are generally familiar with blockchains and smart contract platforms.
 
-- You want to learn about the bleeding edge of blockchain development.
-
-By completing this tutorial, you will accomplish the following objectives:
-
 ## Tutorial objectives
 
 By completing this tutorial, you will accomplish the following objectives:

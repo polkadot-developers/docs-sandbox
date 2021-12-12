@@ -88,7 +88,7 @@ To install required packages on macOS or Linux:
 
 If you are using macOS and do not have Homebrew installed, run the following command to install Homebrew:
 
-```
+```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
@@ -100,33 +100,33 @@ To install and configure Rust manually:
 
 1. Install `rustup` by running the following command:
 
-   ```
+   ```bash
    curl https://sh.rustup.rs -sSf | sh
    ```
 
 1. Configure your current shell to reload your PATH environment variable so that it includes the Cargo `bin` directory by running the following command:
 
-   ```
+   ```bash
    source ~/.cargo/env
    ```
 
 1. Configure the Rust toolchain to default to the latest `stable` version by running the following commands:
 
-   ```
+   ```bash
    rustup default stable
    rustup update
    ```
 
 1. Add the `nightly` release and the `nightly` WebAssembly (`wasm`) targets by running the following commands:
 
-   ```
+   ```bash
    rustup update nightly
    rustup target add wasm32-unknown-unknown --toolchain nightly
    ```
 
 1. Verify your installation by running the following commands:
 
-   ```
+   ```bash
    rustc --version
    rustup show
    ```
@@ -150,19 +150,19 @@ To compile the Substrate node template:
 
 1. Clone the node template repository using the version `latest` branch by running the following command:
 
-   ```
+   ```bash
    git clone https://github.com/substrate-developer-hub/substrate-node-template
    ```
 
 1. Change to the root of the node template directory by running the following command:
 
-   ```
+   ```bash
    cd substrate-node-template
    ```
 
 1. Compile the node template by running the following command:
 
-   ```
+   ```bash
    cargo build --release
    ```
 
@@ -179,7 +179,7 @@ To install the front-end template:
 
 1. Check whether `node` is installed on your local computer by running the following command:
 
-   ```
+   ```bash
    node --version
    ```
 
@@ -189,7 +189,7 @@ To install the front-end template:
 
 1. Check whether `yarn` is installed on your local computer by running the following command:
 
-   ```
+   ```bash
    yarn --version
    ```
 
@@ -197,25 +197,25 @@ To install the front-end template:
 
    If the command doesn’t return a version number, download and install `yarn` by running the following command:
 
-   ```
+   ```bash
    npm install -g yarn
    ```
 
 1. Clone the front-end template repository by running the following command:
 
-   ```
+   ```bash
    git clone https://github.com/substrate-developer-hub/substrate-front-end-template
    ```
 
 1. Change to the root of the front-end template directory by running the following command:
 
-   ```
+   ```bash
    cd substrate-front-end-template
    ```
 
 1. Install the dependencies for the front-end template by running the following command:
 
-   ```
+   ```bash
    yarn install
    ```
 
@@ -231,7 +231,7 @@ To start the local Substrate node:
 
 1. Start the node in development mode by running the following command:
 
-   ```
+   ```bash
    ./target/release/node-template --dev
    ```
 
@@ -244,7 +244,7 @@ To start the local Substrate node:
 
    The terminal should display output similar to this:
 
-   ```
+   ```bash
    2021-11-24 15:36:35 Running in --dev mode, RPC CORS has been disabled.    
    2021-11-24 15:36:35 Substrate Node    
    2021-11-24 15:36:35 ✌️  version 4.0.0-dev-82b7c2c-aarch64-macos    
@@ -284,7 +284,7 @@ To use the front-end template:
 
 1. Start the front-end template by running the following command:
 
-   ```
+   ```bash
    yarn start
    ```
 

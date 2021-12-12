@@ -29,10 +29,14 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
-             #- 'Anatomy of a node': 'main-docs/fundamentals/substrate-client.md'
+             - 'Anatomy of a node': 'main-docs/fundamentals/substrate-client.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
+             - 'Linux': 'main-docs/03-install/linux.md'
+             - 'macOS': 'main-docs/03-install/macos.md'
+             - 'Windows': 'main-docs/03-install/windows.md'
+             - 'Substrate and runtime tools': 'main-docs/03-install/other-tools.md'
         - 'Explore': 'main-docs/04-explore/explore.md'
         - 'Design': 
              - 'main-docs/05-design/index.md'
@@ -60,9 +64,9 @@ nav:
         #- 'Create a custom pallet using macros': 'tutorials/proof-of-existence.md'
         #- 'Publish a custom pallet': 'tutorials/publish-pallet.md'
         #- 'Upgrade the runtime': 'tutorials/forkless-upgrade.md'
-        #- 'Connect to a local relay chain':
-        #- 'Connect a parachain to Polkadot':
-        #- 'Connect a Substrate blockchain to Ethereum':
+        #- 'Connect to a local relay chain': 'tutorials/relay-chain.md'
+        #- 'Connect a parachain to Polkadot': 'tutorials/parachain.md'
+        #- 'Connect a Substrate blockchain to Ethereum': 'tutorials/connect-to-evm.md'
    - 'Reference':
         - 'reference/index.md'
         - 'Rust crates': 'https://docs.substrate.io/rustdocs/"target="_blank'

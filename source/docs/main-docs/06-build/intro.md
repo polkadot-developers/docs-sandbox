@@ -47,7 +47,47 @@ Other pallet libraries exist such as the [Open Runtime Module Library (ORML)](ht
 
 Other libraries designed to interact with the [Substrate framework](/link-to-architecture-page) exist, primarily for Substrate clients.
 
-[ insert content from: https://docs.substrate.io/v3/integration and https://docs.substrate.io/v3/integration/client-libraries/]
+[ inserted content below from: https://docs.substrate.io/v3/integration and https://docs.substrate.io/v3/integration/client-libraries/]
+
+### Polkadot-JS
+
+The [Polkadot-JS project](https://polkadot.js.org/docs/) is a collection of tools, interfaces, and libraries around Polkadot and Substrate.
+While the project is named after "Polkadot", these tools, interfaces, and libraries are fully compatible with any Substrate based chain.
+
+#### Polkadot-JS API
+
+The API provides application developers the ability to query a node and interact with the Polkadot or Substrate chains using Javascript.
+Go to [documentation](https://polkadot.js.org/docs/api).
+
+The Polkadot-JS API is a [library of interfaces](https://github.com/polkadot-js/api) for communicating with Polkadot and Substrate nodes.
+
+#### Polkadot-JS Apps
+
+The Polkadot-JS Apps is a flexible UI for interacting with a Polkadot or Substrate based node.
+Go to [documentation](https://polkadot.js.org/apps).
+
+This is pre-built [user-facing application](https://github.com/polkadot-js/apps), allowing access to all features available on Substrate chains.
+
+To connect the Polkadot-JS Apps to your local node, you must go into `Settings` and change the
+"endpoint to connect to" to `Local Node (127.0.0.1:9944)`.
+
+If you are connected to the Polkadot-JS Apps over a secure HTTPS connection, you will need to use a browser which also supports bridging to an insecure WebSocket endpoint. 
+For example, Google Chrome supports this, but Mozilla Firefox does not.
+
+#### Polkadot-JS extension
+
+The Polkadot-JS Extension is a simple proof-of-concept for managing accounts in a browser extension and allowing the signing of extrinsics using these accounts. 
+It also provides a simple interface for interacting with extension-compliant dApps.
+
+Different ways to use the extension:
+
+- [On Chrome](https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd)
+
+- [On Firefox](https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension)
+
+- [Fork on GitHub](https://github.com/polkadot-js/extension)
+
+
 
 Although it is possible to build an alternative to [FRAME](./link-to-frame) using Substrate primitives, there has not yet been any significant community efforts to do so. 
 ## Substrate tools 

@@ -3,27 +3,60 @@ Type: reference
 Index: 1
 
 This article goes over the different libraries and tools available for building blockchains with Substrate. 
-
 ## Substrate libraries
 
-Substrate is written in Rust which gives it powerful utilities out-of-the-box.
-These include compiling to multiple targets, `cargo` for documentation, testing and managing dependencies, aas well as capabilities provided by compiling to Web Assembly.
+At a high level, Substrate consists of libraries to build: a client, a runtime and the communication layer between the two. 
 
-The diagram below depicts how the Substrate codebase is made of a multitude of Rust crates, each belonging to a specific bundle of core libraries. 
 
-[ todo: diagram]
 
-- **Client**: Libraries which enable the client and networking layer, including consensus and block execution. 
-- **Runtime**: Libraries responsible for calling into a runtime, creating the transaction pool and building blocks for the block executor.
-- **FRAME and SCALE Codec**: Libraries to facilitate building runtime logic and encoding and decoding runtime data.
+                                ┌────────────────────────┐
+                                │ Client                 │
+                                │                        │
+                                │                        │
+                                │                        │
+                                │     ┌──────────────────┤
+                                │     │ Primitives       │
+                                │     │                  │
+                                │     │     ┌────────────┤
+                                │     │     │            │
+                                │     │     │            │
+                                │     │     │   Runtime  │
+                                └─────┴─────┴────────────┘
+
+> _TODO: Need to annotate diagram with below._
+
+> - **Client**: Libraries that enable the client and networking layer, including consensus and block execution. 
+> - **Primitives**: Libraries responsible for communicating between the client and the runtime, creating the transaction pool and building blocks for the block executor.
+> - **FRAME**: Libraries to facilitate building runtime logic and encoding and decoding information passing to and from the runtime.
+
+Each of these components are built from Rust libraries that fall under four categories:
+
+- `sc_*`: Substrate client libraries encapsulate the numerous crates for node and client facing infrastructure, including consensus critical infrastructure, P2P networking, RPC APIs and block execution.
+For example, [`sc_service`](https://docs.substrate.io/rustdocs/latest/sc_service/index.html) is responsible for building the networking layer for Substrate blockchains, managing the communication between the network, client and transaction pool. 
+
+- `sp_*`: Substrate primitives are libraries to facilitate communication between the client and the runtime. 
+For example, [`sp_std`](https://docs.substrate.io/rustdocs/latest/sp_std/index.html) takes useful primitives from Rust's standard library and makes them usable with any code that depends on the runtime.
+
+- `frame_*`: runtime SDK libraries for building use case specific runtime logic and calling to and from a runtime.
+For example, [`frame_support`](https://docs.substrate.io/rustdocs/latest/frame_support/index.html) enables developers to easily declare runtime storage items, errors and events.
+
+- `pallet_*`: a single FRAME module, of which exists an [existing collection](/frame-pallets) created for Polkadot and Kusama. 
+Other pallet libraries exist such as the [Open Runtime Module Library (ORML)](https://github.com/open-web3-stack/open-runtime-module-library).
+
+## Other libraries
+
+Other libraries designed to interact with the [Substrate framework](/link-to-architecture-page) exist, primarily for Substrate clients.
+
+[ insert content from: https://docs.substrate.io/v3/integration and https://docs.substrate.io/v3/integration/client-libraries/]
+
+Although it is possible to build an alternative to [FRAME](./link-to-frame) using Substrate primitives, there has not yet been any significant community efforts to do so. 
+## Substrate tools 
+
+Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
+
+[ Paste content from: https://docs.substrate.io/v3/tools/ ]
 
 ### Client 
-
-These libraries, denoted `sc_` which stands for "Substrate Client", encapsulate the numerous Substrate crates for node and client facing infrastructure, including consensus critical infrastructure, P2P networking, RPC APIs and block execution.
-
-[`sc_service`](https://docs.substrate.io/rustdocs/latest/sc_service/index.html)
-    
-A crate responsible for building the networking layer for Substrate blockchains, managing the communication between the network, client and transaction pool. 
     
 [`sc_network`](https://docs.substrate.io/rustdocs/latest/sc_network/index.html)
 
@@ -56,10 +89,6 @@ A crate responsible for building the networking layer for Substrate blockchains,
 `substrate_frame_rpc_system`
 
 ### Runtime crates
-Libraries in this category are denoted `sp_`, or "Substrate primitives" and do the heavy lifting for building highly customizable runtimes.
-
-[`sp_std`](https://docs.substrate.io/rustdocs/latest/sp_std/index.html): A crate that handles low-level primitive types for Substrate runtimes.
-This library takes useful primitives from Rust's standard library and makes them usable with any code that depends on the runtime.
 
 [`sp_api`](https://docs.substrate.io/rustdocs/latest/sp_api/index.html): This is Substrate's runtime API, which exposes traits that help with the creation and customization of APIs designed to make calls to and from the runtime of a Substrate node.
 
@@ -107,14 +136,3 @@ Read more on various environment variables to configure [here](https://docs.subs
 
 `frame_benchmarking`
 
-### Other client libraries
-
-A number of different client libraries designed to interact with Substrate blockchains exist.
-
-[ insert content from: https://docs.substrate.io/v3/integration ]
-
-## Substrate tools 
-
-Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
-
-[ Paste content from: https://docs.substrate.io/v3/tools/ ]

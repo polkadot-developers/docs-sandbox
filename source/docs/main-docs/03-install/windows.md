@@ -75,9 +75,9 @@ To prepare Windows for Substrate development:
 
 1. Install LLVM: https://releases.llvm.org/download.html
 
-1. Install OpenSSL with `vcpkg` using PowerShell:
+1. Install OpenSSL with `vcpkg` using PowerShell by running the following commands:
 
-   ```bash
+   ```powershell
    mkdir C:\Tools
    cd C:\Tools
    git clone https://github.com/Microsoft/vcpkg.git --depth=1
@@ -88,20 +88,20 @@ To prepare Windows for Substrate development:
 
 1. Add OpenSSL to your System Variables using PowerShell:
 
-   ```powershell
-   $env:OPENSSL_DIR = 'C:\Tools\vcpkg\installed\x64-windows-static'
-   $env:OPENSSL_STATIC = 'Yes'
-   [System.Environment]::SetEnvironmentVariable('OPENSSL_DIR', $env:OPENSSL_DIR, [System.EnvironmentVariableTarget]::User)
-   [System.Environment]::SetEnvironmentVariable('OPENSSL_STATIC', $env:OPENSSL_STATIC, [System.EnvironmentVariableTarget]::User)
-   ```
+    ```powershell
+    $env:OPENSSL_DIR = 'C:\Tools\vcpkg\installed\x64-windows-static'
+    $env:OPENSSL_STATIC = 'Yes'
+    [System.Environment]::SetEnvironmentVariable('OPENSSL_DIR', $env:OPENSSL_DIR, [System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable('OPENSSL_STATIC', $env:OPENSSL_STATIC, [System.EnvironmentVariableTarget]::User)
+    ```
 
 1. Install `cmake`: https://cmake.org/download/
 
-1. Install `make`
+1. Install the [Chocolatey](https://chocolatey.org/install) package manager, if needed.
 
-   - This can be done using Chocolatey. First you need to install the Chocolatey package manager: https://chocolatey.org/install
-   - Once Chocolatey installed you can install make:
+1. Install `make` by runing the following command
 
    ```
    choco install make
    ```
+

@@ -73,7 +73,7 @@ To prepare Windows for Substrate development:
 
 ### Install and configure additional programs
 
-1. Install LLVM: https://releases.llvm.org/download.html
+1. Install [LLVM](https://releases.llvm.org/download.html).
 
 1. Install OpenSSL with `vcpkg` using PowerShell by running the following commands:
 

@@ -7,7 +7,7 @@ keywords: Frame, pallets, API
 
 The FRAME development environment provides modules—called pallets—and support libraries that you can use, modify, and extend to build the runtime logic to suite the needs of your blockchain.
 
-<<TODO-Compare against Rust doc>>
+<!--TODO-Compare against Rust doc-->
 
 This section provides an overview of the predefined pallets and links to the Rust API reference documentation, where you can find details about each pallet's interfaces.
 
@@ -15,13 +15,11 @@ This section provides an overview of the predefined pallets and links to the Rus
 
 The FRAME system pallets are integral to the Substrate runtime and provide core functionality that all other pallets depend on.
 
-| System pallet name   | What it's for
-| -------------------- | ------------------------------------
-| [`frame_executive`](/rustdocs/latest/frame_executive/index.html) | Orchestrates incoming function calls by sending them to the appropriate pallets in the runtime.
-|[`frame_support`](/rustdocs/latest/frame_support/index.html) | Provides Rust
-macros, types, traits, and modules that generate boilerplate code for the pallet
-structure when compiled.
-|[`frame_system`](/rustdocs/latest/frame_system/index.html) | Defines low-level types for Substrate primitives, storage items, and core functions for the blockchain. All other pallets depend on the `frame_system` crate.
+|<div style="width:125px;">System pallet name </div>  | What it's for
+|: -------------------- |: ------------------------------------
+| [`frame_executive`](https://paritytech.github.io/substrate/master/frame_executive/index.html) | Orchestrates incoming function calls by sending them to the appropriate pallets in the runtime.
+|[`frame_support`](https://paritytech.github.io/substrate/master/frame_support/index.html) | Provides Rust macros, types, traits, and modules that generate boilerplate code for the pallet structure when compiled.
+|[`frame_system`](https://paritytech.github.io/substrate/master/frame_system/index.html) | Defines low-level types for Substrate primitives, storage items, and core functions for the blockchain. All other pallets depend on the `frame_system` crate.
 
 ## Functional pallets
 
@@ -30,16 +28,10 @@ These functional pallets are prebuilt and freely available to enable the communi
 
 | Prebuilt pallet name | What it's for
 | -------------------- | ------------------------------------
-| [`frame_executive`](/rustdocs/latest/frame_executive/index.html) | Orchestrates incoming function calls by sending them to the appropriate pallets in the runtime.
-|[`frame_support`](/rustdocs/latest/frame_support/index.html) | Provides Rust
-macros, types, traits, and modules that generate boilerplate code for the pallet
-structure when compiled.
-|[`frame_system`](/rustdocs/latest/frame_system/index.html) | Defines low-level types for Substrate primitives, storage items, and core functions for the blockchain. All other pallets depend on the `frame_system` crate.
 | [`pallet_assets`](/rustdocs/latest/pallet_assets/index.html) | Provides simple and secure methods for dealing with fungible assets.
 | [`pallet_atomic_swap`](/rustdocs/latest/pallet_atomic_swap/index.html) | Enables sending funds from an origin to a target. A proof is used to allow the target to claim the swap. If the swap is not claimed within a specified duration of time, the sender may cancel it.
-| [pallet_aura](/rustdocs/latest/pallet_aura/index.html) | Extends the authority round (Aura) consensus model by managing offline reporting.
-| [`pallet_authority_discovery`](/rustdocs/latest/pallet_authority_discovery/index.html) |
-Retrieves the current set of authorities, learns its own authority ID, and signs and verifies messages to and from other authorities.
+| [`pallet_aura`](/rustdocs/latest/pallet_aura/index.html) | Extends the authority round (Aura) consensus model by managing offline reporting.
+| [`pallet_authority_discovery`](/rustdocs/latest/pallet_authority_discovery/index.html) | Retrieves the current set of authorities, learns its own authority ID, and signs and verifies messages to and from other authorities.
 | [`pallet_authorship`](/rustdocs/latest/pallet_authorship/index.html) | Tracks the current author of the block and recent uncles.
 | [`pallet_babe`](/rustdocs/latest/pallet_babe/index.html) | Extends BABE consensus by |collecting on-chain randomness from VRF outputs and managing epoch transitions.
 | [pallet_balances](/rustdocs/latest/pallet_balances/index.html) | Provides functionality for handling accounts and balances.
@@ -52,8 +44,7 @@ Retrieves the current set of authorities, learns its own authority ID, and signs
 | [`pallet_example`](/rustdocs/latest/pallet_example/index.html) | Demonstrates concepts, APIs, and structures that are applicable for most pallets.
 | [pallet_example_offchain_worker](/rustdocs/latest/pallet_example_offchain_worker/index.html) | Demonstrates concepts, APIs, and structures that are applicable for most offchain workers.
 | [`pallet_grandpa`](/rustdocs/latest/pallet_grandpa/index.html) | Extends the GRANDPA consensus by managing the GRANDPA authority set ready for the native code.
-| [`pallet_identity`](/rustdocs/latest/pallet_identity/index.html) | Enables a federated naming system that allows multiple registrars to be added from a specified origin.
-Registrars can set a fee to provide identity-verification service. Anyone can put forth a proposed identity for a fixed deposit and ask for review by any number of registrars (paying each of their fees). Registrar judgments are given as an enum, allowing for sophisticated, multi-tier opinions.
+| [`pallet_identity`](/rustdocs/latest/pallet_identity/index.html) | Enables a federated naming system that allows multiple registrars to be added from a specified origin. Registrars can set a fee to provide identity-verification service.
 | [`pallet_im_online`](/rustdocs/latest/pallet_im_online/index.html) | Allows validators to gossip a heartbeat transaction with each new session to signal that the node is online.
 | [`pallet_indices`](/rustdocs/latest/pallet_indices/index.html) | Allocates indices for newly created accounts. An index is a short form of an address.
 | [`pallet_membership`](/rustdocs/latest/pallet_membership/index.html) | Allows control of membership of a set of `AccountId`s, useful for managing the membership of a collective.
@@ -61,10 +52,8 @@ Registrars can set a fee to provide identity-verification service. Anyone can pu
 | [`pallet_nicks`](/rustdocs/latest/pallet_nicks/index.html) | Demonstrates simplified account naming on-chain. It makes no effort to create a name hierarchy, be a DNS replacement, or provide reverse lookups.
 | [`pallet_offences`](/rustdocs/latest/pallet_offences/index.html) | Tracks reported offences.
 | [`pallet_proxy`](/rustdocs/latest/pallet_proxy/index.html)| Allows accounts to give permission to other accounts to dispatch types of calls from their signed origin.
-| [`pallet_randomness_collective_flip`](/rustdocs/latest/pallet_randomness_collective_flip/index.html) | Provides a `random` function that can be used in tests and
-generates low-influence random values based on the block hashes from the previous `81` blocks. This pallet is not intended for use in production.
-| [`pallet_recovery`](/rustdocs/latest/pallet_recovery/index.html) | Provides a social recovery tool for users to gain access to their accounts if the private key or other authentication mechanism is lost. Through this pallet, a user is able to make calls on-behalf-of another account which they have recovered. The recovery process is protected
-by trusted "friends" whom the original account owner chooses. A threshold (M) out of N friends are needed to give another account access to the recoverable account.
+| [`pallet_randomness_collective_flip`](/rustdocs/latest/pallet_randomness_collective_flip/index.html) | Provides a `random` function that can be used in tests and generates low-influence random values based on the block hashes from the previous `81` blocks. This pallet is not intended for use in production.
+| [`pallet_recovery`](/rustdocs/latest/pallet_recovery/index.html) | Provides a social recovery tool for users to gain access to their accounts if their private key or other authentication mechanism is lost. This pallet enables an account owner to identify trusted parties who can act on the owner's behalf to recover access to an account.
 | [`pallet_scheduler`](/rustdocs/latest/pallet_scheduler/index.html) | Exposes capabilities for scheduling dispatches to occur at a specified block number or at a specified period. These scheduled dispatches can be named or anonymous and can be canceled.
 | [`pallet_scored_pool`](/rustdocs/latest/pallet_scored_pool/index.html)| Maintains a scored membership pool where the highest scoring entities are made members.
 | [`pallet_session`](/rustdocs/latest/pallet_session/index.html) | Allows validators to manage their session keys, provides a function for changing the session length, and handles session rotation.
@@ -79,4 +68,4 @@ by trusted "friends" whom the original account owner chooses. A threshold (M) ou
 
 ## Additional information
 
-For detailed information about any pallet, refer to the Rust-generated documentation or the source code for the individual pallet.
+For detailed information about any pallet, refer to the [Rust-generated API](https://docs.substrate.io/rustdocs/) documentation or the source code for the individual pallet.

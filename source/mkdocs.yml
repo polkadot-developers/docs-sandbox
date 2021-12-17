@@ -70,9 +70,16 @@ nav:
         #- 'Connect a Substrate blockchain to Ethereum': 'tutorials/connect-to-evm.md'
    - 'Reference':
         - 'reference/index.md'
-        - 'Rust crates': 'https://docs.substrate.io/rustdocs/"target="_blank'
+        - 'Command-line tools':
+             - 'reference/command-line-tools/index.md'
+             - 'node-template': 'reference/command-line-tools/node-template.md'
+             - 'subkey': 'reference/command-line-tools/subkey.md'
+             - 'memory-profiler': 'reference/command-line-tools/memory-profiler.md'
+        - 'FRAME pallets': 'reference/frame-pallets.md'
+        - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'
         - 'How-to quick reference guides': 
              - 'reference/how-to-guides/index.md'
+             - 'Basics': 'reference/how-to-guides/basics.md'
         - 'Polkadot-JS': 'reference/polkadot-js.md'
         - 'Client libraries': 'reference/client-lib.md'
         - 'Glossary': 'reference/glossary.md'

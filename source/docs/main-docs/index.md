@@ -20,17 +20,19 @@ If a pallet doesn't exist for the functionality you need, you can use FRAME to c
 
 Explore the following resources to learn more.
 
-#### Tell me (read related topics)
+#### Tell me more
 
-* [FRAME and runtime development](/v3/concepts/runtime)
-* [Polkadot-JS](../reference/polkadot-js.md)
+* [Blockchain basics](main-docs/02-fundamentals/blockchain-basics.md)
+* [Substrate node architecture](main-docs/02-fundamentals/substrate-client.md)
+* [Runtime development and FRAME](main-docs/02-fundamentals/runtime.md)
 
-#### Guide me (related tutorials)
+#### Guide me
 
 * [Build a local blockchain](../tutorials/01-build-local-blockchain.md)
-* [Simulate a two-node network](../tutorials/02-simulate-network.md)
-* [Start a private network](../tutorials/03-private-network.md)
+* [Simulate a network](../tutorials/02-simulate-network.md)
+* [Start a trusted validator network](../tutorials/03-private-network.md)
 
+<!--
 #### Show me (related video content)
 
 * 
@@ -38,3 +40,4 @@ Explore the following resources to learn more.
 #### Teach me (related how to content)
 
 * 
+-->

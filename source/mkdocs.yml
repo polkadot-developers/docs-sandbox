@@ -11,8 +11,8 @@ theme:
   name: material
   custom_dir: my-overrides
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
+    #- navigation.tabs
+    #- navigation.tabs.sticky
     - navigation.indexes
     - navigation.tracking
     - navigation.sections
@@ -38,12 +38,12 @@ nav:
              - 'macOS': 'main-docs/03-install/macos.md'
              - 'Windows': 'main-docs/03-install/windows.md'
              - 'Substrate and runtime tools': 'main-docs/03-install/other-tools.md'
-        - 'Explore': 'main-docs/04-explore/explore.md'
+        #- 'Explore': 'main-docs/04-explore/explore.md'
         - 'Design': 
              - 'main-docs/05-design/index.md'
              - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
         - 'Build': 'main-docs/06-build/build.md'
-        - 'Test': 'main-docs/07-test/test.md'
+        #- 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'
         #- 'Monitor': 'main-docs/08-deploy/monitor.md'
@@ -54,12 +54,14 @@ nav:
         #- 'Retire': 'main-docs/retire.md'
    - 'Tutorials':
         - tutorials/index.md
-        - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
-        - 'Simulate a network': 'tutorials/02-simulate-network.md'
-        - 'Start a trusted validator network': 'tutorials/03-private-network.md'
+        - 'Get started':
+             - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
+             - 'Simulate a network': 'tutorials/02-simulate-network.md'
+             - 'Start a trusted validator network': 'tutorials/03-private-network.md'
         #- 'Grant permissions to specific nodes in a network': 'tutorials/04-permissions.md
         #- 'Monitor a network and view node metrics': 'tutorials/05-monitor.md
-        - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
+        - 'Work with pallets':
+             - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
         #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
         #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
         #- 'Create a custom pallet using macros': 'tutorials/proof-of-existence.md'
@@ -77,17 +79,17 @@ nav:
              - 'memory-profiler': 'reference/command-line-tools/memory-profiler.md'
         - 'FRAME pallets': 'reference/frame-pallets.md'
         - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'
-        - 'How-to quick reference guides': 
+        - 'How-to reference guides': 
              - 'reference/how-to-guides/index.md'
              - 'Basics': 'reference/how-to-guides/basics.md'
-        - 'Polkadot-JS': 'reference/polkadot-js.md'
+        - 'Polkadot-JS API': 'reference/polkadot-js.md'
         - 'Client libraries': 'reference/client-lib.md'
         - 'Glossary': 'reference/glossary.md'
    - 'Community': 
         - 'community/index.md'
         - 'Writing style guidelines': 'community/style-guide.md'
-        - 'Site builder guidelines': 'community/site-building.md'
+        #- 'Site builder guidelines': 'community/site-building.md'
         - 'How-to topic template': 'https://github.com/substrate-developer-hub/substrate-docs/blob/main/static/assets/contribute-templates/how-to-template.md/"target="_blank'
-        - 'Bounties': 'community/bounty.md'
-   - 'Dropbox': 'faq-dropbox/index.md'
-   - 'Playground': 'https://docs.substrate.io/playground/"target="_blank'
+        #- 'Bounties': 'community/bounty.md'
+   #- 'Dropbox': 'faq-dropbox/index.md'
+   #- 'Playground': 'https://docs.substrate.io/playground/"target="_blank'

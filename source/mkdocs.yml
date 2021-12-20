@@ -62,7 +62,7 @@ nav:
         - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
         #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
         #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
-        #- 'Create a custom pallet using macros': 'tutorials/proof-of-existence.md'
+        - 'Create a custom pallet using macros': 'tutorials/custom-pallet.md'
         #- 'Publish a custom pallet': 'tutorials/publish-pallet.md'
         #- 'Upgrade the runtime': 'tutorials/forkless-upgrade.md'
         #- 'Connect to a local relay chain': 'tutorials/relay-chain.md'

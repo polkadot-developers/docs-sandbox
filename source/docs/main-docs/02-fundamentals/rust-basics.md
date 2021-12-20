@@ -4,7 +4,6 @@ Index: 2
 
 _The goal of this article is to explain how Substrate uses Rust to achieve what it provides._
 _In doing so, it explains how Substrate uses no_std and why, and what it has to do with compiling to Wasm_.
-## Rust basics 
 
 As a modern programming language, Rust provides a high degree of performance, type safety and memory efficiency.
 The Rust compiler helps developers be confident in the code they write, making it harder to write code with memory or concurency bugs.

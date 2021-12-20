@@ -1,4 +1,21 @@
-# Substrate architecture
+Substrate is made of a multitude of libraries that facilitate building blockchain clients and their runtime logic. 
+At a high level any Substrate blockchain contains:
+
+- A networking layer 
+- A consensus layer 
+- A transaction pool
+- An executor
+- A database to store state and blocks
+- A keystore
+- An RPC layer 
+
+The client can be thought of the outer blockchain infrastructure which handles everything outside the scope of on-chain logic.
+Everything responsible for handling on-chain logic happens in the runtime.
+
+Substrate comes with an opinionated toolkit for building runtimes in Rust called FRAME.
+That said, the runtime can be built in any way, with a language other than Rust, so long as it can communicate to the client using the primitives it implements. 
+
+# Substrate architecture 
 
 Substrate nodes run a Substrate client application.
 
@@ -23,3 +40,7 @@ Substrate makes it possible to supply custom consensus engines and also ships wi
 Substrate provides HTTP and WebSocket RPC servers.
 - **Telemetry**: client metrics that are exposed by the embedded [Prometheus](https://prometheus.io/) server.
 
+Notes / stuff to add:
+- On how light clients work: https://github.com/paritytech/substrate/issues/5047#issuecomment-638708536
+- No longer include :code and :heap_pages in execution proofs: https://github.com/paritytech/substrate/pull/10419
+- what is the architecture of a Substrate node?

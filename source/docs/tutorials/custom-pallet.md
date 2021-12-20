@@ -413,7 +413,7 @@ To compile and start the updated Substrate node:
    ./target/release/node-template --dev
    ```
 
-   The `--dev` option start the node using the predefined `development` chain specification.
+   The `--dev` option starts the node using the predefined `development` chain specification.
    Using the `--dev` option ensures that you have a clean working state any time you stop and restart the node.
 
 1. Verify the node produces blocks.

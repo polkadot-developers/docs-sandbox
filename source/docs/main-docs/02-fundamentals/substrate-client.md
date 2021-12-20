@@ -40,7 +40,13 @@ Substrate makes it possible to supply custom consensus engines and also ships wi
 Substrate provides HTTP and WebSocket RPC servers.
 - **Telemetry**: client metrics that are exposed by the embedded [Prometheus](https://prometheus.io/) server.
 
+<!--
 Notes / stuff to add:
 - On how light clients work: https://github.com/paritytech/substrate/issues/5047#issuecomment-638708536
 - No longer include :code and :heap_pages in execution proofs: https://github.com/paritytech/substrate/pull/10419
 - what is the architecture of a Substrate node?
+
+Add section on Design assumptions:
+- all blockchains must run on "minimum hardware requirements" 
+- protocol vs. infrastructure
+-->

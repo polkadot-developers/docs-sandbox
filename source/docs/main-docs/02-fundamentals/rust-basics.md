@@ -223,6 +223,33 @@ This is because the `wasm32-unknown-unknown` relies on [experimental features of
 Over time, features will likely be promoted to stable.
 Subscribe to [this tracking issue](https://github.com/paritytech/substrate/issues/1252) for updates and read more about the [build process](./build-process) to understand how a Substrate node is cross-compiled.
 
+## Native and Wasm runtimes
+<!-- Note to self: maybe move this to architecture page? The goal of this section is to explain why Substrate is designed to have both Wasm and native runtimes, as a prelude to the build process which it should link to. -->
+
+Considered an optimization to Substrate, the native runtime is especially useful for development and testing environments.
+It is optional in the sense that production chains don't need to rely on native builds.
+The Wasm runtime on the other hand is not optional. 
+A chain's Wasm binary is embedded in the client at compile time and required for any [chain specification](./todo).
+It is possible to skip the Wasm runtime compilation for developement purposes.
+However, launching a chain without one will cause the the chain will panic.
+Being a core component to Substrate's design, it provides the possibility for on-chain upgradability and relay chain validation.
+
+### Why two runtimes?
+
+There are ongoing discussions about removing the native runtime altogether. 
+Refer to this open [issue](https://github.com/paritytech/substrate/issues/7288) for more details.
+
+Here are some reasons why using a native runtime could be desired:
+
+- For development and testing, native runtimes have better debugging support, while Wasm runtimes are more difficult to debug.
+- Native execution is faster than Wasm execution and more efficient on slower hardware.
+
+However:
+
+- The Wasm runtime is required in all Substrate chains.
+- The Wasm runtime is the canonical encoding of the chains' state transition functions, which implies that something that isn't supported by a Wasm runtime won't be supported by the native runtime.
+- In production, on-chain upgrades can only be done with Wasm runtimes.
+
 ## Resources
 
 - [**Cargo and crates.io**](https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html)

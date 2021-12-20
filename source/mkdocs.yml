@@ -11,8 +11,8 @@ theme:
   name: material
   custom_dir: my-overrides
   features:
-    #- navigation.tabs
-    #- navigation.tabs.sticky
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.indexes
     - navigation.tracking
     - navigation.sections
@@ -21,7 +21,7 @@ theme:
 
 # Navigation
 nav:
-   - 'Welcome to Substrate': 'index.md'
+   - 'index.md'
    - 'Quick start': 'quickstart.md'
    - 'Docs':
         - main-docs/index.md
@@ -82,6 +82,7 @@ nav:
         - 'How-to reference guides': 
              - 'reference/how-to-guides/index.md'
              - 'Basics': 'reference/how-to-guides/basics.md'
+             - 'Pallet design': 'reference/how-to-guides/pallet-design.md'
         - 'Polkadot-JS API': 'reference/polkadot-js.md'
         - 'Client libraries': 'reference/client-lib.md'
         - 'Glossary': 'reference/glossary.md'

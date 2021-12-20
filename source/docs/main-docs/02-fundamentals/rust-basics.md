@@ -145,16 +145,6 @@ Beyond being a powerful "next-generation web" technology, for Substrate, having 
 - **Smart contract compatibility**. Any Smart Contract that compiles to Wasm can be executed by a compatible Substrate node. See a [list of key advantages of having Wasm smart contracts](https://paritytech.github.io/ink-docs/why-webassembly-for-smart-contracts).
 - **Light-client ready**. Wasm is also a key piece in how all Substrate chains are [light-client ready out of the box](https://paritytech.github.io/substrate-connect/#wasm-light-clients). 
 
-
-### Best practices
-
-[_Note: rough sketch for now.. to move to its own dedicated "Best Practices" section imo. TBD_]
-
-- using `saturated_add` or `checked_add` for arithmetic operations.
-- error checking.
-- writing tests.
-Have a favorite you want to share? [Let us know](https://github.com/substrate-developer-hub/substrate-docs/issues/558)!
- 
 ## Build environments
 
 Rust is an embedded programming language.

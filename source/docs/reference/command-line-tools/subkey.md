@@ -57,10 +57,7 @@ To install and compile the `subkey` program:
     ./target/release/subkey --help
     ```
 
-## Command usage
-
-
-### Basic syntax
+## Basic command usage
 
 The basic syntax for running `subkey` commands is:
 
@@ -92,20 +89,94 @@ For reference information and examples that illustrate using subkey subcommands,
 
 | Command | Description
 | ------- | -----------
-| `generate` | Generates a random account key.
-| `generate-node-key` | Generates a random node `libp2p` secret key. You can save the secret key to a file or display it as standard output (`stdout`).
-| `help` | Displays usage message for `subkey` or for a specified subcommand.
-| `inspect` | Displays the public key and SS58 address for the secret URI you specify.
-| `inspect-node-key` | Displays the peer ID that corresponds with the secret node key in the file name you specify.
-| `sign` | Signs a message with the secret key you specify.
-| `vanity` | Generates a seed that provides a vanity address.
-| `verify` | Verifies the signature for a message is valid for the public or secret key you specify.
+| [`generate`]() | Generates a random account key.
+| [`generate-node-key`]() | Generates a random node `libp2p` secret key. You can save the secret key to a file or display it as standard output (`stdout`).
+| [`help`]() | Displays usage message for `subkey` or for a specified subcommand.
+| [`inspect`]() | Displays the public key and SS58 address for the secret URI you specify.
+| [`inspect-node-key`]() | Displays the peer ID that corresponds with the secret node key in the file name you specify.
+| [`sign`]() | Signs a message with the secret key you specify.
+| [`vanity`]() | Generates a seed that provides a vanity address.
+| [`verify`]() | Verifies the signature for a message is valid for the public or secret key you specify.
 
-## Examples
+### Output
 
-You can use the `subkey generate` command to generate account keys with different signature schemes
+Depending on the subcommand you specify, the output from the subkey program displays some or all of the following information:
 
-You can use the `subkey inspect` command to recalculate the public key and public address for specified secret key or mnemonic phrase.
+| This field | Contains
+| ---------- | ----------
+| Secret phrase | A series of English words that encodes the secret key in a human-friendly way. This series of words—also referred to as a mnemonic phrase or seed phrase—can be used to recover a secret key if the correct set of words are provided in the correct order.
+| Secret Seed | The minimum information necessary to restore a key pair. The secret seed is also sometimes referred to as a private key or raw seed. All other information is calculated from this value.
+| Public Key (hex) | The public half of the cryptographic key pair in hexadecimal format.
+| Public Key (SS58) | The public half of the cryptographic key pair in SS58 encoding.
+| Account ID | An alias for the public key in hexadecimal format.
+| SS58 Address | An SS58-encoded public address based on the public key.
+
+### Examples
+
+To display version information for the `subkey` program, run the following command:
+
+```
+subkey --version
+```
+
+## subkey generate
+
+Use the `subkey generate` command to generate public and private keys and account addresses.
+You can use command-line options to generate keys with different signature schemes or mnemonic phrases with more or fewer words.
+
+#### Basic usage
+
+```
+subkey generate [FLAGS] [OPTIONS]
+```
+
+#### Flags
+
+You can use the following optional flags with the `subkey generate` command.
+
+| Flag   | Description
+| ------ | -----------
+| -h, --help | Displays usage information.
+| --password-interactive | Enables you to enter the password for accessing the keystore interactively in the terminal.
+| -V, --version | Displays version information.
+
+#### Options
+
+You can use the following command-line options with the `subkey generate` command.
+
+| Option   | Description
+| -------- | -----------
+| --keystore-path <path> | Specifies a custom keystore path.
+|--keystore-uri <keystore-uri> | Specifies a custom URI to connect to for keystore-services
+| -n, --network <network> | Specifies the network address format to use. For example, `kusama` or `polkadot`. For a complete list of networks supported, see the online usage information.
+| --output-type <format> | Specifies the output format to use. Valid values are Json and Test. The default output format is Text
+| --password <password> | Specifies the password used by the keystore. This option enables you to append an extra secret to the seed.
+| --password-filename <path> | Specifies the name of a file that contains the password used by the keystore.
+| --scheme <SCHEME>                cryptography scheme [default: Sr25519]  [possible values: Ed25519, Sr25519,
+                                         Ecdsa]
+    -w, --words <WORDS>                  The number of words in the phrase to generate. One of 12 (default), 15, 18, 21
+                                         and 24
+
+
+Generate an sr25519 key by running:
+
+```bash
+subkey generate
+```
+
+```text
+Secret phrase `caution juice atom organ advance problem want pledge someone senior holiday very` is account:
+  Secret seed:       0xc8fa03532fb22ee1f7f6908b9c02b4e72483f0dbd66e4cd456b8f34c6230b849
+  Public key (hex):  0xd6a3105d6768e956e9e5d41050ac29843f98561410d3a47f9dd5b3b227ab8746
+  Public key (SS58): 5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR
+  Account ID:        0xd6a3105d6768e956e9e5d41050ac29843f98561410d3a47f9dd5b3b227ab8746
+  SS58 Address:      5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR
+```
+
+
+## subkey inspect
+
+Use the `subkey inspect` command to recalculate the public key and public address for specified secret key or mnemonic phrase.
 For example, to inspect the public keys derived from a mnemonic phrase, you can run a command similar to the following:
 
 ```bash
@@ -129,26 +200,6 @@ You can also use the secret seed directly by running a command similar to the fo
 subkey inspect 0xc8fa03532fb22ee1f7f6908b9c02b4e72483f0dbd66e4cd456b8f34c6230b849
 ```
 
-## Generating keys
-
-Generate an sr25519 key by running:
-
-_Command:_
-
-```bash
-subkey generate
-```
-
-_Output:_
-
-```text
-Secret phrase `caution juice atom organ advance problem want pledge someone senior holiday very` is account:
-  Secret seed:       0xc8fa03532fb22ee1f7f6908b9c02b4e72483f0dbd66e4cd456b8f34c6230b849
-  Public key (hex):  0xd6a3105d6768e956e9e5d41050ac29843f98561410d3a47f9dd5b3b227ab8746
-  Public key (SS58): 5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR
-  Account ID:        0xd6a3105d6768e956e9e5d41050ac29843f98561410d3a47f9dd5b3b227ab8746
-  SS58 Address:      5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR
-```
 
 We will use this seed as the [example](#example-seed) for the rest of this document.
 
@@ -192,18 +243,6 @@ Secret phrase `voice become refuse remove ordinary recall humble purity shock fe
   SS58 Address:      5CcPdpUAhRvGjyxcpnL7emi7SruQ98eP7mC8cDNkjCKfXNZ7
 ```
 
-The output gives us the following information about our key:
-
-- **Secret phrase** (aka "mnemonic phrase") - A series of English words that encodes the seed in a
-  more human-friendly way. Mnemonic phrases were first introduced in Bitcoin (see
-  [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)) and make it much easier
-  to write down your key by hand.
-- **Secret Seed** (aka "Private Key" or "Raw Seed") - The minimum necessary information to restore
-  the key pair. All other information is calculated from the seed.
-- **Public Key (hex)** - The public half of the cryptographic key pair in hexadecimal.
-- **Public Key (SS58)** - The public half of the cryptographic key pair in SS58 encoding.
-- **Account ID** - Alias for the Public Key in hexadecimal.
-- **SS58 Address** (aka "Public Address") - An SS58-encoded address based on the public key.
 
 You can also create a vanity address, meaning an address that contains a specified sub-string. But
 you will not receive a mnemonic phrase for this address.

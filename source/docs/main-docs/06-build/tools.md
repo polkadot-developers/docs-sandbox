@@ -4,6 +4,17 @@ Type: reference
 
 Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
 
+### try-runtime
+
+The `try-runtime` tool is built to query a snapshot of runtime storage, using an [in-memory-externalities](https://docs.substrate.io/rustdocs/latest/sp_state_machine/struct.TestExternalities.html) to store state. 
+In this way, it enables runtime engineers to write tests for a specified runtime state, for testing against real chain state _before_ going to production. 
+It is designed to be used as a command line interface to specify at which block to query state.
+
+In its simplest form, `try-runtime` is a tool that enables:
+
+1. Connecting to a remote node and calling into some runtime API.
+2. Scraping the specified state from a node at a given block.
+3. Writing tests for that data.
 ### memory profiler
 
 Memory profiling enables you to understand the memory allocation and behavior of your blockchain applications over time in Substrate-based clients. 

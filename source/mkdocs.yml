@@ -29,8 +29,9 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
-             - 'Anatomy of a node': 'main-docs/02-fundamentals/substrate-client.md'
              - 'Runtime as the core of Substrate chains': 'main-docs/02-fundamentals/runtime.md'
+             - 'main-docs/02-fundamentals/substrate-client.md'
+             - 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
@@ -42,7 +43,12 @@ nav:
         - 'Design': 
              - 'main-docs/05-design/index.md'
              - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
-        - 'Build': 'main-docs/06-build/build.md'
+        - 'Build': 
+             - 'main-docs/06-build/libraries.md'
+             - 'main-docs/06-build/tools.md'
+             - 'main-docs/06-build/build-process.md'
+             - 'main-docs/06-build/custom-pallets.md'
+             - 'main-docs/06-build/frontend.md'
         - 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'

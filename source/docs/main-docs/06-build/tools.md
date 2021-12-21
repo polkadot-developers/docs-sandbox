@@ -1,3 +1,6 @@
+Section: Build
+Sub-section: Tools
+Type: reference 
 
 Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
 

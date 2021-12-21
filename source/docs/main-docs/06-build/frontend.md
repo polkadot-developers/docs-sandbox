@@ -1,6 +1,6 @@
 Section: Build
+Sub-section: Front-end development
 Type: reference 
-Index: 4
 
 ## Front-end development
 

@@ -4,12 +4,27 @@ Type: reference
 
 Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
 
-While there are some tools that are documented more extensively, such as [Subkey](/v3/tools/subkey), [Memory Profiling](/v3/tools/memory-profiling) and [Try Runtime](/v3/tools/try-runtime), there exists a number of additional tools which are yet to be integrated into Substrate's documentation hub. 
-This page provides an overview of what these tools are and what they do.
+### subkey
 
+Subkey is a [public key cryptographic](https://en.wikipedia.org/wiki/Public-key_cryptography) utility that is developed [within Substrate itself](https://github.com/paritytech/substrate/tree/master/bin/utils/subkey).
+Its main feature is to generate and inspect key pairs, currently supporting these schemes:
+
+- [sr25519](https://wiki.polkadot.network/docs/en/learn-cryptography): Schorr signatures on
+  the Ristretto group
+- [ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519): SHA-512 (SHA-2) on Curve25519
+- [secp256k1](https://en.bitcoin.it/wiki/Secp256k1): ECDSA signatures on secp256k1
+
+All keys in Substrate based networks ([like polkadot](https://wiki.polkadot.network/docs/learn-accounts#address-format))
+use the [SS58 address encoding format](/v3/advanced/ss58/) that is the primary user-facing way to interact with keys.
+
+Subkey also allows restoring keys from mnemonics and raw seeds; signing and verifying signatures
+on a message; and signing and verifying signatures for encoded transactions.
+
+[Go to documentation](https://github.com/paritytech/substrate/tree/master/bin/utils/subkey#readme).
 ### sr tool
 
 srtool allows building WASM runtimes in a deterministic way, allowing CIs and users to produce a strictly identical WASM runtime.
+
 [Go to documentation](https://github.com/paritytech/srtool). 
 
 ### subxt
@@ -30,7 +45,7 @@ A tool Run alongside a Substrate-backed chain to index all Blocks, State, and Ex
 [Go to documentation](https://github.com/paritytech/substrate-archive)
 
 ### Sidecar
-A REST service that makes it easy to interact with blockchain nodes built using Substrate's FRAME framework.`}
+A REST service that makes it easy to interact with blockchain nodes built using Substrate's FRAME framework.
 [Go to documentation](https://github.com/paritytech/substrate-api-sidecar).
 
 ### Polkadot launch

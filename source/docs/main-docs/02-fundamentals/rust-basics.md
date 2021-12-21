@@ -1,6 +1,6 @@
-Section: Build
+Section: Fundamentals
+Sub-section: Rust basics
 Type: reference 
-Index: 2
 
 _The goal of this article is to explain how Substrate uses Rust to achieve what it provides._
 _In doing so, it explains how Substrate uses no_std and why, and what it has to do with compiling to Wasm_.

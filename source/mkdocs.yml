@@ -29,35 +29,55 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
+             - 'Runtime as the core of Substrate chains': 'main-docs/02-fundamentals/runtime.md'
              - 'main-docs/02-fundamentals/substrate-client.md'
              - 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
+             - 'Linux': 'main-docs/03-install/linux.md'
+             - 'macOS': 'main-docs/03-install/macos.md'
+             - 'Windows': 'main-docs/03-install/windows.md'
+             - 'Substrate and runtime tools': 'main-docs/03-install/other-tools.md'
         - 'Explore': 'main-docs/04-explore/explore.md'
-        - 'Design': 'main-docs/05-design/index.md'
+        - 'Design': 
+             - 'main-docs/05-design/index.md'
+             - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
         - 'Build': 
              - 'main-docs/06-build/libraries.md'
              - 'main-docs/06-build/tools.md'
              - 'main-docs/06-build/build-process.md'
              - 'main-docs/06-build/custom-pallets.md'
              - 'main-docs/06-build/frontend.md'
-
         - 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'
         #- 'Monitor': 'main-docs/08-deploy/monitor.md'
         #- 'Operate': 'main-docs/08-deploy/operate.md'
-        - 'Upgrade': 'main-docs/09-upgrade/upgrade.md'
+        - 'Maintain': 
+             - 'main-docs/09-maintain/index.md'
+             - 'Upgrade': 'main-docs/09-maintain/upgrade.md'
         #- 'Retire': 'main-docs/retire.md'
    - 'Tutorials':
         - tutorials/index.md
         - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
         - 'Simulate a network': 'tutorials/02-simulate-network.md'
-        - 'Start a private network': 'tutorials/03-private-network.md'
+        - 'Start a trusted validator network': 'tutorials/03-private-network.md'
+        #- 'Grant permissions to specific nodes in a network': 'tutorials/04-permissions.md
+        #- 'Monitor a network and view node metrics': 'tutorials/05-monitor.md
+        - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
+        #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
+        #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
+        - 'Create a custom pallet using macros': 'tutorials/custom-pallet.md'
+        #- 'Publish a custom pallet': 'tutorials/publish-pallet.md'
+        #- 'Upgrade the runtime': 'tutorials/forkless-upgrade.md'
+        #- 'Connect to a local relay chain': 'tutorials/relay-chain.md'
+        #- 'Connect a parachain to Polkadot': 'tutorials/parachain.md'
+        #- 'Connect a Substrate blockchain to Ethereum': 'tutorials/connect-to-evm.md'
    - 'Reference':
         - 'reference/index.md'
-        - 'Rust crates': 'https://docs.substrate.io/rustdocs/"target="_blank'
+        - 'FRAME pallets': 'reference/frame-pallets.md'
+        - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'
         - 'How-to quick reference guides': 
              - 'reference/how-to-guides/index.md'
         - 'Polkadot-JS': 'reference/polkadot-js.md'
@@ -69,5 +89,5 @@ nav:
         - 'Site builder guidelines': 'community/site-building.md'
         - 'How-to topic template': 'https://github.com/substrate-developer-hub/substrate-docs/blob/main/static/assets/contribute-templates/how-to-template.md/"target="_blank'
         - 'Bounties': 'community/bounty.md'
-   - 'FAQ dropbox': 'faq-dropbox/index.md'
+   - 'Dropbox': 'faq-dropbox/index.md'
    - 'Playground': 'https://docs.substrate.io/playground/"target="_blank'

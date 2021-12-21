@@ -4,6 +4,13 @@ Type: reference
 
 Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
 
+### memory profiler
+
+Memory profiling enables you to understand the memory allocation and behavior of your blockchain applications over time in Substrate-based clients. 
+It identifies method calls in the context of how memory was allocated, combining this information with the number of allocated objects. 
+In addition, profiling can be used to analyze memory leaks, identify where memory consumption is happening, define temporary allocations, and investigate excessive memory fragmentation within applications.
+
+The profiler we recommend is [koute's memory profiler](https://github.com/koute/memory-profiler).
 ### subkey
 
 Subkey is a [public key cryptographic](https://en.wikipedia.org/wiki/Public-key_cryptography) utility that is developed [within Substrate itself](https://github.com/paritytech/substrate/tree/master/bin/utils/subkey).

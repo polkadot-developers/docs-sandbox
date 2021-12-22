@@ -30,6 +30,7 @@ nav:
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
              - 'Substrate node architecture': 'main-docs/02-fundamentals/architecture.md'
+             - 'Consensus': 'main-docs/02-fundamentals/consensus.md'
              - 'Rust': 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'

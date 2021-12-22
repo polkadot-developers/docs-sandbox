@@ -29,9 +29,8 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
-             - 'Runtime as the core of Substrate chains': 'main-docs/02-fundamentals/runtime.md'
-             - 'main-docs/02-fundamentals/substrate-client.md'
-             - 'main-docs/02-fundamentals/rust-basics.md'
+             - 'Substrate node architecture': 'main-docs/02-fundamentals/architecture.md'
+             - 'Rust': 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'

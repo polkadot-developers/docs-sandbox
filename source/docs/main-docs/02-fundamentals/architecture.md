@@ -1,5 +1,3 @@
-# Substrate architecture 
-
 <!--
 Notes / stuff to add:
 - On how light clients work: https://github.com/paritytech/substrate/issues/5047#issuecomment-638708536
@@ -11,11 +9,11 @@ Add section on Design assumptions:
 - protocol vs. infrastructure
 -->
 
-Substrate is made of a multitude of libraries that facilitate building blockchain clients and their runtime logic. 
+Substrate is made of a [multitude of core libraries](./link-todo) that facilitate building blockchain clients and their runtime logic. 
 At a high level any Substrate blockchain contains:
 
-- A networking layer 
-- A consensus layer 
+- A networking component 
+- A consensus component 
 - A transaction pool
 - An executor
 - A database to store state and blocks
@@ -70,8 +68,7 @@ Substrate provides HTTP and WebSocket RPC servers.
 
 ## Runtime
 
-As discussed in [Anatomy of a node](./substrate-client.md), the Substrate architecture includes several layers of key components. 
-The core of this architecture is the Substrate **runtime**.
+A fundamental part of this architecture is the Substrate **runtime**.
 The runtime for a blockchain defines the business logic that controls how the blockchain behaves. 
 In Substrate-based chains, the runtime provides the [state transition function](../../reference/glossary.md#state-transition-function-stf) because the runtime is where you define the storage items that represent the
 blockchain [state](../../reference/glossary.md##state) and the functions that allow blockchain users to make
@@ -79,22 +76,18 @@ changes to the state.
 
 ![substrate-runtime-client.png](../../img/docs/concepts/substrate-runtime-client.png)
 
-Each Substrate node contains a runtime. The runtime contains the business logic of the chain. It
-defines what transactions are valid and invalid and determines how the chain's state changes in
-response to transactions. The "outer node", everything other than the runtime, does not compile
-to Wasm, only to native. The outer node is responsible for handling peer discovery, transaction
-pooling, block and transaction gossiping, consensus, and answering RPC calls from the outside
-world. While performing these tasks, the outer node sometimes needs to query the runtime for
-information, or provide information to the runtime. A Runtime API facilitates this kind of
-communication between the outer node and the runtime.
+The runtime contains the business logic of the chain. 
+It defines what transactions are valid and invalid and determines how the chain's state changes in response to transactions. 
+The "outer node", everything other than the runtime, does not compile to Wasm, only to native. The outer node is responsible for handling peer discovery, transaction pooling, block and transaction gossiping, consensus, and answering RPC calls from the outside world. 
+While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
 
 ## Runtime APIs
 
-In Substrate, the `sp_api` crate provides an interface to implement a runtime API. It is designed to give
-developers the ability to define their own custom runtime APIs using the [`impl_runtime_apis`](/rustdocs/latest/sp_api/macro.impl_runtime_apis.html)
-macro. However, every runtime must implement the [`Core`](/rustdocs/latest/sp_api/trait.Core.html) and
-[`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html) runtime APIs. In addition to these, a basic Substrate Node
-has the following runtime APIs implemented:
+A Runtime API facilitates communication between the outer node and the runtime.
+In Substrate, the `sp_api` crate provides an interface to implement a runtime API. 
+It is designed to give developers the ability to define their own custom runtime APIs using the [`impl_runtime_apis`](/rustdocs/latest/sp_api/macro.impl_runtime_apis.html) macro. 
+However, every runtime must implement the [`Core`](/rustdocs/latest/sp_api/trait.Core.html) and [`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html) runtime APIs. 
+In addition to these, a basic Substrate Node has the following runtime APIs implemented:
 
 - [`BlockBuilder`](/rustdocs/latest/sp_block_builder/trait.BlockBuilder.html): Provides the functionality required for building a block.
 - [`TaggedTransactionQueue`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html): Handles validating transactions in the transaction queue.
@@ -106,15 +99,13 @@ has the following runtime APIs implemented:
 - [`TransactionPaymentApi`](/rustdocs/latest/pallet_transaction_payment_rpc_runtime_api/trait.TransactionPaymentApi.html): Handles querying information about transactions.
 - [`Benchmark`](/rustdocs/latest/frame_benchmarking/trait.Benchmark.html): Provides a way to [benchmark](/v3/runtime/benchmarking) a FRAME runtime.
 
-In order to provide its defining forkless runtime upgrade capabilities, Substrate runtimes
-are built as [WebAssembly (Wasm)](/v3/getting-started/glossary#webassembly-wasm)
-bytecode. Substrate also defines the core primitives that the runtime must implement.
+In order to provide its defining forkless runtime upgrade capabilities, Substrate runtimes are built as [WebAssembly (Wasm)](/v3/getting-started/glossary#webassembly-wasm) bytecode. 
+Substrate also defines the core primitives that the runtime must implement.
 
 ## Core primitives
 
-The Substrate framework makes minimal assumptions about what your runtime must provide to the other
-layers of Substrate. But there are a few data types that need to be defined and must fulfill a particular
-interface in order to work within the Substrate framework.
+The Substrate framework makes minimal assumptions about what your runtime must provide to the other layers of Substrate. 
+But there are a few data types that need to be defined and must fulfill a particular interface in order to work within the Substrate framework.
 
 They are:
 
@@ -144,24 +135,14 @@ They are:
 
 ## FRAME primitives
 
-The core Substrate codebase ships with [FRAME](/v3/runtime/frame), Parity's system
-for Substrate runtime development that is used for chains like
-[Kusama](https://github.com/paritytech/polkadot/blob/master/runtime/kusama/src/lib.rs) and
-[Polkadot](https://github.com/paritytech/polkadot/blob/master/runtime/polkadot/src/lib.rs). FRAME
-defines additional runtime primitives and
-provides a framework that makes it easy to construct a runtime by composing modules, called
-[pallets](/v3/runtime/frame#pallets). Each pallet encapsulates domain-specific logic that is
-expressed as a set of a [storage items](/v3/runtime/storage),
-[events](/v3/runtime/events-and-errors),
-[errors](/v3/runtime/events-and-errors#errors), and
-[dispatchable functions](/v3/getting-started/glossary#dispatch). FRAME developers
-can [create their own pallets](/v3/runtime/frame#pallets) and reuse existing pallets,
-including [over 50 of those shipped with Substrate](/v3/runtime/frame#prebuilt-pallets).
+The core Substrate codebase ships with [FRAME](/v3/runtime/frame), Parity's system for Substrate runtime development that is used for chains like [Kusama](https://github.com/paritytech/polkadot/blob/master/runtime/kusama/src/lib.rs) and [Polkadot](https://github.com/paritytech/polkadot/blob/master/runtime/polkadot/src/lib.rs). 
+FRAME defines additional runtime primitives and provides a framework that makes it easy to construct a runtime by composing modules, called [pallets](/v3/runtime/frame#pallets). 
+Each pallet encapsulates domain-specific logic that is expressed as a set of a [storage items](/v3/runtime/storage), [events](/v3/runtime/events-and-errors), [errors](/v3/runtime/events-and-errors#errors), and [dispatchable functions](/v3/getting-started/glossary#dispatch). 
+FRAME developers can [create their own pallets](/v3/runtime/frame#pallets) and reuse existing pallets, including [over 50 of those shipped with Substrate](/v3/runtime/frame#prebuilt-pallets).
 
 ![Runtime Composition](../../img/docs/concepts/frame-runtime.png)
 
-There are an additional set of primitives that are assumed about a runtime built with the Substrate
-FRAME. These are:
+There are an additional set of primitives that are assumed about a runtime built with the Substrate FRAME. These are:
 
 - `Call`: The dispatch type that can be called via an extrinsic.
 
@@ -182,6 +163,30 @@ FRAME. These are:
 Although a lot of core runtime development can be enabled with FRAME and
 its related primitives, FRAME is not the only system for developing
 Substrate based blockchains.
+
+## Native and Wasm runtimes
+
+Considered an optimization to Substrate, the native runtime is especially useful for development and testing environments.
+It is optional in the sense that production chains don't need to rely on native builds.
+The Wasm runtime on the other hand is not optional. 
+A chain's Wasm binary is embedded in the client at compile time and required for any [chain specification](./todo).
+It is possible to skip the Wasm runtime compilation for developement purposes.
+However, launching a chain without one will cause the the chain will panic.
+Being a core component to Substrate's design, it provides the possibility for on-chain upgradability and relay chain validation.
+
+There are ongoing discussions about removing the native runtime altogether. 
+Refer to this open [issue](https://github.com/paritytech/substrate/issues/7288) for more details.
+
+Here are some reasons why using a native runtime could be desired:
+
+- For development and testing, native runtimes have better debugging support, while Wasm runtimes are more difficult to debug.
+- Native execution is faster than Wasm execution and more efficient on slower hardware.
+
+However:
+
+- The Wasm runtime is required in all Substrate chains.
+- The Wasm runtime is the canonical encoding of the chains' state transition functions, which implies that something that isn't supported by a Wasm runtime won't be supported by the native runtime.
+- In production, on-chain upgrades can only be done with Wasm runtimes.
 
 ## Next steps
 

@@ -1,8 +1,6 @@
 <!--
 Notes / stuff to add:
 - On how light clients work: https://github.com/paritytech/substrate/issues/5047#issuecomment-638708536
-- No longer include :code and :heap_pages in execution proofs: https://github.com/paritytech/substrate/pull/10419
-- what is the architecture of a Substrate node and how a client relates to other components in the framework
 
 Add section on Design assumptions:
 - all blockchains must run on "minimum hardware requirements" 
@@ -23,23 +21,48 @@ At a high level any Substrate blockchain contains:
 The client can be thought of as the outer blockchain infrastructure which handles everything outside the scope of on-chain logic.
 Everything responsible for handling on-chain logic happens in the runtime.
 
-Substrate comes with an opinionated toolkit for building runtimes in Rust called FRAME.
-That said, the runtime can be built in any way, with a language, so long as it can communicate to the client.
-This communication layer is facilitated by a set of primitives created to implement various host functions and runtime APIs.
+This communication layer been the on-chain and outer-node worlds is facilitated by a set of primitives designed for implementing various host functions and runtime APIs.
 
 This means that developers can use Substrate to build the infrastructure requirements for any blockchain protocol so long as it adheres to the communication implementation between a runtime and client.
 These are:
+
 - Runtime APIs: allows any client to call into a runtime
 - Host functions: allows a runtime to interact with a client
 
-For example, [the Polkadot Protocol](https://github.com/w3f/polkadot-spec/) specifies different host functions and runtime APIs to use Substrate in its implementation.
+A Substrate node can be thought of as video gaming environment, where the console is the client and the games are the runtime.
+
+For all consensus dependant implementations, runtime APIs and host functions must share the same functionality.
+Any consensus-breaking change on the host-function must be reflected in the runtime. 
+For example, [the Polkadot Protocol](https://github.com/w3f/polkadot-spec/) specifies host functions and runtime APIs in its implementation for block authoring (BABE) and block finalization (GRANDPA).
+Any parachain that uses the Polkadot protocol must also have the same runtime APIs and host functions, where any change on Polkadot's runtime APIs or host functions must be reflected in those of the parachain.
+Otherwise there is no way for a relay chain and a parachain to reach consensus.
+
+## Storage
+
+Storage layer: 
+
+- Key-value db allows to build merkle tries ontop of it
+- In the KV database everything is an `Option`. Either the storage exists or not. 
+- Storage items expose metadata 
+- Valuequery → allows to default to 0 if there is no Option
+- The storage macro does the hashing of the item, encodes and decodes 
+- Hashers: balke2_128 or two_x 
+- All user balances has their own key. Reading a storage item is O logn.
+- Merkle trie makes it inefficient to read and write, but merkle proofs make it super efficient to know what is there (useful for light clients)
+
+## Light clients
+
+In the video gaming analogy, a light client is the equivalent of a cloud-hosted gaming environment.
+Instead of playing straight from a console running some game disk, you're able to access the game environment in a more light-weight manner.
 
 ## Assumptions
+
 Substrate nodes run a Substrate client application that makes no assumptions about its environment, except:
 - Host function (runtime to interact with Client) and runtime API (client calling into the runtime) are the assumptions we make 
 - Every Wasm runtime needs to provide a version
 - 
 
+Substrate makes it possible to include executable logic that doesn't take part of consensus, such as off-chain workers.
 ## Client 
 
 ![Substrate client architecture](../../img/docs/getting-started/substrate-arch.png)
@@ -81,7 +104,54 @@ It defines what transactions are valid and invalid and determines how the chain'
 The "outer node", everything other than the runtime, does not compile to Wasm, only to native. The outer node is responsible for handling peer discovery, transaction pooling, block and transaction gossiping, consensus, and answering RPC calls from the outside world. 
 While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
 
-## Runtime APIs
+## Primitives: infrastructure and protocol
+
+As long as the runtime has mutually understood primitives between the client and itself, it can execute its logic. 
+These primitives can be broken down into two categories: everything enabling the implementation of a protocol and the protocol itself.
+
+For example, Polkadot specifies a protocol which requires a set of protocol primitives such as the consenus mechanisms. 
+In addition, it builds on the primtive types and data structures the runtime uses for its implementation.
+This architecture makes it possible for any Substrate runtime to execute provided that it adheres to the protocol and primitives it shares with the client. 
+
+These protocol primitives are expressed as host functions and runtime APIs, or the "host function/runtime api interface".
+The interface between the runtime and the outer node (or client) is made up of host-functions and runtime APIs.
+
+### Host functions and runtime APIs
+
+The "host function/runtime api interface" acts as an independant layer from the features it can enable.
+A host function is a function that is expressed outside of the runtime but passed in as imports to it. 
+Some examples include:
+
+- 
+- 
+
+A runtime API is the interface that enables components outside of the runtime to call into the runtime.
+Some examples include:
+
+- 
+- 
+
+  *Some protocols*    *Transport layer*    *Some client* 
+    ├─────────────┤                      ├─────────────┤                         
+    │             │                      │             │ 
+    │   Runtime   │ <-- Runtime API --   │   Client    │
+    │             │ -- Host functions--> │             │ 
+    ├─────────────│                      ├─────────────│        
+    
+
+The host functions and runtime APIs provide the means to deliver messages being passed between the runtime and the client. 
+They can facilitate a number of runtime implementations without needing to be altered.
+
+These provide any blockchain protocol implemented using Substrate with a core transport layer and on-chain primitives.
+For example, the implementation of a runtime based on BABE and AURA adheres to its protocol specification without needing to alter the underlying interface and on-chain primitives it relies on.
+The interface is merely the transport layer. 
+
+In the example of a consensus protocol such as with a BABE and AURA runtime, the runtime needs to receive and send messages which is does through the transport layer. 
+The ability for a runtime to answer to a request relies on the specific protocol primitive that the runtime and client need to commonly understand.
+
+An important difference is that protocol primitives can be updated without having to update the node-as long as these changes don't require the node to modify behavior around consensus.
+However, any change on the host interface does require upgrading the node.
+### Runtime APIs
 
 A Runtime API facilitates communication between the outer node and the runtime.
 In Substrate, the `sp_api` crate provides an interface to implement a runtime API. 
@@ -135,6 +205,9 @@ They are:
 
 ## FRAME primitives
 
+Substrate comes with an opinionated toolkit for building runtimes in Rust called FRAME.
+That said, the runtime can be built in any way, with any language, so long as it can communicate to the client.
+
 The core Substrate codebase ships with [FRAME](/v3/runtime/frame), Parity's system for Substrate runtime development that is used for chains like [Kusama](https://github.com/paritytech/polkadot/blob/master/runtime/kusama/src/lib.rs) and [Polkadot](https://github.com/paritytech/polkadot/blob/master/runtime/polkadot/src/lib.rs). 
 FRAME defines additional runtime primitives and provides a framework that makes it easy to construct a runtime by composing modules, called [pallets](/v3/runtime/frame#pallets). 
 Each pallet encapsulates domain-specific logic that is expressed as a set of a [storage items](/v3/runtime/storage), [events](/v3/runtime/events-and-errors), [errors](/v3/runtime/events-and-errors#errors), and [dispatchable functions](/v3/getting-started/glossary#dispatch). 
@@ -187,6 +260,7 @@ However:
 - The Wasm runtime is required in all Substrate chains.
 - The Wasm runtime is the canonical encoding of the chains' state transition functions, which implies that something that isn't supported by a Wasm runtime won't be supported by the native runtime.
 - In production, on-chain upgrades can only be done with Wasm runtimes.
+
 
 ## Next steps
 

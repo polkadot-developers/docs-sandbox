@@ -1,7 +1,6 @@
 Section: Build
 Sub-section: Build process
 Type: reference + conceptual
-Index: ?
 
 This article describes what happens under the hood when building a Substrate node.
 

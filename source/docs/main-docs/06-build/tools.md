@@ -1,12 +1,48 @@
+Section: Build
+Sub-section: Tools
+Type: reference 
 
 Developers building with Substrate can use a number of tools depending on where they are in their development cycle.
 
-While there are some tools that are documented more extensively, such as [Subkey](/v3/tools/subkey), [Memory Profiling](/v3/tools/memory-profiling) and [Try Runtime](/v3/tools/try-runtime), there exists a number of additional tools which are yet to be integrated into Substrate's documentation hub. 
-This page provides an overview of what these tools are and what they do.
+### try-runtime
 
+The `try-runtime` tool is built to query a snapshot of runtime storage, using an [in-memory-externalities](https://docs.substrate.io/rustdocs/latest/sp_state_machine/struct.TestExternalities.html) to store state. 
+In this way, it enables runtime engineers to write tests for a specified runtime state, for testing against real chain state _before_ going to production. 
+It is designed to be used as a command line interface to specify at which block to query state.
+
+In its simplest form, `try-runtime` is a tool that enables:
+
+1. Connecting to a remote node and calling into some runtime API.
+2. Scraping the specified state from a node at a given block.
+3. Writing tests for that data.
+### memory profiler
+
+Memory profiling enables you to understand the memory allocation and behavior of your blockchain applications over time in Substrate-based clients. 
+It identifies method calls in the context of how memory was allocated, combining this information with the number of allocated objects. 
+In addition, profiling can be used to analyze memory leaks, identify where memory consumption is happening, define temporary allocations, and investigate excessive memory fragmentation within applications.
+
+The profiler we recommend is [koute's memory profiler](https://github.com/koute/memory-profiler).
+### subkey
+
+Subkey is a [public key cryptographic](https://en.wikipedia.org/wiki/Public-key_cryptography) utility that is developed [within Substrate itself](https://github.com/paritytech/substrate/tree/master/bin/utils/subkey).
+Its main feature is to generate and inspect key pairs, currently supporting these schemes:
+
+- [sr25519](https://wiki.polkadot.network/docs/en/learn-cryptography): Schorr signatures on
+  the Ristretto group
+- [ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519): SHA-512 (SHA-2) on Curve25519
+- [secp256k1](https://en.bitcoin.it/wiki/Secp256k1): ECDSA signatures on secp256k1
+
+All keys in Substrate based networks ([like polkadot](https://wiki.polkadot.network/docs/learn-accounts#address-format))
+use the [SS58 address encoding format](/v3/advanced/ss58/) that is the primary user-facing way to interact with keys.
+
+Subkey also allows restoring keys from mnemonics and raw seeds; signing and verifying signatures
+on a message; and signing and verifying signatures for encoded transactions.
+
+[Go to documentation](https://github.com/paritytech/substrate/tree/master/bin/utils/subkey#readme).
 ### sr tool
 
 srtool allows building WASM runtimes in a deterministic way, allowing CIs and users to produce a strictly identical WASM runtime.
+
 [Go to documentation](https://github.com/paritytech/srtool). 
 
 ### subxt
@@ -27,7 +63,7 @@ A tool Run alongside a Substrate-backed chain to index all Blocks, State, and Ex
 [Go to documentation](https://github.com/paritytech/substrate-archive)
 
 ### Sidecar
-A REST service that makes it easy to interact with blockchain nodes built using Substrate's FRAME framework.`}
+A REST service that makes it easy to interact with blockchain nodes built using Substrate's FRAME framework.
 [Go to documentation](https://github.com/paritytech/substrate-api-sidecar).
 
 ### Polkadot launch

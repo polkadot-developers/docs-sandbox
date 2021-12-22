@@ -1,6 +1,6 @@
 Section: Build
+Sub-section: Create pallets
 Type: reference 
-Index: 3
 
 ## Create custom pallets
 

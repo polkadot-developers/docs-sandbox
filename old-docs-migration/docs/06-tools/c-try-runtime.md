@@ -6,19 +6,6 @@ section: docs
 category: tools
 keywords:
 ---
-
-The `try-runtime` tool is built to query a snapshot of runtime storage, using an [in-memory-
-externalities][testextern-rustdocs] to store state. In this way,
-it enables runtime engineers to write tests for a specified runtime state, for testing against real
-chain state _before_ going to production. It is designed to be used as a command line interface to
-specify at which block to query state.
-
-In its simplest form, `try-runtime` is a tool that enables:
-
-1. Connecting to a remote node and calling into some runtime API.
-2. Scraping the specified state from a node at a given block.
-3. Writing tests for that data.
-
 ## Motivation
 
 The initial motivation for `try-runtime` came from the need to test runtime changes against state from a real

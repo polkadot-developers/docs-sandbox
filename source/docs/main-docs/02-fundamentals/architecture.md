@@ -261,6 +261,13 @@ However:
 - The Wasm runtime is the canonical encoding of the chains' state transition functions, which implies that something that isn't supported by a Wasm runtime won't be supported by the native runtime.
 - In production, on-chain upgrades can only be done with Wasm runtimes.
 
+### Coordination with the Runtime
+
+The simplest static consensus algorithms work entirely outside of the runtime as we've described so far. 
+However many consensus games are made much more powerful by adding features that require coordination with the runtime. 
+Examples include adjustable difficulty in proof of work, authority rotation in proof of authority, and stake-based weighting in proof-of-stake networks.
+
+To accommodate these consensus features, Substrate has the concept of a [`DigestItem`](/rustdocs/latest/sp_runtime/enum.DigestItem.html), a message passed from the outer part of the node, where consensus lives, to the runtime, or vice versa.
 
 ## Next steps
 

@@ -13,20 +13,19 @@ Any of these components can be swapped out for different ones, depending on the 
 
 ![Substrate client architecture](../../img/docs/getting-started/substrate-arch.png)
 
-The architecture of a Substrate node assumes that there is at least:
+The architecture of a Substrate contains:
 
-- **A runtime**: the logic that defines how blocks are processed, including state transition logic. 
+- **[A runtime](#runtime)**: the logic that defines how blocks are processed, including state transition logic. 
 In Substrate, runtime code is compiled to [Wasm](/v3/getting-started/glossary#webassembly-wasm) and becomes part of the blockchain's storage state. 
 This enables [forkless runtime upgrades](/v3/runtime/upgrades#forkless-runtime-upgrades). 
 Substrate clients can also include a "native runtime". 
 Everything responsible for handling on-chain logic and state persistence happens in the runtime.
-- **A storage component**: used to persist the evolving state of a Substrate blockchain.
-The blockchain network allows participants to reach trustless [consensus](/v3/advanced/consensus) about the state of storage. 
+- **[A storage component](#storage)**: used to persist the evolving state of a Substrate blockchain.
 Substrate ships with a simple and highly efficient [key-value storage mechanism](/v3/advanced/storage).
 - **An executor**: the component of the client that dispatches calls to the runtime is known as the [executor](/v3/advanced/executor), whose role is to select between the native code and interpreted Wasm. 
-Although the native runtime may offer a performance advantage, the executor will select to interpret the Wasm runtime if it implements a newer [version](/v3/runtime/upgrades#runtime-versioning).
+The executor will select to interpret the Wasm runtime if it implements a newer [version](/v3/runtime/upgrades#runtime-versioning).
 - **A network layer**: the capabilities that allow the client to communicate with other network participants. 
-Substrate uses the Rust implementation of the [`libp2p` network stack](https://libp2p.io/) to achieve this.
+Substrate uses the Rust implementation of the [`libp2p` network stack](https://libp2p.io/).
 - **A consensus engine**: the logic that allows network participants to agree on the state of the blockchain.
 Substrate makes it possible to supply custom consensus engines and also ships with several consensus mechanisms that have been built on top of [Web3 Foundation research](https://w3f-research.readthedocs.io/en/latest/index.html).
 - **An RPC API**: the capabilities that allow blockchain users to interact with the network. 
@@ -85,11 +84,12 @@ However:
 
 Substrate uses a simple key-value data store implemented as a database-backed, modified [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree).
 This allows any higher-level storage abstraction to be built ontop of this simple key-value storage layer.
-This layer is the Rust implementation of [Rocks DB](http://rocksdb.org/).
-There is a different implementation under developement called [Parity DB](https://github.com/paritytech/parity-db), also built in Rust but aims to optimize storage and retrieval of state data. In any case, Substrate is designed to support any key-value database implementation. 
+All events, extrinsics and pallet logic use this storage layer to persist state on-chain.
+For example, the Wasm runtime of a Substrate chain is stored at the magic key [`:code`](https://docs.substrate.io/rustdocs/latest/sp_storage/well_known_keys/constant.CODE.html).
+User balances are stored as a [`StorageMap`](https://docs.substrate.io/rustdocs/latest/frame_support/storage/trait.StorageMap.html) which uses the key-value database.
 
-The Wasm runtime of a Substrate chain is stored at the magic key [`:code`](https://docs.substrate.io/rustdocs/latest/sp_storage/well_known_keys/constant.CODE.html).
-User balances are stored as a [`StorageMap`](https://docs.substrate.io/rustdocs/latest/frame_support/storage/trait.StorageMap.html). All events, extrinsics and pallet logic use this storage layer to persist state on-chain.
+This layer is built using the Rust implementation of [Rocks DB](http://rocksdb.org/).
+There is a different implementation under developement called [Parity DB](https://github.com/paritytech/parity-db), also built in Rust but aims to optimize storage and retrieval of state data. In any case, Substrate is designed to support any key-value database implementation. 
 
 [ TODO: Elaborate on storage layers, including externalities]
 
@@ -98,13 +98,12 @@ User balances are stored as a [`StorageMap`](https://docs.substrate.io/rustdocs/
 Substrate uses a Base-16 Modified Merkle Patricia tree ("trie") from
 [`paritytech/trie`](https://github.com/paritytech/trie) to provide a trie structure whose contents can be modified and whose root hash is recalculated efficiently.
 
-All trie nodes are stored in the DB and part of the trie state can get pruned, i.e. a key-value pair can be deleted from storage when it is out of pruning range for non-archive nodes. 
-
 Substrate-based chains have a single main trie, called the state trie, whose root hash is placed in each block header. 
 This is used to easily verify the state of the blockchain and provide a basis for light clients to verify proofs.
 
 This trie only stores content for the canonical chain, not forks. 
 There is a separate [`state_db` layer](/rustdocs/latest/sc_state_db/index.html) that maintains the trie state with references counted in memory for all non-canonical blocks.
+All trie nodes are stored in the database and part of the trie state can get pruned, i.e. a key-value pair can be deleted from storage when it is out of pruning range for non-archive nodes. 
 
 Substrate also provides an API to generate new [child tries](./todo-link-design) with their own root hashes that can be used in the runtime.
 Learn about ways to design and implement the storage for your chain [here](./todo-link-design).
@@ -146,13 +145,13 @@ These are:
 - `BlockNumber`: A type which encodes the total number of ancestors any valid block has. Typically a
   32-bit quantity.
 
-**Protocol primitives** are a more abstract class of primitives that are typically informed by consensus critical components which define the relationship between a client and a runtime.
+**Protocol primitives** are a more abstract class of primitives. 
+They are typically informed by consensus critical components which define the relationship between a client and a runtime.
 These relate to implementations of [runtime APIs and host functions](#runtime-apis-and-host-functions), whereby any consensus-breaking change on the host-function must be reflected in the runtime. 
 
 Adhering to some set of protocol primitives is necessary for chains connecting to eachother such as in Polkadot's parachain model.
 For example, [the Polkadot protocol](https://github.com/w3f/polkadot-spec/) specifies host functions and runtime APIs in its implementation for block authoring (BABE) and block finalization (GRANDPA).
 Any parachain that uses the Polkadot protocol must also expose the same runtime APIs and host functions.
 Similarly, any change in Polkadot's runtime APIs or host functions must be reflected in the parachain, otherwise there is no way for a relay chain and a parachain to reach consensus.
-In Polkadot these changes could be updates to the consenus mechanism it uses or block execution time.
 
-This architecture makes it possible to implement any Substrate runtime provided that it adheres to the protocol and primitives it shares with the client. 
+This architecture makes it possible to implement any Substrate runtime, using any language or libraries provided that it adheres to the protocol and primitives it shares with the client. 

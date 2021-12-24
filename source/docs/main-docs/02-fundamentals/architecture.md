@@ -125,39 +125,44 @@ Some examples include:
 - 
 - 
 
-A runtime API is the interface that enables components outside of the runtime to call into the runtime.
-Some examples include:
+Here are some reasons why using a native runtime could be desired:
 
-- 
-- 
+- For development and testing, native runtimes have better debugging support, while Wasm runtimes are more difficult to debug.
+- Native execution is faster than Wasm execution and more efficient on slower hardware.
 
-  *Some protocols*    *Transport layer*    *Some client* 
-    ├─────────────┤                      ├─────────────┤                         
-    │             │                      │             │ 
-    │   Runtime   │ <-- Runtime API --   │   Client    │
-    │             │ -- Host functions--> │             │ 
-    ├─────────────│                      ├─────────────│        
-    
+However:
 
-The host functions and runtime APIs provide the means to deliver messages being passed between the runtime and the client. 
-They can facilitate a number of runtime implementations without needing to be altered.
+- The Wasm runtime is required in all Substrate chains.
+- The Wasm runtime is the canonical encoding of the chains' state transition functions, which implies that something that isn't supported by a Wasm runtime won't be supported by the native runtime.
+- In production, on-chain upgrades can only be done with Wasm runtimes.
 
-These provide any blockchain protocol implemented using Substrate with a core transport layer and on-chain primitives.
-For example, the implementation of a runtime based on BABE and AURA adheres to its protocol specification without needing to alter the underlying interface and on-chain primitives it relies on.
-The interface is merely the transport layer. 
+## Storage
 
-In the example of a consensus protocol such as with a BABE and AURA runtime, the runtime needs to receive and send messages which is does through the transport layer. 
-The ability for a runtime to answer to a request relies on the specific protocol primitive that the runtime and client need to commonly understand.
+Substrate uses a simple key-value data store implemented as a database-backed, modified [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree).
+This allows any higher-level storage abstraction to be built ontop of this simple key-value storage layer.
+This layer is the Rust implementation of [Rocks DB](http://rocksdb.org/).
+There is a different implementation under developement called [Parity DB](https://github.com/paritytech/parity-db), also built in Rust but aims to optimize storage and retrieval of state data. In any case, Substrate is designed to support any key-value database implementation. 
 
-An important difference is that protocol primitives can be updated without having to update the node-as long as these changes don't require the node to modify behavior around consensus.
-However, any change on the host interface does require upgrading the node.
-### Runtime APIs
+The Wasm runtime of a Substrate chain is stored at the magic key [`:code`](https://docs.substrate.io/rustdocs/latest/sp_storage/well_known_keys/constant.CODE.html).
+User balances are stored as a [`StorageMap`](https://docs.substrate.io/rustdocs/latest/frame_support/storage/trait.StorageMap.html). All events, extrinsics and pallet logic use this storage layer to persist state on-chain.
 
-A Runtime API facilitates communication between the outer node and the runtime.
-In Substrate, the `sp_api` crate provides an interface to implement a runtime API. 
-It is designed to give developers the ability to define their own custom runtime APIs using the [`impl_runtime_apis`](/rustdocs/latest/sp_api/macro.impl_runtime_apis.html) macro. 
-However, every runtime must implement the [`Core`](/rustdocs/latest/sp_api/trait.Core.html) and [`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html) runtime APIs. 
-In addition to these, a basic Substrate Node has the following runtime APIs implemented:
+[ TODO: Elaborate on storage layers, including externalities]
+
+**Trie abstraction**
+
+Substrate uses a Base-16 Modified Merkle Patricia tree ("trie") from
+[`paritytech/trie`](https://github.com/paritytech/trie) to provide a trie structure whose contents can be modified and whose root hash is recalculated efficiently.
+
+All trie nodes are stored in the DB and part of the trie state can get pruned, i.e. a key-value pair can be deleted from storage when it is out of pruning range for non-archive nodes. 
+
+Substrate-based chains have a single main trie, called the state trie, whose root hash is placed in each block header. 
+This is used to easily verify the state of the blockchain and provide a basis for light clients to verify proofs.
+
+This trie only stores content for the canonical chain, not forks. 
+There is a separate [`state_db` layer](/rustdocs/latest/sc_state_db/index.html) that maintains the trie state with references counted in memory for all non-canonical blocks.
+
+Substrate also provides an API to generate new [child tries](./todo-link-design) with their own root hashes that can be used in the runtime.
+Learn about ways to design and implement the storage for your chain [here](./todo-link-design).
 
 - [`BlockBuilder`](/rustdocs/latest/sp_block_builder/trait.BlockBuilder.html): Provides the functionality required for building a block.
 - [`TaggedTransactionQueue`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html): Handles validating transactions in the transaction queue.

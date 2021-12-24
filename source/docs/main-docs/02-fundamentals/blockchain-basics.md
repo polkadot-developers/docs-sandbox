@@ -21,6 +21,27 @@ For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namec
 However, the existing blockchain platforms were not designed to allow for modification.
 As a result, building a new blockchain by forking has serious limitations.
 
+## State machines and handling conflicts
+
+A blockchain runtime is a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine). 
+It has some internal state, and state transition function that allows it to transition from its current state to a future state. 
+In most runtimes there are states that have valid transitions to multiple future states, but a single transition must be selected.
+
+Blockchains must agree on:
+
+- Some initial state, called "genesis".
+- A series of state transitions, each called a "block".
+- A final (current) state.
+
+In order to agree on the resulting state after a transition, all operations within a blockchain's [state transition function](/v3/concepts/runtime) must be deterministic.
+
+In centralized systems, the central authority chooses among mutually exclusive alternatives by recording state transitions in the order it sees them, and choosing the first of the competing alternatives when a conflict arises. 
+In decentralized systems, the nodes will see transactions in different orders, and thus they must use a more elaborate method to exclude transactions. 
+As a further complication, blockchain networks strive to be fault tolerant, which means that they should continue to provide consistent data even if some participants are not following the rules.
+
+Blockchains batch transactions into blocks and have some method to select which participant has the right to submit a block. 
+For example, in a proof-of-work chain, the node that finds a valid proof of work first has the right to submit a block to the chain.
+
 ## What is Substrate?
 
 Substrate is an open source, modular, and extensible framework for building blockchains.

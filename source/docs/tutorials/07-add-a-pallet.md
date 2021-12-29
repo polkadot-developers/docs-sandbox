@@ -1,5 +1,5 @@
 ---
-title: Add a simple pallet to the runtime
+title: Add a module to the runtime
 slug: /tutorials/07-add-a-pallet
 sideNav: addPallet
 section: tutorials

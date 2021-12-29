@@ -7,6 +7,8 @@ The Substrate Developer Hub provides a centralized location for developer resour
 
 ## [Fundamentals First](main-docs/02-fundamentals/index.md)
 
+[Substrate empowers builders](main-docs/index.md)
+
 [Blockchain basics](main-docs/02-fundamentals/blockchain-basics.md)
 
 [Choosing a development platform](main-docs/01-why-substrate/choose-a-dev-platform.md)
@@ -23,6 +25,8 @@ The Substrate Developer Hub provides a centralized location for developer resour
 
 [Start a trusted validator network](tutorials/03-private-network.md)
 
+[Add a module to the runtime](tutorials/07-add-a-pallet.md)
+
 [... and more](tutorials/index.me)
 
 ## [Get Technical](reference/index.md)
@@ -32,5 +36,7 @@ The Substrate Developer Hub provides a centralized location for developer resour
 [FRAME pallets](reference/frame-pallets.md)
 
 [Rust API](https://docs.substrate.io/rustdocs/"target="_blank)
+
+[Polkadot-JS API](reference/polkadot-js.md)
 
 [... and more](reference/index.md)

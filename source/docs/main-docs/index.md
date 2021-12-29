@@ -7,7 +7,7 @@ The following diagram illustrates the nature of this flexibility.
 
 ![Technical freedom vs development ease](../img/docs/getting-started/technical-freedom.png)
 
-The main use cases for Substrate blockchains reflect tis sliding scale between technical freedom and development ease.
+The main use cases for Substrate blockchains reflect this sliding scale between technical freedom and development ease.
 At one end of the spectrum, you can deploy predefined Substrate nodes with minimal configuration and launch a blockchain with virtually no development effort.
 At the other end of the spectrum, you can design and implement a Substrate-based blockchain from scratch, giving you the technical freedom to innovate.
 

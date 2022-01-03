@@ -21,7 +21,7 @@ theme:
 
 # Navigation
 nav:
-   - 'Welcome to Substrate': 'index.md'
+   - 'index.md'
    - 'Quick start': 'quickstart.md'
    - 'Docs':
         - main-docs/index.md
@@ -29,8 +29,9 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
-             - 'Anatomy of a node': 'main-docs/02-fundamentals/substrate-client.md'
-             - 'Runtime as the core of Substrate chains': 'main-docs/02-fundamentals/runtime.md'
+             - 'Substrate node architecture': 'main-docs/02-fundamentals/architecture.md'
+             - 'Consensus': 'main-docs/02-fundamentals/consensus.md'
+             - 'Rust': 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
@@ -42,7 +43,12 @@ nav:
         - 'Design': 
              - 'main-docs/05-design/index.md'
              - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
-        - 'Build': 'main-docs/06-build/build.md'
+        - 'Build': 
+             - 'main-docs/06-build/libraries.md'
+             - 'main-docs/06-build/tools.md'
+             - 'main-docs/06-build/build-process.md'
+             - 'main-docs/06-build/custom-pallets.md'
+             - 'main-docs/06-build/frontend.md'
         - 'Test': 'main-docs/07-test/test.md'
         - 'Deploy': 'main-docs/08-deploy/deploy.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'
@@ -62,7 +68,7 @@ nav:
         - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
         #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
         #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
-        #- 'Create a custom pallet using macros': 'tutorials/proof-of-existence.md'
+        - 'Create a custom pallet using macros': 'tutorials/custom-pallet.md'
         #- 'Publish a custom pallet': 'tutorials/publish-pallet.md'
         #- 'Upgrade the runtime': 'tutorials/forkless-upgrade.md'
         #- 'Connect to a local relay chain': 'tutorials/relay-chain.md'
@@ -70,7 +76,8 @@ nav:
         #- 'Connect a Substrate blockchain to Ethereum': 'tutorials/connect-to-evm.md'
    - 'Reference':
         - 'reference/index.md'
-        - 'Rust crates': 'https://docs.substrate.io/rustdocs/"target="_blank'
+        - 'FRAME pallets': 'reference/frame-pallets.md'
+        - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'
         - 'How-to quick reference guides': 
              - 'reference/how-to-guides/index.md'
         - 'Polkadot-JS': 'reference/polkadot-js.md'

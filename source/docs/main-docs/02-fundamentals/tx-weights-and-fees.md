@@ -1,5 +1,5 @@
 ---
-title: Transactions weights and fees
+title: Transactions, weights, and fees
 slug: /v3/runtime/weights-and-fees
 version: '3.0'
 section: docs

@@ -4,7 +4,7 @@ The FRAME Ethereum Virtual Machine (EVM) provides an execution environment for S
 
 For more information on the FRAME EVM, see [FRAME EVM pallet reference](https://docs.rs/pallet_evm/).
 
-To download Frontier, go to https://github.com/paritytech/frontier.
+To use the Frontier node template, go to https://github.com/paritytech/frontier/tree/master/template.
 
 The Substrate runtime works alongside the [Ethereum pallet](https://docs.rs/pallet-ethereum) and the [Dynamic Fee pallet](https://docs.rs/pallet-dynamic-fee) to enable the creation of runtimes capable of fully emulating Ethereum block production and transaction processing.
 

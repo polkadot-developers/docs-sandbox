@@ -21,7 +21,7 @@ theme:
 
 # Navigation
 nav:
-   - 'Welcome to Substrate': 'index.md'
+   - 'index.md'
    - 'Quick start': 'quickstart.md'
    - 'Docs':
         - main-docs/index.md

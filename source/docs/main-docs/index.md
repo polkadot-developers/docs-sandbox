@@ -1,4 +1,4 @@
-# Substrate empowers developers
+# Substrate empowers builders
 
 Substrate takes a modular and flexible approach to blockchain development.
 With every design decision, you can choose between the complexity of technical freedom and the ease of developing with predefined modules.
@@ -22,6 +22,7 @@ Explore the following resources to learn more.
 
 #### Tell me (read related topics)
 
+* [Choosing a development platform](main-docs/01-why-substrate/choose-a-dev-platform.md)
 * [FRAME and runtime development](/v3/concepts/runtime)
 * [Polkadot-JS](../reference/polkadot-js.md)
 
@@ -29,7 +30,7 @@ Explore the following resources to learn more.
 
 * [Build a local blockchain](../tutorials/01-build-local-blockchain.md)
 * [Simulate a two-node network](../tutorials/02-simulate-network.md)
-* [Start a private network](../tutorials/03-private-network.md)
+* [Start a trusted validator network](tutorials/03-private-network.md)
 
 #### Show me (related video content)
 

@@ -13,7 +13,7 @@ The Substrate Developer Hub provides a centralized location for developer resour
 
 [Choosing a development platform](main-docs/01-why-substrate/choose-a-dev-platform.md)
 
-[Substrate architecture](main-docs/02-fundamentals/substrate-clientx.md)
+[Substrate architecture](main-docs/02-fundamentals/substrate-client.md)
 
 [... and more](main-docs/02-fundamentals/index.md)
 

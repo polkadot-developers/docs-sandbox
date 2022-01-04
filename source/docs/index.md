@@ -1,18 +1,42 @@
 ---
-title: Welcome to Substrate
+title: Substrate Developer Hub
 slug: 
 ---
 
-The Substrate Developer Hub provides a centralized location for developer resources and documentation to serve the Substrate developer community.
+The Substrate Developer Hub provides a centralized location for developer resources and documentation to serve the Substrate developer and chain builder community.
 
-The topics here are intended to help you learn what's possible when you build a Substrate blockchain and how Substrate can help you build a blockchain that best serves your specific project requirements or business model.
+## [Fundamentals First](main-docs/02-fundamentals/index.md)
 
-Before you start building, though, you want to make sure you are in the right place.
+[Substrate empowers builders](main-docs/index.md)
 
-* In [Choosing a development platform](main-docs/01-why-substrate/choose-a-dev-platform.md), you'll learn how developing on a traditional smart contract platform differs from developing with Substrate and why Substrate might—or might not—suit your project requirements and goals.
+[Blockchain basics](main-docs/02-fundamentals/blockchain-basics.md)
 
-* [Blockchain basics](main-docs/02-fundamentals/blockchain-basics.md) provides context about the complexity associated with blockchain development and how Substrate simplifies the process by taking an approach that is modular, flexible, and interoperable.
+[Choosing a development platform](main-docs/01-why-substrate/choose-a-dev-platform.md)
 
-* Topics in [Fundamentals](main-docs/02-fundamentals/index.md) explain many of the core principles of the Substrate development environment and the design decisions that influence how you develop applications to run on a Substrate-based blockchain.
+[Substrate architecture](main-docs/02-fundamentals/substrate-client.md)
 
-After you digest the information in these introductory sections, you'll be ready to start designing, building, and testing your own custom blockchain solution.
+[... and more](main-docs/02-fundamentals/index.md)
+
+## [Learn by Doing](tutorials/index.md)
+
+[Build a local blockchain](tutorials/01-build-local-blockchain.md)
+
+[Simulate a network](tutorials/02-simulate-network.md)
+
+[Start a trusted validator network](tutorials/03-private-network.md)
+
+[Add a module to the runtime](tutorials/07-add-a-pallet.md)
+
+[... and more](tutorials/index.me)
+
+## [Get Technical](reference/index.md)
+
+[Command-line tools](reference/command-line-tools/index.md)
+
+[FRAME pallets](reference/frame-pallets.md)
+
+[Rust API](https://docs.substrate.io/rustdocs/"target="_blank)
+
+[Polkadot-JS API](reference/polkadot-js.md)
+
+[... and more](reference/index.md)

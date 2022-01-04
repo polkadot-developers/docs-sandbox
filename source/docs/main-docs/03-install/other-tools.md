@@ -1,3 +1,3 @@
 # Substrate and runtime tools
 
-Other tools available and how to install them.
+Other development environment tools available and how to install them.

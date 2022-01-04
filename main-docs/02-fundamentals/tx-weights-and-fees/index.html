@@ -1,0 +1,2507 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>Transactions, weights, and fees - Substrate Doc Sandbox</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-fees-are-calculated" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Substrate Doc Sandbox" class="md-header__button md-logo" aria-label="Substrate Doc Sandbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Substrate Doc Sandbox
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transactions, weights, and fees
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../.." class="md-tabs__link">
+      Substrate Developer Hub
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../quickstart/" class="md-tabs__link">
+      Quick start
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../" class="md-tabs__link">
+        Docs
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../tutorials/" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../reference/" class="md-tabs__link">
+        Reference
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../community/" class="md-tabs__link">
+        Community
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../faq-dropbox/" class="md-tabs__link">
+      Dropbox
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="https://docs.substrate.io/playground/"target="_blank" class="md-tabs__link">
+      Playground
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Substrate Doc Sandbox" class="md-nav__button md-logo" aria-label="Substrate Doc Sandbox" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Substrate Doc Sandbox
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Substrate Developer Hub
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quickstart/" class="md-nav__link">
+        Quick start
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../">Docs</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Docs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Docs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../">Fundamentals</a>
+          
+            <label for="__nav_3_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Fundamentals" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Fundamentals
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blockchain-basics/" class="md-nav__link">
+        Blockchain basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        Substrate node architecture
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consensus/" class="md-nav__link">
+        Consensus
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rust-basics/" class="md-nav__link">
+        Rust
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../03-install/">Install</a>
+          
+            <label for="__nav_3_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Install" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Install
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-install/rust-builds/" class="md-nav__link">
+        Rust compiler and toolchain
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-install/linux/" class="md-nav__link">
+        Linux
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-install/macos/" class="md-nav__link">
+        macOS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-install/windows/" class="md-nav__link">
+        Windows
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-install/other-tools/" class="md-nav__link">
+        Substrate and runtime tools
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-explore/explore/" class="md-nav__link">
+        Explore
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_6" type="checkbox" id="__nav_3_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../05-design/">Design</a>
+          
+            <label for="__nav_3_6">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Design" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_6">
+          <span class="md-nav__icon md-icon"></span>
+          Design
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_7" type="checkbox" id="__nav_3_7" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3_7">
+          Build
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Build" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_7">
+          <span class="md-nav__icon md-icon"></span>
+          Build
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-build/libraries/" class="md-nav__link">
+        Libraries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-build/tools/" class="md-nav__link">
+        Tools
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-build/build-process/" class="md-nav__link">
+        Build process
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-build/custom-pallets/" class="md-nav__link">
+        Custom pallets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-build/frontend/" class="md-nav__link">
+        Frontend
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-test/test/" class="md-nav__link">
+        Test
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-deploy/deploy/" class="md-nav__link">
+        Deploy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_10" type="checkbox" id="__nav_3_10" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../09-maintain/">Maintain</a>
+          
+            <label for="__nav_3_10">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Maintain" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_10">
+          <span class="md-nav__icon md-icon"></span>
+          Maintain
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-maintain/upgrade/" class="md-nav__link">
+        Upgrade
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../tutorials/">Tutorials</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/01-build-local-blockchain/" class="md-nav__link">
+        Build a local blockchain
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/02-simulate-network/" class="md-nav__link">
+        Simulate a network
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/03-private-network/" class="md-nav__link">
+        Start a trusted validator network
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/07-add-a-pallet/" class="md-nav__link">
+        Add a simple pallet to the runtime
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/custom-pallet/" class="md-nav__link">
+        Create a custom pallet using macros
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../reference/">Reference</a>
+          
+            <label for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/frame-pallets/" class="md-nav__link">
+        FRAME pallets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.substrate.io/rustdocs/"target="_blank" class="md-nav__link">
+        Rust API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../reference/how-to-guides/">How-to quick reference guides</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="How-to quick reference guides" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          How-to quick reference guides
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/polkadot-js/" class="md-nav__link">
+        Polkadot-JS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/client-lib/" class="md-nav__link">
+        Client libraries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/glossary/" class="md-nav__link">
+        Glossary
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../community/">Community</a>
+          
+            <label for="__nav_6">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Community" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Community
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../community/style-guide/" class="md-nav__link">
+        Writing style guidelines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../community/site-building/" class="md-nav__link">
+        Site builder guidelines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/substrate-developer-hub/substrate-docs/blob/main/static/assets/contribute-templates/how-to-template.md/"target="_blank" class="md-nav__link">
+        How-to topic template
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../community/bounty/" class="md-nav__link">
+        Bounties
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../faq-dropbox/" class="md-nav__link">
+        Dropbox
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.substrate.io/playground/"target="_blank" class="md-nav__link">
+        Playground
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#how-fees-are-calculated" class="md-nav__link">
+    How fees are calculated
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#using-the-transaction-payment-pallet" class="md-nav__link">
+    Using the transaction payment pallet
+  </a>
+
+  <!-- Render nested item list -->
+  
+    <nav class="md-nav" aria-label="Using the transaction payment pallet">
+       <ul class="md-nav__list">
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#a-closer-look-at-the-inclusion-fee" class="md-nav__link">
+    A closer look at the inclusion fee
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#accounts-with-an-insufficient-balance" class="md-nav__link">
+    Accounts with an insufficient balance
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#fee-multiplier" class="md-nav__link">
+    Fee multiplier
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+      </ul>
+    </nav>
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#transactions-with-special-requirements" class="md-nav__link">
+    Transactions with special requirements
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#default-weight-annotations" class="md-nav__link">
+    Default weight annotations
+  </a>
+
+  <!-- Render nested item list -->
+  
+    <nav class="md-nav" aria-label="Default weight annotations">
+       <ul class="md-nav__list">
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#weights-and-database-readwrite-operations" class="md-nav__link">
+    Weights and database read/write operations
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#dispatch-classes" class="md-nav__link">
+    Dispatch classes
+  </a>
+
+  <!-- Render nested item list -->
+  
+    <nav class="md-nav" aria-label="Dispatch classes">
+       <ul class="md-nav__list">
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#normal-dispatches" class="md-nav__link">
+    Normal dispatches
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#operational-dispatches" class="md-nav__link">
+    Operational dispatches
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#mandatory-dispatches" class="md-nav__link">
+    Mandatory dispatches
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+      </ul>
+    </nav>
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#dynamic-weights" class="md-nav__link">
+    Dynamic weights
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+      </ul>
+    </nav>
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#post-dispatch-weight-correction" class="md-nav__link">
+    Post dispatch weight correction
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#custom-fees" class="md-nav__link">
+    Custom fees
+  </a>
+
+  <!-- Render nested item list -->
+  
+    <nav class="md-nav" aria-label="Custom fees">
+       <ul class="md-nav__list">
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#custom-weights" class="md-nav__link">
+    Custom weights
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#custom-inclusion-fee" class="md-nav__link">
+    Custom inclusion fee
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+      </ul>
+    </nav>
+   
+</li>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    Next steps
+  </a>
+
+  <!-- Render nested item list -->
+  
+    <nav class="md-nav" aria-label="Next steps">
+       <ul class="md-nav__list">
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+          <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Table of contents item -->
+<li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+
+  <!-- Render nested item list -->
+   
+</li>
+        
+      </ul>
+    </nav>
+   
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Transactions, weights, and fees</h1>
+                
+                <p>When transactions are executed or data is stored on-chain, the activity changes the state of the chain and consumes blockchain resources.
+Because the resources available to a blockchain are limited, it’s important to manage how operations on-chain consume them.
+In addition to being limited in practical terms—such as storage capacity—blockchain resources represent a potential attack vector for malicious users.
+For example, a malicious user might attempt to overload the network with messages to stop the network from producing new blocks.
+To protect blockchain resources from being drained or overloaded, you need to manage how they are made available and how they are consumed.
+The resources to be aware of include:</p>
+<ul>
+<li>Memory usage</li>
+<li>Storage input and output</li>
+<li>Computation</li>
+<li>Transaction and block size</li>
+<li>State database size</li>
+</ul>
+<p>Substrate provides block authors with several ways to manage access to resources and to prevent individual components of the chain from consuming too much of any single resource.
+Two of the most important mechanisms available to block authors are <strong>weights</strong> and <strong>transaction fees</strong>.</p>
+<p><a href="/v3/concepts/weight">Weights</a> are used to manage the time it takes to validate a block.
+In general, weights are used to characterize the time it takes to execute the <a href="/v3/concepts/extrinsics">extrinsic</a> calls in the body of a block.
+By controlling the execution time that a block can consume, weights set limits on storage input and output and computation.</p>
+<p>Some of the weight allowed for a block is consumed as part of the block's initialization and finalization.
+The weight might also be used to execute mandatory inherent extrinsic calls.
+To help ensure blocks don’t consume too much execution time—and prevent malicious users from overloading the system with unnecessary calls—weights are used in combination with <strong>transaction fees</strong>.</p>
+<p>Transaction fees provide an economic incentive to limit execution time, computation, and the number of calls required to perform operations.
+Transaction fees are also used to make the blockchain economically sustainable because they are typically applied to transactions initiated by users and deducted before a transaction request is executed.</p>
+<h2 id="how-fees-are-calculated">How fees are calculated</h2>
+<p>The final fee for a transaction is calculated using the following parameters:</p>
+<ul>
+<li>
+<p><em>base fee</em>: This is the minimum amount a user pays for a transaction. It is declared as a <strong>base weight</strong> in the runtime and converted to a fee using <code>WeightToFee</code>.</p>
+</li>
+<li>
+<p><em>weight fee</em>: A fee proportional to the execution time (input and output and computation) that a transaction consumes.</p>
+</li>
+<li>
+<p><em>length fee</em>: A fee proportional to the encoded length of the transaction.</p>
+</li>
+<li>
+<p><em>tip</em>: An optional tip to increase the priority of the transaction, giving it a higher chance to be included by the transaction queue.</p>
+</li>
+</ul>
+<p>The base fee and proportional weight and length fees constitute the <strong>inclusion fee</strong>.
+The inclusion fee is the minimum fee that must be available for a transaction to be included in a block.</p>
+<h2 id="using-the-transaction-payment-pallet">Using the transaction payment pallet</h2>
+<p>The <a href="/rustdocs/latest/pallet_transaction_payment/index.html">Transaction Payment pallet</a> provides the basic logic for calculating the inclusion fee.</p>
+<p>You can also use the Transaction Payment pallet to:</p>
+<ul>
+<li>
+<p>Convert a weight value into a deductible fee based on a currency type using <code>Config::WeightToFee</code>.</p>
+</li>
+<li>
+<p>Update the fee for the next block by defining a multiplier, based on the final state of the chain at the end of the previous block using <code>Config::FeeMultiplierUpdate</code>.</p>
+</li>
+<li>
+<p>Manage the withdrawal, refund, and deposit of transaction fees using <code>Config::OnChargeTransaction</code>.</p>
+</li>
+</ul>
+<p>You can learn more about these configuration traits in the <a href="/rustdocs/latest/pallet_transaction_payment/index.html">Transaction Payment</a> documentation.</p>
+<p>You should note that transaction fees are withdrawn before the transaction is executed.
+After the transaction is executed, the transaction weight can be adjusted to reflect the actual resources the transaction used.
+If a transaction uses fewer resources than expected, the transaction fee is corrected and the adjusted transaction fee is deposited.</p>
+<h3 id="a-closer-look-at-the-inclusion-fee">A closer look at the inclusion fee</h3>
+<p>The formula for calculating the final fee looks like this:</p>
+<pre><code>inclusion_fee = base_fee + length_fee + [targeted_fee_adjustment * weight_fee];
+final_fee = inclusion_fee + tip;
+</code></pre>
+<p>In this formula, the <code>targeted_fee_adjustment</code> is a multiplier that can tune the final fee based on the congestion of the network.</p>
+<ul>
+<li>
+<p>The <code>base_fee</code> derived from the base weight covers inclusion overhead like signature verification.</p>
+</li>
+<li>
+<p>The <code>length_fee</code> is a per-byte fee that is multiplied by the length of the encoded extrinsic.</p>
+</li>
+<li>
+<p>The <code>weight_fee</code> fee is calculated using two parameters:</p>
+</li>
+</ul>
+<p>The <code>ExtrinsicBaseWeight</code> that is declared in the runtime and applies to all extrinsics.</p>
+<p>The <code>#[pallet::weight]</code> annotation that accounts for an extrinsic's complexity.</p>
+<p>To convert the weight to Currency, the runtime must define a <code>WeightToFee</code> struct that implements a conversion function, <code>Convert&lt;Weight,Balance&gt;</code>.</p>
+<p>Note that the extrinsic sender is charged the inclusion
+fee before the extrinsic is invoked. The fee is deducted from the sender's balance even if the transaction fails upon execution.</p>
+<h3 id="accounts-with-an-insufficient-balance">Accounts with an insufficient balance</h3>
+<p>If an account does not have a sufficient balance to pay the inclusion fee and remain alive—that is, enough to pay the inclusion fee and maintain the minimum <strong>existential deposit</strong>—then you should ensure the transaction is cancelled so that no fee is deducted and the transaction does not begin execution.</p>
+<p>Substrate does not enforce this rollback behavior.
+However, this scenario would be a rare occurrence because the transaction queue and block-making logic perform checks to prevent it before adding an extrinsic to a block.</p>
+<h3 id="fee-multiplier">Fee multiplier</h3>
+<p>The inclusion fee formula always results in the same fee for the same input.
+However, weight can be dynamic and—based on how
+<a href="/rustdocs/latest/pallet_transaction_payment/pallet/trait.Config.html#associatedtype.WeightToFee"><code>WeightToFee</code></a>
+is defined—the final fee can include some degree of variability.</p>
+<p>To account for this variability, the Transaction Payment pallet provides the <a href="/rustdocs/latest/pallet_transaction_payment/pallet/trait.Config.html#associatedtype.FeeMultiplierUpdate"><code>FeeMultiplierUpdate</code></a> configurable parameter.</p>
+<p>The default update function is inspired by the Polkadot network and implements a targeted adjustment in which a target saturation level of block weight is defined.
+If the previous block is more saturated, then the fees are slightly increased.
+Similarly, if the previous block has fewer transactions than the target, fees are decreased by a small amount.
+For more information about fee multiplier adjustments, see the
+<a href="https://w3f-research.readthedocs.io/en/latest/polkadot/overview/2-token-economics.html#relay-chain-transaction-fees-and-per-block-transaction-limits">Web3 research page</a>.</p>
+<h2 id="transactions-with-special-requirements">Transactions with special requirements</h2>
+<p>Inclusion fees must be computable prior to execution, and therefore can only represent fixed logic.
+Some transactions warrant limiting resources with other strategies.
+For example:</p>
+<ul>
+<li>Bonds are a type of fee that might be returned or slashed after some on-chain event.</li>
+</ul>
+<p>For example, you might want to require users to place a bond to participate in a vote. The bond might then be returned at the end of the referendum or slashed if the voter attempted malicious behavior.</p>
+<ul>
+<li>Deposits are fees that might be returned later.</li>
+</ul>
+<p>For example, you might require users to pay a deposit to execute an operation that uses storage. If a subsequent operation frees up storage, the user's deposit could be returned.</p>
+<ul>
+<li>Burn operations are used to pay for a transaction based on its internal logic.</li>
+</ul>
+<p>For example, a transaction might burn funds from the sender if the transaction creates new storage items to pay for the increased the state size.</p>
+<ul>
+<li>Limits enable you to enforce constant or configurable limits on certain operations.</li>
+</ul>
+<p>For example, the default Staking pallet only allows nominators to nominate 16 validators to limit the complexity of the validator election process.</p>
+<p>It is important to note that if you query the chain for a transaction fee, it only returns the inclusion fee.</p>
+<h2 id="default-weight-annotations">Default weight annotations</h2>
+<p>All dispatchable functions in Substrate must specify a weight. The way of doing that is using the
+annotation-based system that lets you combine fixed values for database read/write weight and/or
+fixed values based on benchmarks. The most basic example would look like this:</p>
+<pre><code class="language-rust">#[pallet::weight(100_000)]
+fn my_dispatchable() {
+    // ...
+}
+</code></pre>
+<p>Note that the <code>ExtrinsicBaseWeight</code> is automatically added to the declared weight to account for the costs of simply including an empty extrinsic into a block.</p>
+<h3 id="weights-and-database-readwrite-operations">Weights and database read/write operations</h3>
+<p>To make weight annotations independent of the deployed database backend, they are defined
+as a constant and then used in the annotations when expressing database accesses performed by the dispatchable:</p>
+<pre><code class="language-rust">#[pallet::weight(T::DbWeight::get().reads_writes(1, 2) + 20_000)]
+fn my_dispatchable() {
+    // ...
+}
+</code></pre>
+<p>This dispatchable does one database read and two database writes in addition to other things that add the additional 20,000. 
+A database access is generally every time a value that is declared inside the <code>#[pallet::storage]</code> block is accessed. 
+However, only unique accesses are counted because after a value is accessed it is cached and accessing it again does not result in a database operation. 
+That is:</p>
+<ul>
+<li>Multiple reads of the same value count as one read.</li>
+<li>Multiple writes of the same value count as one write.</li>
+<li>Multiple reads of the same value, followed by a write to that value, count as one read and one write.</li>
+<li>A write followed by a read only counts as one write.</li>
+</ul>
+<h3 id="dispatch-classes">Dispatch classes</h3>
+<p>Dispatches are broken into three classes: </p>
+<ul>
+<li><code>Normal</code></li>
+<li><code>Operational</code></li>
+<li><code>Mandatory</code></li>
+</ul>
+<p>If a dispatch is not defined as <code>Operational</code> or <code>Mandatory</code> in the weight annotation, the dispatch is identified as <code>Normal</code> by default. 
+You can specify that the dispatchable uses another class like this:</p>
+<pre><code class="language-rust">#[pallet::weight(100_000, DispatchClass::Operational)]
+fn my_dispatchable() {
+    // ...
+}
+</code></pre>
+<p>This tuple notation also allows you to specify a final argument that determines whether or not the user is charged based on the annotated weight. 
+If you don't specify otherwise, <code>Pays::Yes</code> is assumed:</p>
+<pre><code class="language-rust">#[pallet::weight(100_000, DispatchClass::Normal, Pays::No)]
+fn my_dispatchable() {
+    // ...
+}
+</code></pre>
+<h4 id="normal-dispatches">Normal dispatches</h4>
+<p>Dispatches in this class represent normal user-triggered transactions. 
+These types of dispatches only consume a portion of a block's total weight limit.
+For information about the maximum portion of a block that can be consumed for normal dispatches, see <a href="/rustdocs/latest/frame_system/limits/struct.BlockLength.html#method.max_with_normal_ratio"><code>AvailableBlockRatio</code></a>.
+Normal dispatches are sent to the <a href="">transaction pool</a>.</p>
+<h4 id="operational-dispatches">Operational dispatches</h4>
+<p>Unlike normal dispatches, which represent <em>usage</em> of network capabilities, operational dispatches are those that <em>provide</em> network capabilities. 
+Operational dispatches can consume the entire weight limit of a block.
+They are not bound by the <a href="/rustdocs/latest/frame_system/limits/struct.BlockLength.html#method.max_with_normal_ratio"><code>AvailableBlockRatio</code></a>.
+Dispatches in this class are given maximum priority and are exempt from paying the <code>length_fee</code>.</p>
+<h4 id="mandatory-dispatches">Mandatory dispatches</h4>
+<p>Mandatory dispatches are included in a block even if they cause the block to surpass its weight limit. 
+You can only use the mandatory dispatch class for <a href="">inherents</a>.
+This dispatch class is intended to represent functions that are part of the block validation process. 
+Because these dispatches are always included in a block regardless of the function weight, it is critical that the validation process prevents malicious nodes from abusing the function to craft blocks that are valid but impossibly heavy. 
+You can typically accomplish this by ensuring that:</p>
+<ul>
+<li>The operation performed is always light.</li>
+<li>The operation can only be included in a block once.</li>
+</ul>
+<p>To make it more difficult for malicious nodes to abuse mandatory dispatches, they cannot be included in blocks that return errors. 
+This dispatch class exists to serve the assumption that it is better to allow an overweight block to be created than to not allow any block to be created at all.</p>
+<h3 id="dynamic-weights">Dynamic weights</h3>
+<p>In addition to purely fixed weights and constants, the weight calculation can consider the input arguments of a dispatchable. 
+The weight should be trivially computable from the input arguments with some basic arithmetic:</p>
+<pre><code class="language-rust">#[pallet::weight(FunctionOf(
+  |args: (&amp;Vec&lt;User&gt;,)| args.0.len().saturating_mul(10_000),
+  DispatchClass::Normal,
+  Pays::Yes,
+))]
+fn handle_users(origin, calls: Vec&lt;User&gt;) {
+    // Do something per user
+}
+</code></pre>
+<h2 id="post-dispatch-weight-correction">Post dispatch weight correction</h2>
+<p>Depending on the execution logic, a dispatchable might consume less weight than was prescribed pre-dispatch. 
+Why this is useful is explained in the <a href="/v3/concepts/weight#post-dispatch-weight-correction">weights article</a>. 
+To correct weight, the dispatchable declares a different return type and returns its actual weight:</p>
+<pre><code class="language-rust">#[pallet::weight(10_000 + 500_000_000)]
+fn expensive_or_cheap(input: u64) -&gt; DispatchResultWithPostInfo {
+    let was_heavy = do_calculation(input);
+
+    if (was_heavy) {
+        // None means &quot;no correction&quot; from the weight annotation.
+        Ok(None.into())
+    } else {
+        // Return the actual weight consumed.
+        Ok(Some(10_000).into())
+    }
+}
+</code></pre>
+<h2 id="custom-fees">Custom fees</h2>
+<p>You can also define custom fee systems through custom weight functions or inclusion fee functions.</p>
+<h3 id="custom-weights">Custom weights</h3>
+<p>Instead of using the default weight annotations, you can create a custom weight calculation type. 
+The custom weight calculation type must implement the follow traits:</p>
+<ul>
+<li>[<code>WeighData&lt;T&gt;</code>] to determine the weight of the dispatch.</li>
+<li>[<code>ClassifyDispatch&lt;T&gt;</code>] to determine the class of the dispatch.</li>
+<li>[<code>PaysFee&lt;T&gt;</code>] to determine whether the dispatchable's sender pays fees.</li>
+</ul>
+<p>Substrate then bundles the output information of the two traits into the [<code>DispatchInfo</code>] struct and provides it by implementing the [<code>GetDispatchInfo</code>] for all <code>Call</code> variants and opaque extrinsic types. 
+This is used internally by the System and Executive modules.</p>
+<p><code>ClassifyDispatch</code>, <code>WeighData</code>, and <code>PaysFee</code> are generic over <code>T</code>, which gets resolved into the tuple of all dispatch arguments except for the origin. 
+The following example illustrates a <code>struct</code> that calculates the weight as <code>m * len(args)</code> where <code>m</code> is a given multiplier and <code>args</code> is the concatenated tuple of all dispatch arguments. 
+In this example, the dispatch class is <code>Operational</code> if the transaction has more than 100 bytes of length in arguments and will pay fees if the encoded length is greater than 10 bytes.</p>
+<pre><code class="language-rust">struct LenWeight(u32);
+impl&lt;T&gt; WeighData&lt;T&gt; for LenWeight {
+    fn weigh_data(&amp;self, target: T) -&gt; Weight {
+        let multiplier = self.0;
+        let encoded_len = target.encode().len() as u32;
+        multiplier * encoded_len
+    }
+}
+
+impl&lt;T&gt; ClassifyDispatch&lt;T&gt; for LenWeight {
+    fn classify_dispatch(&amp;self, target: T) -&gt; DispatchClass {
+        let encoded_len = target.encode().len() as u32;
+        if encoded_len &gt; 100 {
+            DispatchClass::Operational
+        } else {
+            DispatchClass::Normal
+        }
+    }
+}
+
+impl&lt;T&gt; PaysFee&lt;T&gt; {
+    fn pays_fee(&amp;self, target: T) -&gt; Pays {
+        let encoded_len = target.encode().len() as u32;
+        if encoded_len &gt; 10 {
+            Pays::Yes
+        } else {
+            Pays::No
+        }
+    }
+}
+</code></pre>
+<p>A weight calculator function can also be coerced to the final type of the argument, instead of defining it as a vague type that can be encoded. 
+The code would roughly look like this:</p>
+<pre><code class="language-rust">struct CustomWeight;
+impl WeighData&lt;(&amp;u32, &amp;u64)&gt; for CustomWeight {
+    fn weigh_data(&amp;self, target: (&amp;u32, &amp;u64)) -&gt; Weight {
+        ...
+    }
+}
+
+// given a dispatch:
+#[pallet::call]
+impl&lt;T: Config&lt;I&gt;, I: 'static&gt; Pallet&lt;T, I&gt; {
+    #[pallet::weight(CustomWeight)]
+    fn foo(a: u32, b: u64) { ... }
+}
+</code></pre>
+<p>In this example, the <code>CustomWeight</code> can only be used in conjunction with a dispatch with a particular signature <code>(u32, u64)</code>, as opposed to <code>LenWeight</code>, which can be used with anything because there aren't any assumptions about <code>&lt;T&gt;</code>.</p>
+<h3 id="custom-inclusion-fee">Custom inclusion fee</h3>
+<p>The following example illustrates how to customize your inclusion fee. 
+You must configure the appropriate associated types in the respective module.</p>
+<pre><code class="language-rust">// Assume this is the balance type
+type Balance = u64;
+
+// Assume we want all the weights to have a `100 + 2 * w` conversion to fees
+struct CustomWeightToFee;
+impl Convert&lt;Weight, Balance&gt; for CustomWeightToFee {
+    fn convert(w: Weight) -&gt; Balance {
+        let a = Balance::from(100);
+        let b = Balance::from(2);
+        let w = Balance::from(w);
+        a + b * w
+    }
+}
+
+parameter_types! {
+    pub const ExtrinsicBaseWeight: Weight = 10_000_000;
+}
+
+impl frame_system::Config for Runtime {
+    type ExtrinsicBaseWeight = ExtrinsicBaseWeight;
+}
+
+parameter_types! {
+    pub const TransactionByteFee: Balance = 10;
+}
+
+impl transaction_payment::Config {
+    type TransactionByteFee = TransactionByteFee;
+    type WeightToFee = CustomWeightToFee;
+    type FeeMultiplierUpdate = TargetedFeeAdjustment&lt;TargetBlockFullness&gt;;
+}
+
+struct TargetedFeeAdjustment&lt;T&gt;(sp_std::marker::PhantomData&lt;T&gt;);
+impl&lt;T: Get&lt;Perquintill&gt;&gt; Convert&lt;Fixed128, Fixed128&gt; for TargetedFeeAdjustment&lt;T&gt; {
+    fn convert(multiplier: Fixed128) -&gt; Fixed128 {
+        // Don't change anything. Put any fee update info here.
+        multiplier
+    }
+}
+</code></pre>
+<h2 id="next-steps">Next steps</h2>
+<p>The entire logic of fees is encapsulated in <code>pallet-transaction-payment</code> using a <a href="/v3/concepts/tx-pool#signed-extensions"><code>SignedExtension</code></a>.
+This pallet provides flexibility for implementing transaction payments.
+Alternatively, you can refer to the transaction payment pallet for inspiration and build a completely custom payment module.</p>
+<p>You now know what the weight system is, how it affects transaction fee computation, and how to specify weights for your dispatchable calls.
+The next step is determining the correct weight to account for the operations your dispatchable performs.
+You can use Substrate <strong>benchmarking functions</strong> and <code>frame-benchmarking</code> calls to test your functions with different parameters and empirically determine the correct weight in their worst case scenarios. For more information, see <a href="/v3/runtime/benchmarking">Benchmarking</a>.</p>
+<ul>
+<li>Dedicated <a href="/v3/concepts/weight">weight documentation</a></li>
+<li><a href="https://github.com/paritytech/substrate/tree/master/frame/examples/basic">Example pallet</a></li>
+<li><a href="/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html">SignedExtension</a></li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p>You can find examples of custom weights and fees in the following repositories:</p>
+<ul>
+<li><a href="https://github.com/paritytech/substrate/blob/master/frame/examples/basic/src/weights.rs">Custom weights for the Example pallet</a></li>
+<li><a href="/how-to-guides/v3/weights/calculate-fees">Custom WeightToFee how-to guide</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://w3f-research.readthedocs.io/en/latest/polkadot/overview/2-token-economics.html#relay-chain-transaction-fees-and-per-block-transaction-limits">Web3 Foundation Research</a></li>
+</ul>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <!--
+  Copyright (c) 2016-2021 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+
+
+<!-- Footer -->
+<footer class="md-footer">
+
+  <!-- Link to previous and/or next page -->
+  
+
+  <!-- Further information -->
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+
+      <!-- Copyright and theme information -->
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021. All rights reserved.
+          </div>
+        
+      </div>
+
+      <!-- Social links -->
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.tracking", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied!", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

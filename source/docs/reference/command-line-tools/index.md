@@ -2,7 +2,7 @@
 
 This section provides reference information for Substrate command-line tools.
 
-| Command entry point | Description
+| <div style="width:138px;">Command entry point | Description
 | ------------------- | -----------
 | [subkey](./subkey.md) | Generate and manage public and private key pairs for accounts.
 | [memory-profiler](./memory-profiling.md) | Collect information about memory allocation and the behavior of blockchain applications over time.

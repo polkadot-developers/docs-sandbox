@@ -4,7 +4,7 @@ Type: conceptual
 Index: 1
 
 <!-- _Notes to docs team: This artice aims to describe the concepts around developing Substrate runtimes._
-_This should be the entry point for anyone developing with substrate, whereby this content conceptually describes the ways one can create application specific business logic for a substrate chain. At a high level, this includes designing new pallets or smart contracts or using both. Runtime development ultimately encompasses the two._ -->
+_This should be the entry point for anyone developing with substrate, whereby this content conceptually describes the ways one can create application specific business logic for a substrate chain._ -->
 # Designing your runtime
 Application logic in Substrate-based blockchains can be expressed in the form of:
 
@@ -12,12 +12,7 @@ Application logic in Substrate-based blockchains can be expressed in the form of
 - Smart contracts: application logic is specified in smart contracts that target a specific execution environment.
 - A combination of both pallets and smart contracts: application logic is executed by both smart contracts and task-specific pallets.
 
-Note that designing a Substrate-based blockchain network (or ["core runtime features"](/link-todo)) and designing the application logic of a Substrate-based blockchain are separate things.
-While the network type may have an influence on how a runtime is designed and/or how smart contracts are used, the chosen network architecture can evolve over time throughout early phases of development.
-For chains already in production, evolving on network type or architecture is possible only with chains with [forkless upgradability](/todo-link) built in, which the Substrate framework provides out of the box.
-Refer to [this page](./02-fundamentals/network-types) to explore the types of networks that can be built with Substrate. 
-
-Substrate runtime application development using specialized pallets or smart contracts each provide solutions designed to solve different problems. 
+Runtime development using specialized pallets or smart contracts each provide solutions designed to solve different problems. 
 There is likely some amount of overlap in the kinds of problems each one can solve, but there is also a clear set of problems suited for only one of the two. 
 To give just one example in each category:
 

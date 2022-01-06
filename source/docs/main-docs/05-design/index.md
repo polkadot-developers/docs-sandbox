@@ -1,72 +1,132 @@
----
-title: Design
-slug: /docs/05-design
-version: '3.0'
-section: docs
-category: developers
-keywords:
----
-# Design
+Section: Design
+Sub-section: Runtime design
+Type: conceptual 
+Index: 1
 
-A Substrate node can be thought of as video gaming environment, where the console is the client (or the "outer part") and the current game being played is the current runtime (i.e. everything "on-chain").
-Each of these components are created using Substrate's [multitude of core libraries](./link-todo) for building blockchain clients and their runtime logic. 
+<!-- _Notes to docs team: This artice aims to describe the concepts around developing Substrate runtimes._
+_This should be the entry point for anyone developing with substrate, whereby this content conceptually describes the ways one can create application specific business logic for a substrate chain. At a high level, this includes designing new pallets or smart contracts or using both. Runtime development ultimately encompasses the two._ -->
+# Designing your runtime
+Application logic in Substrate-based blockchains can be expressed in the form of:
 
-### Runtime APIs and host functions
+- Specialized [pallets](/todo): each pallet performs a special task, serving the business logic needs of the blockchain. 
+- Smart contracts: application logic is specified in smart contracts that target a specific execution environment.
+- A combination of both pallets and smart contracts: application logic is executed by both smart contracts and task-specific pallets.
 
-Any blockchain protocol can be implemented with Substrate by implementing relevant runtime APIs host functions.
+Note that designing a Substrate-based blockchain network (or ["core runtime features"](/link-todo)) and designing the application logic of a Substrate-based blockchain are separate things.
+While the network type may have an influence on how a runtime is designed and/or how smart contracts are used, the chosen network architecture can evolve over time throughout early phases of development.
+For chains already in production, evolving on network type or architecture is possible only with chains with [forkless upgradability](/todo-link) built in, which the Substrate framework provides out of the box.
+Refer to [this page](./02-fundamentals/network-types) to explore the types of networks that can be built with Substrate. 
 
-[ _TODO: diagram to show how multiple protocols can be implemented with the same runtime api / host function interface_ ]
+Substrate runtime application development using specialized pallets or smart contracts each provide solutions designed to solve different problems. 
+There is likely some amount of overlap in the kinds of problems each one can solve, but there is also a clear set of problems suited for only one of the two. 
+To give just one example in each category:
 
-    |*some protocols*|*transport layer*| *some client* 
+- **Runtime development:** Building a privacy layer on top of transactions in your blockchain.
+- **Smart contract development:** Introducing multi-signature wallets over the currency of your blockchain.
+- **Use case specific:** Building a gaming dApp which may need to build up a community of users (smart contract), or may need to scale to millions of transactions a day (runtime pallet development).
 
-    ├─────────────┤                      ├─────────────┤                         
-    │             │                      │             │ 
-    │   Runtime   │ <-- Runtime API --   │   Client    │
-    │             │ -- Host functions--> │             │ 
-    ├─────────────│                      ├─────────────│        
-    
+## Runtime development
+Runtime development has the intention of producing lean, performant, and fast nodes. 
 
-In the example of a consensus protocol such as with a BABE and AURA runtime, the runtime needs to receive and send messages which is does through the transport layer. 
-The ability for a runtime to actually answer to a request relies on the specific protocol primitive that the runtime and client need to commonly understand, which would correspond to some custom host function and runtime API interface. 
+You have full control of the underlying logic that each node on your network will run. 
+You have full access to each and every storage item across all of your pallets, which you can modify and control.
 
-An important difference between changes in the runtime API versus the host function interface is that protocol primitives can be updated without having to update the node-as long as these changes don't require the node to modify behavior around consensus.
-However, any change on the host interface requires upgrading the node.
+This level of control comes with greater responsibility.
+Runtime engineers have much more responsibility for writing robust and correct code, than those deploying Smart Contracts.
+Incorrect logic or poor error handling could brick your chain. 
 
-Substrate provides developers with the ability to define their own custom runtime APIs using the [`impl_runtime_apis`](/rustdocs/latest/sp_api/macro.impl_runtime_apis.html) macro. 
-However, every runtime must implement the [`Core`](/rustdocs/latest/sp_api/trait.Core.html) and [`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html) runtime APIs. 
-In addition to these, the Substrate node template has the following runtime APIs implemented:
+As a runtime engineer, you must provide the protections for the overhead of transactions reverting and implicitly introduce any fee system to the computation of the nodes your chain runs on. 
+This means while you are developing runtime functions, you must correctly assess and apply fees to different parts of your runtime logic so that it will not be abused by malicious actors.
 
-- [`BlockBuilder`](/rustdocs/latest/sp_block_builder/trait.BlockBuilder.html): Provides the functionality required for building a block.
-- [`TaggedTransactionQueue`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html): Handles validating transactions in the transaction queue.
-- [`OffchainWorkerApi`](/rustdocs/latest/sp_offchain/trait.OffchainWorkerApi.html): Handles [off-chain capabilities](/v3/concepts/off-chain-features).
-- [`AuraApi`](/rustdocs/latest/sp_consensus_aura/trait.AuraApi.html): Handles block authorship with [Aura consensus](/v3/advanced/consensus#aura).
-- [`SessionKeys`](/rustdocs/latest/sp_session/trait.SessionKeys.html): Generates and decodes [session keys](/v3/concepts/session-keys).
-- [`GrandpaApi`](/rustdocs/latest/sp_finality_grandpa/trait.GrandpaApi.html): Integrates the [GRANDPA](/v3/advanced/consensus#grandpa) finality gadget into the runtime.
-- [`AccountNonceApi`](/rustdocs/latest/frame_system_rpc_runtime_api/trait.AccountNonceApi.html): Handles querying transaction indices.
-- [`TransactionPaymentApi`](/rustdocs/latest/pallet_transaction_payment_rpc_runtime_api/trait.TransactionPaymentApi.html): Handles querying information about transactions.
-- [`Benchmark`](/rustdocs/latest/frame_benchmarking/trait.Benchmark.html): Provides a way to [benchmark](/v3/runtime/benchmarking) a FRAME runtime.
+**Substrate Runtime Development:**
 
-### Coordination with the Runtime
+- Provides low level access to your entire blockchain.
+- Removes the overhead of built-in safety for performance,
+  giving developers increased flexibility at the cost of increased responsibility.
+- Raises the entry bar for developers, where developers are
+  not only responsible for writing working code but must constantly check to avoid writing broken code.
+- Has no inherent economic incentives to repel bad actors.
+## Smart contracts in Substrate
+In order to use smart contracts in a Substrate node, the runtime must be specially configured.
+Smart contract compatible runtimes use specialized pallets that define the types of execution environment an application requires. 
+This could be the [EVM pallet](/pallet-todo-link), for example, used in Ethereum compatible Substrate-based chains.
+Another example is the [Contracts pallet](/pallet-todo-link) which provides a way to execute Wasm contracts written in a specialized language called ink!. See [some examples](https://paritytech.github.io/ink-docs/examples/) on how to write a smart contract in ink!.  
 
-The simplest static consensus algorithms work entirely outside of the runtime as we've described so far. 
-However many consensus games are made much more powerful by adding features that require coordination with the runtime. 
-Examples include adjustable difficulty in proof of work, authority rotation in proof of authority, and stake-based weighting in proof-of-stake networks.
+Other community projects aiming to provide easy ways to integrate smart contract capabilities also exist.
+Refer to [this section](./todo) of the awesome Subtrate repository to learn about them. 
 
-To accommodate these consensus features, Substrate has the concept of a [`DigestItem`](/rustdocs/latest/sp_runtime/enum.DigestItem.html), a message passed from the outer part of the node, where consensus lives, to the runtime, or vice versa.
+In all cases, the architecture of a Substrate node with smart contract capabilities will look like this:
 
-[ _TODO: not sure where to put the below, but it related to runtime execution of consenus, and where consensus sits in the big picture_]
+_(TODO: Diagramify with points below)_
 
-A Substrate runtime executes the protocol logic and rules in a deterministic way, such that validators and block producers outside of the runtime can accept or reject them.
+- Any node will have some pallet (or collection of pallets) that will implement the smart contract execution environment.
+- This could be any VM, for example the EVM or a Wasm execution environment, or both.
+- The contract code and programming language used depends on the target environment of the pallet. For example ink! for the Contracts pallet, or anything that can compile to Wasm and [exposes the interface required by the Contracts pallet](https://github.com/paritytech/substrate/tree/master/frame/contracts#interface-exposed-to-contracts).
 
-In the collator model of a relay chain like Polkadot, collators selection is tightly coupled to the consensus mechanism. 
-[ TODO: provide more insight and examples ]
+Any single type of virtual machine or execution environment, such as EVM or Wasm, can support different programming languages to write smart contracts.
+For example, Solidity can be used for both EVM and Wasm environments using purpose built compilers.
+With the contracts pallet as the execution environment, it is possible to use any language that can compile to Wasm.
 
-* Smart contract platform
-* Smart contract pallet
-* EVM pallet
-* Prototype using smart contracts
-* Plan how to compose a runtime
-* Design a pallet
-* Storage design decisions
-* Query and update efficiency
-* Ecomonic models
+A traditional smart contract platform allows users to publish additional logic on top of some core blockchain logic. 
+Because smart contract logic can be published by anyone, including malicious actors and inexperienced developers, there are a number of intentional safe guards built around these public smart contract platform.
+
+Some examples are:
+
+- **Fees**: Ensuring that contract execution incurs fees for the computation and storage it forces on the computers running it, so it can't abuse block creators.
+
+- **Sandbox**: A contract is not able to modify core blockchain storage or the storage of other contracts directly. It's power is limited to only modifying it's own state, and the ability to make outside calls to other contracts or runtime functions.
+
+- **Storage Deposit**: A contract takes up space on the blockchain, and should be charged for taking up space on the hard drives of the nodes. This ensures that people don't take advantage of "free, unlimited storage."
+
+- **Reversion**: A contract can be prone to logical errors. The expectations of a contract developer are low, so extra overhead is added to support reverting transactions when they fail, so no state is updated when things go wrong.
+
+These different overheads makes running contracts slower and more costly, but attractive to certain developers.
+
+Contracts allow your community to extend and develop on top of your runtime logic without needing to go through the process of on-chain runtime upgrades. 
+It can even be used as a testing ground for future runtime changes, but done in a way that isolates your network from any of the growing pains or errors which might occur.
+
+**Substrate Smart Contracts:**
+
+- Are inherently safer to the network.
+- Have built in economic incentives against abuse.
+- Have computational overhead to support graceful failures in logic.
+- Have a lower bar to entry for development.
+- Enable fast-pace community interaction through a playground to write new logic.
+
+## Prototyping with smart contracts
+
+Todo
+
+## Considerations and comparisions
+
+There are a few considerations to be made when composing runtimes with pallets, smart contracts or both.
+A main one is the cost associated with building using each approach. 
+
+Deploying a contract is a relatively simple and easy process because you take advantage of the existing network. 
+The only costs to you are the fees which you pay to deploy and maintain your contract.
+
+Setting up your own blockchain, on the other hand, incurs the cost of building a community who find value in the service you provide, or the additional costs associated with establishing a private network with the overhead of a Cloud computing-based architecture and general network maintenance.
+
+While it's hard to address every scenario, in general, runtime development is most favorable for applications that require higher degrees of flexibility and adaptability. For example, applications that require the accommodation of different types of users or multiple layers of governance. The table below is meant to help inform your decisions on which approach to use based on different situations.
+
+| Runtime Development | Smart Contract | Use Case Specific |
+|---------------------|:---------------|:------------------|
+| Privacy Layer  <br>Feeless Token <br>Light-Client Bridge <br> Decentralized Exchange <br>Oracles <br>Stable Coin| Multi-signature Wallet <br> Data services <br> Simple fundraiser | Small scale gaming dApp (contract) <br>Large scale gaming dApp (runtime) <br> Community driven Decentralized Autonomous Organizations (DAO)(contract)<br> Protocol driven Decentralized Autonomous Organizations (DAO)(runtime) <br> Community driven treasury(contract)<br> Protocol driven treasury (runtime)                |
+
+> **NOTE:** If you are building on Polkadot, you can also [deploy smart contracts on its parachain](https://wiki.polkadot.network/docs/en/build-smart-contracts). 
+See [The Polkadot Wiki](https://wiki.polkadot.network/docs/build-build-with-polkadot#what-is-the-difference-between-building-a-parachain-a-parathread-or-a-smart-contract) for a comparison between developing on a parachain, parathread, and smart contracts.
+
+## Where to go next
+
+Explore the following resources to learn more.
+
+#### Tell me
+
+* [Pallet design](./pallet-design)
+* [Smart contract pallets](./smart-contract-pallets)
+* [Storage design](./storage-design)
+* [Economic models](./economic-models) 
+
+#### Guide me 
+* Build a proof of existence blockchain
+* ink! tutorial

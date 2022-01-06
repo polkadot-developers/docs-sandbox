@@ -13,7 +13,10 @@ Any of these components can be swapped out for different ones, depending on the 
 
 ![Substrate client architecture](../../img/docs/getting-started/substrate-arch.png)
 
-The architecture of a Substrate contains:
+A Substrate node can be thought of as video gaming environment, where the console is the client (or the "outer part") and the current game being played is the current runtime (i.e. everything "on-chain").
+Each of these components are created using Substrate's [multitude of core libraries](/main-docs/06-build/libraries/) for building blockchain clients and their runtime logic. 
+
+The architecture of a Substrate node contains:
 
 - **[A runtime](#runtime)**: the logic that defines how blocks are processed, including state transition logic. 
 In Substrate, runtime code is compiled to [Wasm](/v3/getting-started/glossary#webassembly-wasm) and becomes part of the blockchain's storage state. 
@@ -43,7 +46,20 @@ The "outer node", everything other than the runtime is responsible for handling 
 While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
 ### Runtime APIs and host functions
 
-The host functions and runtime APIs provide a means to deliver messages being passed between the runtime and the client. 
+Any blockchain protocol can be implemented with Substrate by implementing relevant runtime APIs and host functions.
+
+[ _TODO: diagram to show how multiple protocols can be implemented with the same runtime api / host function interface_ ]
+
+    |*some protocols*|*transport layer*| *some client* 
+
+    ├─────────────┤                      ├─────────────┤                         
+    │             │                      │             │ 
+    │   Runtime   │ <-- Runtime API --   │   Client    │
+    │             │ -- Host functions--> │             │ 
+    ├─────────────│                      ├─────────────│        
+    
+
+Host functions and runtime APIs provide a means to deliver messages being passed between the runtime and the client. 
 Substrate can facilitate a number of runtime implementations without needing to alter the host functions and runtime APIs that come out of the box.
 
 A **host function** is a function that is expressed outside of the runtime but passed in as an import to the runtime. 
@@ -53,7 +69,27 @@ One example is the benchmarking implementation in FRAME.
 A **runtime API** facilitates communication between the outer node and the runtime.
 For example, benchmarking requires a [runtime API](https://docs.substrate.io/rustdocs/latest/frame_benchmarking/trait.Benchmark.html) as well.
 
-It is also possible to [design custom "runtime API / host function" interfaces](./link-todo-design) in Substrate.
+In the example of a consensus protocol such as with a BABE and AURA runtime, the runtime needs to receive and send messages which is does through the transport layer. 
+The ability for a runtime to actually answer to a request relies on the specific protocol primitive that the runtime and client need to commonly understand, which would correspond to some custom host function and runtime API interface. 
+
+An important difference between changes in the runtime API versus the host function interface is that protocol primitives can be updated without having to update the node &mdash; as long as these changes don't require the node to modify behavior around consensus.
+However, any change on the host interface requires upgrading the node.
+
+Substrate provides developers with the ability to define their own custom runtime APIs using the [`impl_runtime_apis`](/rustdocs/latest/sp_api/macro.impl_runtime_apis.html) macro. 
+At a minimum, a runtime must implement the [`Core`](/rustdocs/latest/sp_api/trait.Core.html) and [`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html) runtime APIs. 
+In addition to these runtime APIs, the Substrate node template has the following runtime APIs:
+
+- [`BlockBuilder`](/rustdocs/latest/sp_block_builder/trait.BlockBuilder.html): Provides the functionality required for building a block.
+- [`TaggedTransactionQueue`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html): Handles validating transactions in the transaction queue.
+- [`OffchainWorkerApi`](/rustdocs/latest/sp_offchain/trait.OffchainWorkerApi.html): Handles [off-chain capabilities](/v3/concepts/off-chain-features).
+- [`AuraApi`](/rustdocs/latest/sp_consensus_aura/trait.AuraApi.html): Handles block authorship with [Aura consensus](/v3/advanced/consensus#aura).
+- [`SessionKeys`](/rustdocs/latest/sp_session/trait.SessionKeys.html): Generates and decodes [session keys](/v3/concepts/session-keys).
+- [`GrandpaApi`](/rustdocs/latest/sp_finality_grandpa/trait.GrandpaApi.html): Integrates the [GRANDPA](/v3/advanced/consensus#grandpa) finality gadget into the runtime.
+- [`AccountNonceApi`](/rustdocs/latest/frame_system_rpc_runtime_api/trait.AccountNonceApi.html): Handles querying transaction indices.
+- [`TransactionPaymentApi`](/rustdocs/latest/pallet_transaction_payment_rpc_runtime_api/trait.TransactionPaymentApi.html): Handles querying information about transactions.
+- [`Benchmark`](/rustdocs/latest/frame_benchmarking/trait.Benchmark.html): Provides a way to [benchmark](/v3/runtime/benchmarking) a FRAME runtime.
+
+Learn more on how to [design custom "runtime API / host function" interfaces](./link-todo-design) in Substrate.
 ### Native and Wasm runtimes
 
 In order to provide its defining forkless runtime upgrade capabilities, Substrate runtimes are compiled to [WebAssembly (Wasm)](/v3/getting-started/glossary#webassembly-wasm) bytecode. 

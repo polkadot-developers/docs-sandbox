@@ -2,6 +2,13 @@ Section: Design
 Sub-section: Economic models
 Type: reference + conceptual
 
+Questions: 
+
+Scenario: I'm building a parachain and I'm looking to ensure my chain is economically secure. 
+
+- What sort of economic models come "out of the box" with Substrate? What safe guards?
+- Can I assess my economic design against a threat model common to other Substrate chains?
+
 [ WIP ]
 ## Hybrid consensus
 

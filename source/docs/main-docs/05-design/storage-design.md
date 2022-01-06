@@ -1,3 +1,11 @@
+Questions: 
+
+- What will I need to consider when designing the storage abstractions of my chain?
+- What tools are at my disposal to ensure I've made the right decisions? What could go wrong?
+- When would I use a child trie and why? 
+- What type of hashers should and when/ what for? 
+- What other storage layers are available and how can I use them (externalities for e.g.?) ?
+
 **storage**
 
 FRAME macros are used to hash storage items, encode and decode them.

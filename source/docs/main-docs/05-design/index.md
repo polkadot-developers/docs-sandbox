@@ -6,6 +6,19 @@ Index: 1
 <!-- _Notes to docs team: This artice aims to describe the concepts around developing Substrate runtimes._
 _This should be the entry point for anyone developing with substrate, whereby this content conceptually describes the ways one can create application specific business logic for a substrate chain._ -->
 # Designing your runtime
+
+TODO: Improve this section's write-up based on these guiding questions.
+
+Scenario: I want to understand what components I need to consider when designing my runtime. I'd then like to prototype my idea, or jump right into using existing pallets and creating my own. This is the lay of the land before I get there.
+
+- At a HL, what does it mean to design a runtime? What are the different components I should focus on?
+- For a team getting started, what's a good way to prototype a chain's logic? What factors would they need to consider?
+- How can I determine whether my prototype is a good canadidate to become a chain in the first place? Where should I go with my prototype if not? 
+- Now that I know I want to design a parachain, what's my next step?
+- Can you explain how having full control of the blockchain relates to how I can design my chain?
+- What sort of decisions must I make before thinking about my user facing application logic (i.e. perhaps more on the network level)?
+- @Shawn: maybe this highlevel section would benefit from a diagram showing the life cycle of a parachain from its inception phase to production, with the phases we reccomend in between.
+
 Application logic in Substrate-based blockchains can be expressed in the form of:
 
 - Specialized [pallets](/todo): each pallet performs a special task, serving the business logic needs of the blockchain. 
@@ -88,10 +101,15 @@ It can even be used as a testing ground for future runtime changes, but done in 
 - Have a lower bar to entry for development.
 - Enable fast-pace community interaction through a playground to write new logic.
 
-## Prototyping with smart contracts
+## Prototyping 
 
-Todo
+TODO: Improve this section's write-up based on these guiding questions.
 
+- How should I take my business application idea to a prototype or POC?
+- In what scenario would I want to create a prototype with smart contracts?
+- What should I be thinking about in the prototype phase?  
+- What does bringing my smart contracts dapp prototype look like in the form of pallets? Any tips on how to break up my application's logic?
+- What's an example of a prototype? (mapping high level application logic to pallets and pallet functions)
 ## Considerations and comparisions
 
 There are a few considerations to be made when composing runtimes with pallets, smart contracts or both.

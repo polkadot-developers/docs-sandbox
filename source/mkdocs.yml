@@ -43,8 +43,8 @@ nav:
         - 'Explore': 'main-docs/04-explore/explore.md'
         - 'Design': 
              - 'Designing your runtime logic': 'main-docs/05-design/index.md'
-             - 'Smart contract runtimes': 'main-docs/05-design/smart-contract-pallets.md'
              - 'Pallet design': 'main-docs/05-design/pallet-design.md'
+             - 'Smart contract pallets': 'main-docs/05-design/smart-contract-pallets.md'
              - 'Storage design decisions': 'main-docs/05-design/storage-design.md'
              - 'Economic models': 'main-docs/05-design/economic-models.md'
         - 'Build': 

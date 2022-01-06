@@ -97,7 +97,8 @@ You can follow [our guide here](/how-to-guides/v3/pallet-design/contracts-pallet
 
 # EVM pallet
 
-The FRAME Ethereum Virtual Machine (EVM) provides an execution environment for Substrate's Ethereum compatibility layer, known as Frontier. Frontier allows unmodified EVM code to be executed in a Substrate-based blockchain, designed to closely emulate the functionality of executing contracts on the Ethereum mainnet within the Substrate runtime. 
+The FRAME Ethereum Virtual Machine (EVM) provides an execution environment for Substrate's Ethereum compatibility layer, known as Frontier. 
+Frontier allows unmodified EVM code to be executed in a Substrate-based blockchain, designed to closely emulate the functionality of executing contracts on the Ethereum mainnet within the Substrate runtime. 
 
 For more information on the FRAME EVM, see [FRAME EVM pallet reference](https://docs.rs/pallet_evm/).
 

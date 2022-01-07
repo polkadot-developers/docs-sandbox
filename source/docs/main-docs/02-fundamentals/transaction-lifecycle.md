@@ -1,0 +1,1 @@
+TODO: Lifecycle of a transaction write-up

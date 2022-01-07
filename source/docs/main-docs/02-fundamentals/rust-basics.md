@@ -49,14 +49,11 @@ Generics allow Substrate to exist as a sort of template for writing runtimes.
 They use traits to encapsulate the set of operations that can be performed on a generic type. 
 For developers, this system  makes it possible to extend domain specific logic by defining custom behavior using traits and type bounds.
 
+ --------------------	
+_TODO: Make actual diagram illustrating that everything is generic and made concrete in the runtime._
 
- ┌──────────────┐            ┌──────────────┐
- │              │            │              │
- │  Substrate   │            │    Runtime   │
- │ (generic lib)├───────────►│  (user code, │
- │              │            │   concrete)  │
- └──────────────┘            └──────────────┘
-
+ │  Generic library |  ---> made concrete --->    │  Runtime  │
+ --------------------
 Having Substrate as generic as possible leaves maximum flexibility, where generics resolve into whatever the user defines them to resolve as.
 Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utxo-on-substrate/) for a demonstration of how these paradigms make Substrate flexible and modular.
 

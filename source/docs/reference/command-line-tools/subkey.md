@@ -4,9 +4,10 @@ The `subkey` program is a key generation and management utility that is included
 You can use the `subkey` program to perform the following tasks:
 
 * Generate and inspect cryptographically-secure public and private key pairs.
-* Restore keys from mnemonics and raw seeds.
-* Sign and verify signatures on a message.
+* Restore keys from secret phrases and raw seeds.
+* Sign and verify signatures on messages.
 * Sign and verify signatures for encoded transactions.
+* Derive hierarchical deterministic child key pairs.
 
 ## Signature schemes
 
@@ -56,6 +57,16 @@ To install and compile the `subkey` program:
     ```bash
     ./target/release/subkey --help
     ```
+
+## Hierarchical deterministic keys
+
+The `subkey` program supports hierarchical deterministic keys.
+Hierarchical deterministic (HD) keys enable you to use a parent seed to derive child key pairs in a hierarchical tree structure. 
+In this hierarchical structure, each child derived from a parent has its own key pair.
+The derived keys can also be used to derive additional child key pairs, similar to how a file system can have nested directories in a hierarchical directory structure.
+For background information about how hierarchical deterministic keys are derived, see the [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) specification for hierarchical deterministic wallets.
+
+For information about deriving hierarchical deterministic keys using subkey commands, see [Working with derived keys](#derived-keys).
 
 ## Basic command usage
 
@@ -668,28 +679,21 @@ For example:
 Signature verifies correctly.
 ```
 
-## Hierarchical deterministic keys
+## Working with derived keys<a name="derived-keys"></a>
 
-The `subkey` program supports hierarchical deterministic keys.
-Hierarchical deterministic (HD) keys enable you to use a parent seed to derive child key pairs in a hierarchical tree structure. 
-In this hierarchical structure, each child derived from a parent has its own key pair.
-The derived keys can also be used to derive additional child key pairs, similar to how a file system can have nested directories in a hierarchical directory structure.
-
-In Substrate, derived keys are classified as hard keys or as soft keys based on how they are derived.
-For example, hard keys can only be derived using the parent private key and a derivation path.
+In Substrate, hierarchical deterministic derived keys are classified as hard keys or as soft keys based on how they are derived.
+For example, hard keys can only be derived using the parent **private key** and a derivation path.
 The parent public key cannot be used to derive a hard key.
-After the hard key child key pair is derived, it cannot be used to identify its parent.
-Soft keys can be derived using either the parent private key or the parent public key and a derivation path.
+
+Soft keys can be derived using either the parent private key or the parent **public key** and a derivation path.
 Because soft keys can be derived using the parent public key, they can be used to identify the parent key without exposing the parent seed. 
 You can derive either hard keys or soft keys by using different syntax in `subkey` commands.
-You can then use the addresses associated with derived keys to sign messages with the same security as message signed by their root key.
+You can then use the addresses associated with derived keys to sign messages with the same security as messages signed by their root key.
 
-All of the keys comply with the [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) specification for hierarchical deterministic wallets.
-
-##### Derive a hard key
+### Derive a hard key
 
 To derive a hard child key pair, you add two slashes (`//`), a derivation path, and an index after the secret phrase associated with its parent key.
-Because you are deriving a new key pair and address from a key that ahs been previously generated, you use the `subkey inspect` command.
+Because you derive child key pairs and addresses from keys that have been previously generated, you use the `subkey inspect` command.
 For example:
 
 ```bash
@@ -707,7 +711,7 @@ Secret Key URI `caution juice atom organ advance problem want pledge someone sen
   SS58 Address:      5GuSLtVEbYgYT9Q78CX99RSSPuHjsAyAadwC1GmweDvTvFTZ
 ```
 
-##### Derive a soft key
+### Derive a soft key
 
 To derive a soft child key pair from a parent private key, you add one slash (`/`), a derivation path, and an index after the secret phrase associated with the parent key.
 Because you are deriving a new key pair and address from a key that ahs been previously generated, you use the `subkey inspect` command.
@@ -748,7 +752,7 @@ Public Key URI `5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR/derived-public/
 ```
 
 If you use the same derivation path and index, the soft child key is the same whether you use the parent private key or parent public address.
-If you change either the derivation path—from `derived-soft-key` to `derived-public`—or the index—from `0` to `1`—you derive different child keys with different addresses.
+If you change either the derivation path—for example, from `derived-soft-key` to `derived-public`—or the index—from `0` to `1`—you derive different child keys with different addresses.
 For example:
 
 ```bash
@@ -766,7 +770,7 @@ Public Key URI `5Gv8YYFu8H1btvmrJy9FjjAWfb99wrhV3uhPFoNEr918utyR/derived-soft-ke
   SS58 Address:       5ERnpynLaQweDhrBQLe3vz8aWYodKYEeJ92xsbnpgG7GhHvo
 ```
 
-## Combine derivation paths and passwords
+### Combine derivation paths and passwords
 
 Note that the secret seed _is not_ password protected. 
 Although it can still recover _an_ account, the key pair that's derived _is not the same_ account as recovered with _any_ password!
@@ -810,13 +814,13 @@ Secret Key URI `caution juice atom organ advance problem want pledge someone sen
   SS58 Address:      5D8JkugWWMDmQ4h2yUuBLWwQXaBi2nBdiDmY4DR7hW76QmuW
 ```
 
-The following command creates a soft key derived from a public address with a hidden see, hard key derivation path, and a password.
+The following command creates a soft key derived from a public address with a hidden seed, hard key derivation path, and a password.
 
 ```bash
 subkey inspect "5GsbzysSK8TKahXBC7FpS2myx3nWehMyYU7q8CLrzZCjpKbM/0"
 ```
 
-_Output:_
+The command displays output similar to the following:
 
 ```text
 Public Key URI `5GsbzysSK8TKahXBC7FpS2myx3nWehMyYU7q8CLrzZCjpKbM/0` is account:
@@ -829,7 +833,7 @@ Public Key URI `5GsbzysSK8TKahXBC7FpS2myx3nWehMyYU7q8CLrzZCjpKbM/0` is account:
 
 This example illustrates that the soft key derived using the _SS58-address/derivation path_ produces the same address as the _secret phrase//derivation path/index///password_. With this strategy for combining hard and soft keys, you can reveal a parent public address and soft derivation paths without revealing your secret phrase or password, retaining control of all derived addresses.
 
-## Predefined accounts and keys
+### Predefined accounts and keys
 
 Substrate includes several predefined accounts that you can use for testing in a local development environment.
 These predefined accounts are all derived from the same seed using a single secret phrase.

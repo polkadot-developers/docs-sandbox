@@ -2,8 +2,50 @@ Section: Build
 Sub-section: Front-end development
 Type: reference 
 
-Different libraries exist for building frontend interfaces of Substrate-based chains and interacting with Substrate runtimes.
+Frontend application development for Substrate runtimes could be for any type of user-facing interface to a Substrate blockchain, such as browser applications, desktop applications or low consumption hardware environments. 
 
+All front-end libraries that interact with Substrate runtimes are made possible by leveraging the rich metadata system provided by [`frame-metadata`](https://docs.substrate.io/rustdocs/latest/frame_metadata/index.html) and [`scale-info`](https://docs.rs/scale-info/latest/scale_info/).
+
+
+                            ┌─────────────┐   
+                            │RPC functions|    
+                            └─────────────┘ 
+                                 │   ▲
+                                 ▼   │        
+                            ┌─────────────┐   
+                            │Type Registry|  
+                            └─────────────┘   
+                              scale-info 
+                                   ▲
+                                   │                                 
+                             frame-metadata
+                                   ▲
+                                   │
+                            ┌──────┴────────┐
+                            │    Runtime    │
+                            │  (n pallets)  │
+                            └───────────────┘
+
+                            
+- The runtime contains pallets that expose callable functions, types, parameters and documentation for each pallet.
+- `frame-metadata` helps decode the metadata of all the types and callable functions the runtime exposes.
+- `scale-info` creates a "registry" of all types generated from `frame-metadata`. The types in this registry are annotated so they can be encoded and decoded to the SCALE binary format as well as information about how each type will be encoded.
+
+With >V14 metadata, any runtime can be queried and expose the available runtime calls, types and parameters.  
+The metadata also exposes how a type is expected to be decoded, making it easy for an external application to retrieve any of the information a runtime exposes. 
+
+[add content from "c-metadata"]
+
+Different libraries exist for building frontend interfaces of Substrate-based chains and interacting with Substrate runtimes.
+## subxt 
+
+`subxt` is a Rust library for submitting extrinsics to a Substrate node.
+It leverages the combination of `frame-metadata` and `scale-info` and removes the maintainance burden of updating and recompiling an app's API everytime a node introduces new types.
+
+It provides a way for Rust developers to write user facing client applications for any Substrate chain without the burden of maintaining a list of types. 
+Being built with Rust, it's also a good solution for lower level applications such as non-browser graphic user interfaces.
+
+Integrated into the `subxt` library, the [`subxt-cli` tool](./reference/command-line-tools) can be used to generate the metadata as well as the runtime API of a target running chain.
 ## Polkadot-JS
 
 The [Polkadot-JS project](https://polkadot.js.org/docs/) is a collection of tools, interfaces, and libraries around Polkadot and Substrate.
@@ -13,7 +55,6 @@ The [Polkadot JS API](https://polkadot.js.org/docs/api) provides application dev
 
 
 ## Substrate connect
-
 
 [Substrate Connect](https://paritytech.github.io/substrate-connect/) is a JavaScript library and browser extension that builds on the [Polkadot JS API](/v3/integration/polkadot-js#polkadot-js-api) to enable developers to build application specific light clients for Substrate chains. 
 By using light clients available to all Substrate built blockchains, application developers no longer need to rely on single RPC nodes to allow end-users to interact with their applications. 

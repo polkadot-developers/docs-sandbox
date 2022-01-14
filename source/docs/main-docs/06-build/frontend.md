@@ -40,7 +40,7 @@ As shown in the above diagram:
 With this system, any runtime can be queried for its available runtime calls, types and parameters.  
 The metadata also exposes how a type is expected to be decoded, making it easy for an external application to retrieve any of the information a runtime exposes. 
 
-[add content from "c-metadata"]
+[TODO: add content from "c-metadata"]
 
 Different libraries exist for building frontend interfaces of Substrate-based chains and interacting with Substrate runtimes.
 

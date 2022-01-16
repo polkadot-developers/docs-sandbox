@@ -1,13 +1,5 @@
 # Windows development environment
 
-Supported architecture and versions 
-
-Installation instructions
-
-Verifying your installation
-
-Troubleshooting
-
 In general, Substrate development is best supported on UNIX-based operating systems like macOS or Linux and all of the examples in Substrate [Tutorials](../tutorials) and [How-to guides](../reference/how-to-guides) illustrate how to use UNIX-compatible commands to interact with Substrate from a terminal. 
 
 If you only have Microsoft Windows available on your local computer, there are configuration steps required to prepare your environment for Substrate development.
@@ -16,6 +8,15 @@ To develop on Windows, you have the following options:
 * Use Windows Subsystem Linux (WSL) to emulate a UNIX operating environment (recommended).
 
 * Add all of the required packages to the native Windows environment.
+
+## Before you begin
+
+Before installing on Microsoft Windows, verify the following basic requirements:
+
+* You have a computer running a supported version of the Microsoft Windows operating system.
+* You must be running Microsoft Windows 10, version 2004 or later,  or Windows 11 to install Windows Subsystem for Linux on a computer with the Windows desktop operating system.
+* You must be running Windows Server 2019, or later, to install Windows Subsystem for Linux on a computer with the Windows server operating system.
+* You must have a 64-bit architecture and the ability to install all required packages locally if you are using Microsoft Windows desktop or Microsoft Windows Server without the Windows Subsystem for Linux.
 
 ## Install and use Windows Subsystem Linux
 
@@ -105,3 +106,6 @@ To prepare Windows for Substrate development:
    choco install make
    ```
 
+## Verify your installation
+
+## Troubleshooting

@@ -498,7 +498,6 @@ To add a second validator to the private network:
     If you don't set the correct `bootnode` identifier, you see errors like this: 
     
     `💔 The bootnode you want to connect to at ... provided a different peer ID than the one you expect: ...`
-    
 
 1. Add the `aura` secret key generated from the `key` subcommand by running a command similar to the following:
     ```bash

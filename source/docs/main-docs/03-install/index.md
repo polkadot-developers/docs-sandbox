@@ -5,17 +5,15 @@ Because Substrateâ€”and most of the developer tools for working with Substrateâ€
 The steps for installing Rust depend on the operating system of the computer you are using for Substrate development.
 For installation instructions, see the appropriate topic for your operating system.
 
-* [Linux]
-* [macOS]
-* [Windows]
+* [Linux](./linux.md)
+* [macOS](./macos.md)
+* [Windows](./windows.md)
 
-If you already have Rust installed, you can skip the installation instructions. 
+If you already have Rust installed, you can skip the installation instructions.
+For additional information about installing and upgrading the Rust compiler and toolchain or troubleshooting installation issues, see the following topics:
 
-- Rust builds
-- Linux
-- macOS 
-- Windows
-- Full node
-- Versioning and upgrades
-- Other tools
-- Troubleshoot common issues
+* [Rust compiler and toolchain](./rust-builds.md)
+* [Versioning and upgrades]()
+* [Node template or full node]()
+* [Developer tools]()
+* [Troubleshooting]()

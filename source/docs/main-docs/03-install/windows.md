@@ -18,7 +18,7 @@ Before installing on Microsoft Windows, verify the following basic requirements:
 * You must be running Windows Server 2019, or later, to install Windows Subsystem for Linux on a computer with the Windows server operating system.
 * You must have a 64-bit architecture and the ability to install all required packages locally if you are using Microsoft Windows desktop or Microsoft Windows Server without the Windows Subsystem for Linux.
 
-## Install and use Windows Subsystem Linux
+## Install Windows Subsystem for Linux
 
 To use Windows Subsystem Linux to emulate Linux:
 
@@ -28,7 +28,7 @@ To use Windows Subsystem Linux to emulate Linux:
 
 1. ollow the instructions for [Ubuntu/Debian](../installation#ubuntudebian).
 
-## Install packages for a native Windows environment
+## Install required packages for Windows
 
 If you want to use a Windows computer to _natively_ build Substrate, you need to download and install several required packages.
 
@@ -50,7 +50,7 @@ To prepare Windows for Substrate development:
 
 1. Restart your computer.
 
-### Install Rust on Windows
+## Install Rust on Windows
 
    - Detailed instructions are provided by the
      [Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html#installing-rustup-on-windows)
@@ -72,7 +72,7 @@ To prepare Windows for Substrate development:
    rustup target add wasm32-unknown-unknown --toolchain nightly
    ```
 
-### Install and configure additional programs
+## Install and configure additional programs
 
 1. Install [LLVM](https://releases.llvm.org/download.html).
 

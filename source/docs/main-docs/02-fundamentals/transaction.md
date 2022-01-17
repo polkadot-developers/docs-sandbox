@@ -1,8 +1,5 @@
 The transaction pool contains all [signed](/v3/concepts/extrinsics#signed-transactions) and [unsigned](/v3/concepts/extrinsics#unsigned-transactions) transactions broadcasted to the network that have been received and validated by the local node.
 
--- what is a tx made of?
--- what makes a tx valid?
-
 The [`ValidTransaction` struct](/rustdocs/latest/sp_runtime/transaction_validity/struct.ValidTransaction.html) defines two parameters used to determine the ordering of transactions in the pool: `requires` and `provides`. 
 Together they create a dependency graph which allows the pool to produce a valid linear ordering of transactions.
 
@@ -93,41 +90,47 @@ This is due to the possibility that a recently-authored block may not make it in
 
 The block is executed and the entire block either succeeds or fails.
 
+## Extending transactions
+
+The [`SignedExtension`](/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html) trait is used to extend a signed or unsigned transaction with additional data or logic.
+For example, if you wanted to attach some information about a transaction prior to execution you could implement a custom `SignedExtension` to do so.
+
+`SignedExtension` are commonly used to prepare transactions for the transaction pool and use the data attached to the transaction for handling their transaction pool logic.
+
+By default, they can hold any of the following types:
+- `AccountId`: to encode the sender's identity.
+- `Call`: to encode the pallet call to be dispatched. This data is used to calculate transaction fees.
+- `AdditionalSigned`: to handle any additional data to go into the signed payload. This makes it possible to attach any custom logic prior to dispatching a transaction.
+- `Pre`: to encode the information that can be passed from before a call is dispatch to after it gets dispatched.
+
+The transaction queue regularly calls functions from `SignedExtension` to validate transactions prior to block construction. 
+This is useful for verifying that transactions don't fail in a block.
+
+FRAME's [system pallet](todo) provides a set of [useful `SignedExtensions`](https://docs.substrate.io/rustdocs/latest/frame_system/index.html#signed-extensions) out of the box.
 
 
+`SignedExtension` can also be used to verify [unsigned transactions](/v3/concepts/extrinsics#unsigned-transactions).
+The `*_unsigned` set of methods can be implemented to encapsulate validation, spam, and replay protection logic that is needed by the transaction pool.
 
-## Priority 
-Closes #5672 
-Closes #9317 
 
-Alternative take on #9596
-(we can leave the adjuster from previous PR, but I don't think it is going to be useful at all, given no extensions change `priority`).
+## Priority calculation
 
-This PR changes the way Transaction Priority is calculated by following `SignedExtensions`:
-1. `CheckWeight`
-2. `ChargeTransactionPayment`
+The following `SignedExtension`s are used to calculate transaction priority using the `priority` parameter.
 
-For `CheckWeight` it removes the `priority` calculation completely, leaving the priority as `0` for all dispatch classes. Please note that this might cause a bit of an havoc on existing chains without any extra signed extension that would alter `priority` (which is discouraged anyway) -  all transactions would end up having the same priority (`0`) and the inclusion might be done at random (i.e. depending on the transaction pool ordering - currently based on the insertion time), note that the requirements (i.e. nonce) would still be respected though.
+- `CheckWeight`: the `priority` is set to `0` for all dispatch classes.
+- `ChargeTransactionPayment`: calculates the overall priority, modifying the `priority` parameter.
 
-`ChargeTransactionPayment` is completely reworked and is now a single place responsible for calculating the overall `priority` (all other `SignedExtensions` in this repo do not alter it).
 The priority depends on the dispatch class and the amount of tip-per-weight or tip-per-length (whatever is more limiting) the sender is willing to pay.
-Transactions without a `tip` are using a minimal tip value of `1` for `priority` calculations to make sure we don't end up with all transactions with `0` priority. The consequence of this is that "smaller" transactions are more preferred than the "large" ones (note the behavior used to be similar with `CheckWeight`'s prioriy). 
 
-`Operational` transactions are getting additional priority bump - not as high as previously (3/4 * u64::max), because that prevents other transactions from getting in front of them in the pool, but now equal to the `OperationalVirtualTip` amount configurable by a rutnime developer.
+Transactions without a `tip` are using a minimal tip value of `1` for `priority` calculations to make sure we don't end up with all transactions with `0` priority. 
+The consequence of this is that "smaller" transactions are more preferred than the "large" ones.
 
-Companion PR: https://github.com/paritytech/polkadot/pull/3901
+`Operational` transactions are getting additional priority bump (3/4 * `u64::max()`), because that prevents other transactions from getting in front of them in the pool, but now equal to the `OperationalVirtualTip` amount configurable by a runtime developer.
 
 ## Transaction encoding
 
+[ TODO ]
 See: https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/pull/674/files
 
-
-## Transaction lifecycle
-
-## Transaciton pool logic 
-
-What's the life cycle of a transaction? Which transactions are propagated?
-
-see:  https://docs.substrate.io/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html#method.validate
 
 

@@ -5,10 +5,12 @@ Notes / stuff to add:
 Add section on Design assumptions:
 - all blockchains must run on "minimum hardware requirements" 
 - protocol vs. infrastructure
+- advanced topic: some teams create runtimes without FRAME and pallets, but using FRAME helps to decompose the state transition function nicely.
+- advanced callout: You do not see `&self` in FRAME traits so that all state is in storage, and it is difficult to introduce side-effects
 -->
 
 A Substrate node is designed to be modular and adaptable to change. 
-This article presents the architecture of a Substrate node, using the [node template](https://github.com/substrate-developer-hub/substrate-node-template) as a reference whicih provides a set of core components ready to use out of the box.
+This article presents the architecture of a Substrate node, using the [node template](https://github.com/substrate-developer-hub/substrate-node-template) as a reference which provides a set of core components ready to use out of the box.
 Any of these components can be swapped out for different ones, depending on the target optimization or use case.
 
 ![Substrate client architecture](../../img/docs/getting-started/substrate-arch.png)
@@ -44,6 +46,7 @@ It defines what transactions are valid and invalid and determines how the chain'
 
 The "outer node", everything other than the runtime is responsible for handling peer discovery, transaction pooling, block and transaction gossiping, consensus, and answering RPC calls from the outside world. 
 While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
+
 ### Runtime APIs and host functions
 
 Any blockchain protocol can be implemented with Substrate by implementing relevant runtime APIs and host functions.
@@ -90,6 +93,7 @@ In addition to these runtime APIs, the Substrate node template has the following
 - [`Benchmark`](/rustdocs/latest/frame_benchmarking/trait.Benchmark.html): Provides a way to [benchmark](/v3/runtime/benchmarking) a FRAME runtime.
 
 Learn more on how to [design custom "runtime API / host function" interfaces](./link-todo-design) in Substrate.
+
 ### Native and Wasm runtimes
 
 In order to provide its defining forkless runtime upgrade capabilities, Substrate runtimes are compiled to [WebAssembly (Wasm)](/v3/getting-started/glossary#webassembly-wasm) bytecode. 

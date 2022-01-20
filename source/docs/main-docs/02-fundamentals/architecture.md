@@ -50,13 +50,13 @@ Any blockchain protocol can be implemented with Substrate by implementing releva
 
 [ _TODO: diagram to show how multiple protocols can be implemented with the same runtime api / host function interface_ ]
 
-    |*some protocols*|*transport layer*| *some client* 
+              |*some protocols*| *transport layer*|   *some client* 
 
-    ├─────────────┤                      ├─────────────┤                         
-    │             │                      │             │ 
-    │   Runtime   │ <-- Runtime API --   │   Client    │
-    │             │ -- Host functions--> │             │ 
-    ├─────────────│                      ├─────────────│        
+                ├─────────────┤                      ├─────────────┤                         
+                │             │                      │             │ 
+                │   Runtime   │ <-- Runtime API --   │   Client    │
+                │             │ -- Host functions--> │             │ 
+                ├─────────────│                      ├─────────────│        
     
 
 Host functions and runtime APIs provide a means to deliver messages being passed between the runtime and the client. 

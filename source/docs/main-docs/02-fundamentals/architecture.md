@@ -128,6 +128,11 @@ This layer is built using the Rust implementation of [Rocks DB](http://rocksdb.o
 There is a different implementation under developement called [Parity DB](https://github.com/paritytech/parity-db), also built in Rust but aims to optimize storage and retrieval of state data. In any case, Substrate is designed to support any key-value database implementation. 
 
 [ TODO: Elaborate on storage layers, including externalities]
+[ Add a diagram to show "full call path of a storage read in Substrate"] 
+
+db  <--> trie <--> overlay(s) <-->  sp_io host functions <--> runtime  
+
+(where "DB" includes all the key-value layer; ["overlays"](https://github.com/paritytech/substrate/blob/ded44948e2d5a398abcb4e342b0513cb690961bb/primitives/state-machine/src/overlayed_changes/mod.rs#L92); host function impls; runtime; and pallet call)
 
 **Trie abstraction**
 

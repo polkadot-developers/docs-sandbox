@@ -2,7 +2,7 @@ Section: Build
 Sub-section: Front-end development
 Type: reference 
 
-Front-end development for Substrate runtimes includes user-facing interfaces such as browser applications, desktop applications or low performance hardware environments. 
+Front-end development for Substrate runtimes includes user-facing interfaces such as browser applications, desktop applications or applications for low performance hardware environments.
 Different libraries exist to build these types of interfaces, depending on your needs.
 This article aims to describe:
 

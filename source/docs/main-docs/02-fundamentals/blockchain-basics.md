@@ -5,13 +5,13 @@ To ensure the security of the data on the chain and the ongoing progress of the 
 
 ## What is a blockchain node?
 
-At a high level, a blockchain node consists of the following key components:
+At a high level, a blockchain node consists of the following core components:
 
-- [Storage](/v3/advanced/storage)
+- [Storage](../architecture#storage)
 - [Peer-to-peer networking](https://libp2p.io)
-- [Consensus capabilities](/v3/advanced/consensus)
-- Data handling capabilities for external or ["extrinsic"](/v3/concepts/extrinsics) information
-- A [Runtime](/v3/concepts/runtime)
+- [Consensus](../consensus)
+- [Transaction handling](../transaction)
+- [Runtime](/v3/concepts/runtime) (or a "state transition function")
 
 Because of the complexity involved in building these components, most blockchain projects are forked from an existing blockchain project.
 For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namecoin, and Bitcoin Cash. Similarly, the Ethereum repository was forked to create Quorum, POA Network, KodakCoin, and Musicoin.

@@ -20,9 +20,7 @@ To install and compile the the `substrate-archive-cli` program:
 1. Clone the `substrate-archive` directory using:
 `git clone https://github.com/paritytech/substrate-archive.git`
 
-1. Set up the PostgreSQL database
-??
-`sudo -u postgres psql -U postgres -d postgres -c "ALTER USER postgres WITH PASSWORD '123';"`
+1. Set up the PostgreSQL database by running `docker-compose up -d` to start postgres and pgadmin.
 
 1. Start your Substrate node, with `pruning` set to archive. For example: 
 `./target/release/node-template --pruning=archive`
@@ -30,16 +28,16 @@ To install and compile the the `substrate-archive-cli` program:
 1. Look at the current DBs:
     `psql -U postgres -hlocalhost -p6432`
 
-1. Create a db (drop old dbs)
-    `CREATE DATABASE`
+1. Run `DATABASE_URL=postgres://postgres:123@localhost:6432/local_chain_db sqlx` database create in `substrate-archive/src` to create the database. 
 
-1. Set `CHAIN_DATA_DB="full_path"`
+1. Set `CHAIN_DATA_DB="<your_path>"`.
 
-1. Set up your `Archive.conf` file:
-- make sure to set your base bath to primary DB
-- tell it where the rocksdb is. State using CHAIN_DATA_DB
-- secondary DB is an optimization
-- postgres url (set to var if in prod)
+1. Set up your `archive.conf` file:
+
+    - make sure to set your base bath to primary DB
+    - tell it where the rocksdb is. State using CHAIN_DATA_DB
+    - secondary DB is an optimization
+    - postgres url (set to var if in prod)
 
 1. (Optional) setup up logging and debugging.
 

@@ -3,6 +3,17 @@ A library to submit extrinsics to a Substrate node via RPC.
 
 Rough notes [WIP]:
 
+
+Key features:
+- compile time encoding / decoding
+- compile time for very specific node endpoints (Like metadata your targeting)
+- more dynamic way of interacting with metadata 
+
+Use cases:
+- ui's that are static
+- for a pallet or serveral palelts that that don't change
+- but for a front-end that need to be more generic, polkadotjs lib is better. Like for different chains.
+
 - What does subxt do?
     - Download the metadata of a substrate node using subxt-cli
     - Generates runtime API from the downloaded metadata 

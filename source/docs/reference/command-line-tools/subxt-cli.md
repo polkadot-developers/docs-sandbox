@@ -62,7 +62,7 @@ To display usage information for the `subxt metadata` command, run the following
 
 ## codegen
 
-Use the `subxt codegen` command to generate a the API for some target Substrate node.
+Use the `subxt codegen` command to generate an interface for some target Substrate node.
 
 This could be useful for debugging or modifying a node's API to meet certain hardware constraints.
 

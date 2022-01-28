@@ -2,7 +2,7 @@
 
 A CLI utility to generate the metadata and API from a running Substrate node.
 This tool was originally designed for the [`subxt` library](./06-build/libraries#subxt) to build the runtime API from the metadata of a target node. 
-It can be used as a standalone tool to download the metadata or generate the API for the runtime of any node. 
+It can be used as a standalone tool to download the metadata or generate the API for the runtime of any node using a metadata version 14 or later. 
 
 ## Installation 
 
@@ -20,7 +20,8 @@ The basic syntax for running `subxt-cli` commands is:
 
 `subxt <SUBCOMMAND>`
 
-In order to use the commands exposed by `subxt`, you must either be running a node locally or you must specify the chain you're targeting.
+In order to use the commands exposed by `subxt`, you must either be running a node locally or specify the chain you're targeting.
+If the metadata is already provided, it is possible to use the `codegen` subcommand without running a node.
 
 ### Flags
 
@@ -132,3 +133,7 @@ To save the metadata to a file from a local node in bytes:
 To save the metadata from the Rococo network to a JSON file:
 
 `subxt metadata --url https://rococo-rpc.polkadot.io:443 > metadata.json`
+
+To query type `125` from the array of types in the metadata and output in JSON: 
+
+`subxt metadata --format json | jq '.[1].V14.types.types | .[125]'`

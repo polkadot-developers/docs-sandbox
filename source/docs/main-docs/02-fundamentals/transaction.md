@@ -2,20 +2,22 @@ Transactions in Substrate can be considered as any piece of data to be included 
 They can be one of 3 distinct types, all of which fall under a broader category called  "extrinsics"-i.e. any information that originates from _outside_ a runtime.
 These are:
 
-1. **Signed transactions**: must contain the signature of an account sending an inbound request to execute some runtime call.
+* **Signed transactions**: must contain the signature of an account sending an inbound request to execute some runtime call.
   With a signed transaction, the account used to submit the request typically pays a transaction fee and must sign it using the account's private key.
-1. **Unsigned transactions**: do not identify the sender of the inbound request and do not require any signature.
+* **Unsigned transactions**: do not identify the sender of the inbound request and do not require any signature.
   With an unsigned transaction, there's no economic deterrent to prevent spam or replay attacks, so custom logic is required to protect the network from these types of transactions being misused.
-1. **Inherents**: are a special type of unsigned transaction made by block authors which carry information required to build a block such as timestamps, storage proofs and uncle blocks.
+* **Inherents**: are a special type of unsigned transaction made by block authors which carry information required to build a block such as timestamps, storage proofs and uncle blocks.
 
 ## Transaction lifecylce
 
-Understanding how transactions are formatted, validated and executed provides an important foundation on the design of the transaction types and behaviors available in Substrate.
+Understanding how signed and unsigned transactions are formatted, validated and executed provides an important foundation on the design of the extrinsic types and behaviors available in Substrate.
+Any signed or unsigned transaction that's sent to a [non-authoring node]() will just be gossiped to other nodes in the network and enter their transaction pool until it is received by an authoring node.
 
 [ maybe diagram here ? ]
-### Transactions in a block produced locally
 
-If a transaction is included in a block produced by the local node, the transaction lifecycle follows a path like this:
+### Extrinsics in a block produced locally
+
+If a signed or unsigned transaction is included in a block produced by the local node, its lifecycle follows a path like this:
 
 1. Some node listens for transactions on the network.
 1. The node receives a JSON-RPC request for a signed transaction.
@@ -27,43 +29,15 @@ If a transaction is included in a block produced by the local node, the transact
 
 Notice that transactions are not removed from the ready queue when blocks are authored, but removed _only_ on block import.
 This is due to the possibility that a recently-authored block might not make it into the canonical chain.
+Inherents don't follow the same execution path: they are included in every block without fail.
 
-### Transactions in a block received from network
+### Extrinsics in a block received from network
 
 1. The node receives notification of the new block.
 1. Other nodes also construct this block and publish it to the network.
 1. A 2/3 majority of nodes reach consensus that this block is part of the canonical chain.
 1. All other nodes on the network receive and build the block.
 1. All transactions in that block are executed and state changes are updated in runtime storage.
-
-## Transaction formats
-
-The way the format of an extrinsic is desgined in Substrate takes into account the metadata an extrinsic can expose as well as any additional information required to verify that a transaction is valid.
-In order to expose certain checks required for an extrinisic to be valid and correctly constructed, extrinsics are formatted by the runtime as either unchecked, checked or opaque. 
-
-- Unchecked: signed transactions that require some validation check before they can be accepted in the transaction pool.
-Any unchecked extrinsic contains the signature for the data being sent plus some extra data.
-- Checked: inherent extrinsics which by definition don't require signature verification. 
-Instead, they carry information on where the extrinsic comes from and some extra data.
-- Opaque: used for cases when an extrinsic hasn't yet been committed to a format but can still be decoded. 
-
-Extra data can be any additional information that would be useful to attach to a transaction or inherent.
-For example, the nonce of the transaction, or the tip for the block author.
-This information is provided by a specialized extensions that help determine the validity and ordering of extrinsics before they get included in a block.
-
-A signed transaction call could look like:
-
-```rust
-node_runtime::UncheckedExtrinsic::new_signed(
-		function.clone(),                                      // some call
-		sp_runtime::AccountId32::from(sender.public()).into(), // some sending account
-		node_runtime::Signature::Sr25519(signature.clone()),   // the account's signature
-		extra.clone(),                                         // the signed extensions 
-	)
-```
-
-Substrate defines these transaction formats generically to allow developers to implement custom ways to define valid transactions. 
-Skip to [transaction construction]() to learn more about how a transaction is constructed in a FRAME runtime.
 
 ## Validating and queuing transactions
 
@@ -75,9 +49,9 @@ Before including a transaction in a block, nodes must first determine which tran
 
 ### Validating transactions
 
-A FRAME runtime defines rules that determine the validity of any transaction type. 
+A runtime defines rules that determine the validity of any transaction type. 
 It translates this information by tagging transactions with special fields to help nodes determine whether a transaction is valid or not.
-The tag system gives nodes just enough information to know whether a transaction provides the data required by the runtime.
+This tagging system gives nodes just enough information to know whether a transaction provides the data required by the runtime.
 
 Using these runtime-defined rules, the local node's transaction pool checks that the transactions received meets specific conditions and whether it should be included in a block or not.
 
@@ -96,21 +70,20 @@ For more detailed information about validating transactions, see the [`validate_
 
 ### Adding valid transactions to a transaction queue
 
-If a transaction is identified as valid, the transaction pool moves the transaction into a transaction queue. 
-There are two transaction queues for valid transactions.
+If a transaction is identified as valid, the transaction pool moves the transaction into a queue. 
+There are two separate transaction queues for valid transactions.
 
 * The **ready queue**: contains transactions that can be included in a new pending block.
   For runtimes built with FRAME, the transactions must follow the exact order in the ready queue.
 
 * The **future queue**: contains transactions that may become valid in the future.
-  For example, a transaction may have a `nonce` that is too high for its account.
-  This transaction will wait in the future queue until the valid preceding transactions are included in the chain, after which it will be either dropped or reconsidered.
+  For example, a transaction may have a `nonce` that is too high for its account, in which case the transaction will wait in the future queue until the valid preceding transactions are included in the chain, after which it will be either dropped or reconsidered.
   
 It's possible to design a custom runtime to remove the transaction ordering requirements.
 However, a runtime without strict transaction ordering would allow full nodes to implement different strategies for propagating transactions and including them in blocks. 
 ### Invalid transactions
 
-The runtime will return an `Invalid` error when a transaction cannot be added to a block at all.
+When a transaction cannot be added to a block at all, the runtime will return an `Invalid` error 
 Transactions could be invalid for one of the following reasons:
 
 - The transaction was already included in a block (`Stale`).
@@ -134,7 +107,169 @@ Some scenarios:
 - 2 transactions from _different_ senders (with `nonce=0`): `priority` is needed to determine which transaction is more important and should be included in the block first. 
 - 2 transactions from the _same_ sender with an identical `nonce`: only one transaction can be included in the block, so only the transaction with the higher fee will be put in the transaction pool.
 
-## Extending transactions
+## Transaction formats
+
+The way the format of an extrinsic is desgined in Substrate takes into account the metadata it should expose as well as any additional information required to verify that a transaction is valid.
+This provides a means of checking the requirements for an extrinisic to be valid and correctly constructed, which is done in the runtime by formatting any extrinsic as either unchecked, checked or opaque. 
+
+- Unchecked: signed transactions that require some validation check before they can be accepted in the transaction pool.
+Any unchecked extrinsic contains the signature for the data being sent plus some extra data.
+- Checked: inherent extrinsics which by definition don't require signature verification. 
+Instead, they carry information on where the extrinsic comes from and some extra data.
+- Opaque: used for cases when an extrinsic hasn't yet been committed to a format but can still be decoded. 
+
+Extra data can be any additional information that would be useful to attach to a transaction or inherent.
+For example, the nonce of the transaction, or the tip for the block author.
+This information is provided by a [specialized extensions](#signed-extensions) that help determine the validity and ordering of extrinsics before they get included in a block.
+
+A signed transaction call could look like:
+
+```rust
+node_runtime::UncheckedExtrinsic::new_signed(
+		function.clone(),                                      // some call
+		sp_runtime::AccountId32::from(sender.public()).into(), // some sending account
+		node_runtime::Signature::Sr25519(signature.clone()),   // the account's signature
+		extra.clone(),                                         // the signed extensions 
+	)
+```
+
+## How transactions are constructed 
+
+Substrate defines its transaction formats generically to allow developers to implement custom ways to define valid transactions. 
+In a runtime built with FRAME however (assuming transaction version 4), a transaction must be constructed by submitting the following encoded data:
+
+`<signing account ID> + <signature> + <additional data>`
+
+When submitting a signed transaction, the signature is constructed by signing:
+
+- The actual call, composed of:
+  - The index of the pallet.
+  - The index of the function call in the pallet. 
+  - The address and balance of the sender. 
+  
+- Some extra information, verified by the signed extensions of the transaction:
+  - What's the era for this transaction, i.e. how long should this call last in the transaction pool before it gets discarded?
+  This can either be `Mortal` or `Immortal`.
+  - The nonce, i.e. many prior transactions have occurred from this account?
+  This helps protect against replay attacks or accidental double-submissions.
+  - The tip amount paid to the block producer to help incentive it to include this transaction in the block.
+
+Then, some additional data that's not part of what gets signed is required, which includes:
+
+  - The spec version and the transaction version. 
+  This ensures the transation is being submitted to a compatible runtime.
+  - The genesis hash. This ensures that the transaction is valid for the correct chain.
+  - The block hash. This corresponds to the hash of the checkpoint block, which enables the signature to verify that the transaction doesn't execute on the wrong fork, by checking against the block number provided by the era information.
+
+The SCALE encoded data is then signed (i.e. (`call`, `extra`, `additional`)) and the signature, extra data and call data is attached in the correct order and SCALE encoded, ready to send off to a node that will verify the signed payload.
+In order to minimize the size of the signed transaction if a payload is longer than 256 bytes, it gets hashed and the hashed value is what gets signed and serialized.
+
+This process can be broken down into the following steps:
+
+1. Construct the unsigned payload.
+1. Create a signing payload.
+1. Sign the payload.
+1. Serialize the signed payload.
+1. Submit the serialized transaction.
+
+The final result has the following bit-fields:
+
+`0x + [ 1 ] + [ 2 ] + [ 3 ] + [ 4 ] + [ 5 ]`
+
+where:
+
+- `[1]` is a `u8` containing the compact encoded length of the encoded data.
+- `[2]` is a `u8` containing 1 byte for the transaction version ID.
+- `[3]` is a `u8` containing 1 bit to indicate whether the transacton is signed.
+- `[4]` is a `[u8; 32]` containing the signature, if signed. If unsigned this is just a `0; u8`.
+- `[5]` is a `u128` containing the encoded call data.
+
+The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
+For instance, an application will know that a `(u8, u8, u8, [u8; 32], u128)` type will encode to the correct bytes to represent the call it wants to make. 
+If a call doesn't need to be signed, the application knows to pre-prend a `None` signature to it (`0; u8`). 
+
+<!-- TODO: How are inherents constructed? -->
+
+**Example:**
+
+Balances transfer from Bob to Dave: Bob sends `42` units to Dave.
+
+[ TODO: polkadotjs apps screenshot ]
+
+* Encoded call data: `0x050000306721211d5404bd9da88e0204360a1a9ab8b87c66c1bc2fcdd37f3c2222cc20a8`
+* Encoded call hash: `0x52f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
+* Signed call: `0xf4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce88`
+* Compact endcoded length of encoded data: `4a`
+
+* Resulting extrinsic: `0x4a100f4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce8852f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
+
+Submitting the resulting constructed extrinsic via RPC returns:
+
+```json
+{
+  dispatchInfo: {
+    weight: 195,952,000
+    class: Normal
+    paysFee: Yes
+  }
+  events: [
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: Withdraw
+        section: balances
+        index: 0x0508
+        data: [
+          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+          125,000,141
+        ]
+      }
+      topics: []
+    }
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: Transfer
+        section: balances
+        index: 0x0502
+        data: [
+          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+          5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy
+          42
+        ]
+      }
+      topics: []
+    }
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: ExtrinsicSuccess
+        section: system
+        index: 0x0000
+        data: [
+          {
+            weight: 195,952,000
+            class: Normal
+            paysFee: Yes
+          }
+        ]
+      }
+      topics: []
+    }
+  ]
+  status: {
+    InBlock: 0x6543a4d4b44f5acc9ad111f0218296f1da5a5493599431ce9eecb55ed0a4d3fb
+  }
+}
+```
+
+## Signed extensions
 
 Substrate provides the concept of **signed extensions** to extend an extrinsic with additional data, provided by the [`SignedExtension`](/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html) trait.
 
@@ -168,6 +303,14 @@ The priority depends on the dispatch class and the amount of tip-per-weight or t
 Transactions without a tip use a minimal tip value of `1` for priority calculations to make sure that not all transactions end up having a priority of `0`. 
 The consequence of this is that "smaller" transactions are preferred over "larger" ones.
 
+## Executing transactions and producing blocks 
+
+--> which explains how blocks are build and executed
+
+BlockBuilder_build_inherents is first passed to include inherents -> then other extrinsics go to to pool and then -> BlockBuilder_append_extrinsic adds both types of extrinsics to build the block.
+
+
+
 <!-- TODO: consider moving elsewhere to more procedural / practical material.
 
 ## Transaction encoding 
@@ -194,3 +337,5 @@ See: https://github.com/substrate-developer-hub/substrate-developer-hub.github.i
 - Learn more about how transactions are encoded
 - Learn how to configure transaction fees for your chain
 - Learn about how block execution works
+- Submit offline transactions using `tx-wrapper` 
+- Submit transactions using `sidecar`

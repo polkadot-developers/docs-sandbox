@@ -304,32 +304,63 @@ Transactions without a tip use a minimal tip value of `1` for priority calculati
 The consequence of this is that "smaller" transactions are preferred over "larger" ones.
 
 ## Executing transactions and producing blocks 
+<!-- 
+TODO: 
+which explains how blocks are build and executed
 
---> which explains how blocks are build and executed
+`BlockBuilder_build_inherents` is first passed to include inherents -> then other extrinsics go to to pool and then -> `BlockBuilder_append_extrinsic` adds both types of extrinsics to build the block. -->
 
-BlockBuilder_build_inherents is first passed to include inherents -> then other extrinsics go to to pool and then -> BlockBuilder_append_extrinsic adds both types of extrinsics to build the block.
+After valid transactions are placed in the transaction queue, a separate **executive module** orchestrates how transactions are executed to produce a block.
+The executive module is not a typical pallet that provides specific functionality to the runtime.
+Instead, the executive module acts as the orchestration layer that calls functions in the runtime modules and handles the execution of those functions in the proper order as defined in the runtime business logic.
 
+The executive module provides functions to:
 
+* Check transaction validity.
+* Initialize a block.
+* Apply extrinsics.
+* Execute a block.
+* Finalize a block.
+* Start an off-chain worker.
 
-<!-- TODO: consider moving elsewhere to more procedural / practical material.
+As a runtime developer, it's important to understand how the executive module interacts with the system pallet and other pallets you use to compose the business logic for your blockchain.
+In particular, you should be familiar with how the executive module performs the following operations:
 
-## Transaction encoding 
+* Initialize a block
+* Execute the inherent and transaction extrinsics in a block
+* Finalize a block
 
-Any type of exstrinsic uses SCALE codec to encode and decode transactions.
+### Initialize a block
 
-Here's an example of a decoded transaction:
+To initialize a block, the executive module calls the `on_initialize` function in the System pallet and all other runtime pallets to execute any business logic defined to take
+place before transactions are executed. 
+The System pallet `on_initialize` function is always executed first.
+The remaining pallets are called in the order they are defined in the `construct_runtime!` macro.
 
-[ TODO ]
+After all of the pallet `on_initialize` functions have been executed, the executive module checks the parent hash in the block header and the extrinsics trie root to verify that the information is correct.
 
-Notice how it's constructed:
-- `Call`: 
-- `Address`: 
-- `Extra`: this shows all the signed extensions for this transaction.
-- `Additional Signed`: this contains the spec version
-- `Raw Payload`:  
+### Executing extrinsics
 
-See: https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/pull/674/files
- -->
+After the block has been initialized, each valid extrinsic is executed in order of transaction priority. 
+Extrinsics must not cause a panic in the runtime logic or the system would be vulnerable to attacks where users could trigger computational execution without any punishment.
+
+When an extrinsic executes, the state is not cached prior to execution.
+Instead, state changes are written directly to storage during execution. 
+If an extrinsic were to fail mid-execution, any state changes that took place before the failure would not be reverted, leaving the block in an unrecoverable state.
+Before committing any state changes to storage, the runtime logic should perform all necessary checks to ensure the extrinsic will succeed. 
+
+Note that [events](/v3/runtime/events-and-errors) are also written to storage. 
+Therefore, the runtime logic should not emit an event before performing the complementary actions. 
+If an extrinsic fails after an event is emitted, the event is not be reverted.
+
+### Finalizing a block
+
+After all queued extrinsics have been executed, the executive module calls into each pallet's `on_idle` and `on_finalize` functions to perform any final business logic that should take place at the end of the block. 
+The modules are again executed in the order that they are defined in the `construct_runtime!` macro, but in this case, the `on_finalize` function in the system pallet is executed last.
+
+After all of the `on_finalize` functions have been executed, the executive modulate checks that the digest and storage root in the block header match what was calculated when the block was initialized.
+
+The `on_idle` function also passes through the remaining weight of the block to allow for execution based on the usage of the blockchain.
 
 ## Learn more
 

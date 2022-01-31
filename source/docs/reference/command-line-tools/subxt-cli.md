@@ -1,8 +1,8 @@
 # subxt-cli
 
-A CLI utility to generate the metadata and API from a running Substrate node.
+`subx-cli` is a CLI utility to generate a client API from the metadata of a Substrate node.
 This tool was originally designed for the [`subxt` library](./06-build/libraries#subxt) to build the runtime API from the metadata of a target node. 
-It can be used as a standalone tool to download the metadata or generate the API for the runtime of any node. 
+It can be used as a standalone tool to download the metadata or generate the API for the runtime of any node that uses metadata V14. 
 
 ## Installation 
 

@@ -2,21 +2,21 @@ Section: Build
 Sub-section: Front-end development
 Type: reference 
 
-Front-end development for Substrate runtimes includes user-facing interfaces such as browser applications, desktop applications or applications for low performance hardware environments.
-Different libraries exist to build these types of interfaces, depending on your needs.
+Application development against Substrate runtimes includes user-facing interfaces such as browser applications, desktop applications or applications for low performance hardware environments such as hardware wallets.
+Different libraries exist to build these types of applications.
 This article aims to describe:
 
 - Types of application providers.
 - How extrinsics are sent to and from an application.
-- How a runtime exposes metadata that can dynamically be consumed by a front-end application for any chain.
+- How a Substrate node exposes metadata that can be consumed by an application for any chain.
 - The process of querying metadata.
-- Existing libraries for writing front-end runtime interfaces. 
+- Existing libraries for writing user facing interfaces. 
 
 ## Transport providers
 
 Any client or front-end application requires specifying a provider to answer JSON-RPC requests made to interact with a chain.
 This could be for connecting to an existing node such as `wss://rpc.polkadot.io` or connecting to a local port such as `ws://127.0.0.1:9944` when running a chain locally for example. 
-Depending on the client implementation, multi-transport support is available including Websocket, HTTP and Ipc.
+Depending on the client implementation, both Websocket and HTTP transport options are available.
 Websocket connections are a more secure alternative to HTTP and are better supported among current front-end libraries.
 Yet, an alternative way to specify a provider is by using `Smoldot`, which allows applications to spawn their own light clients and connect directly there (still in an experimental phase).
 
@@ -26,7 +26,7 @@ However, the APIs for these providers are language-agnostic, making it possible 
 ## Sending and receiving transactions
 
 Specifying an endpoint to connect to will establish a connection to the specified node.
-In order to actually send and receive transactions to and from the node, all front-end APIs must implement a SCALE codec library to encode/decode RPC calls.
+In order to actually send and receive transactions to and from the node, all front-end APIs must implement a SCALE codec library to encode/decode the RPC payloads.
 
 For each pallet, the metadata provides information about the storage items, transactions, events, errors and constants that are exposed by that pallet. 
 Substrate automatically generates this metadata for you and makes it available through RPC calls.

@@ -2,9 +2,9 @@ Section: Build
 Sub-section: Front-end development
 Type: reference 
 
-Front-end development for Substrate runtimes encompasses building user-facing interfaces such as browser and desktop applications, as well as client applications for specific hardware requirements. 
-Different libraries exist to build these types of interfaces, depending on your needs.
-This article explains the process of querying a Substrate node and using the metadata it exposes in order to provide background knowledge to help inform these decisions, or to create application specific libraries.
+Application development against Substrate runtimes encompasses building user-facing interfaces such as browser and desktop applications, as well as client applications for specific hardware requirements, such as hardware wallets.
+Different libraries exist to build these types of applications, depending on your needs.
+This article explains the process of querying a Substrate node and using the metadata it exposes in order to provide background knowledge to help inform these decisions, or to help developers create application specific libraries.
 
 > NOTE: Although it's technically possible to use any protocol to communicate with a Substrate node, this article assumes that the chosen interface is via a node's RPC interface using JSON-RPC.
 
@@ -16,7 +16,7 @@ The current version (V14) differs significantly from its predecessors as it allo
 This means that if a runtime containts a pallet with some custom type, the type information will be included as part of the metadata returned.
 This rich metadata system is made possible by both the [`frame-metadata`](https://docs.substrate.io/rustdocs/latest/frame_metadata/index.html) and [`scale-info`](https://docs.rs/scale-info/latest/scale_info/) crates which all Substrate runtimes using the latest system have.
 
-In order to actually send and receive transactions to and from the node, front-end APIs must implement a SCALE codec library to encode and decode RPC calls.
+In order to actually send and receive transactions to and from the node, front-end APIs must implement a [SCALE codec library](./libraries#SCALE-Codec) to encode and decode RPC payloads.
 
 The general flow of how metadata is generated, exposed and used to make and receive calls from the runtime:
 

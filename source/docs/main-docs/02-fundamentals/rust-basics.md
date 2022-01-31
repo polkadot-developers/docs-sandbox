@@ -29,7 +29,8 @@ Some common patterns for using `cargo` when developing with Substrate include:
 - Using [`cargo tree`](https://doc.rust-lang.org/cargo/commands/cargo-tree.html) for resolving dependency issues.
 - Using [`cargo remote`](https://crates.io/crates/cargo-remote) to speed up compile times by using a remote machine.
 
-You might have noticed that `cargo remote` and `cargo edit` are not built-in to cargo, and you need to `cargo install` them manually. The complete list of such cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
+You might have noticed that `cargo remote` and `cargo edit` are not built-in to cargo, and you need to `cargo install` them manually. 
+The complete list of such cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
 
 [**Crates.io**](https://crates.io/) is Rust's community managed package registry. 
 Any Rust developer can publish their crates there for others to use in their projects. 
@@ -62,7 +63,7 @@ Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utx
 A common use of abstractions in Susbtrate is the use of the [`Config` trait from `frame_system`](https://docs.substrate.io/rustdocs/latest/frame_system/pallet/trait.Config.html) when developing [pallets](./link-todo).
 This is the trait responsible for declaring the types that are commonly used in developing Substrate runtimes.
 With it there is no need to duplicate code that declares a type that's used in several places, such as `AccountId`.
-Instead, any pallet -- which is coupled to `frame_system::Config` by definition -- can refer to an `AccountId` type by using the generic `T`:
+Instead, any pallet-which is coupled to `frame_system::Config` by definition-can refer to an `AccountId` type by using the generic `T`:
 
 ```rust
 T::AccountId;

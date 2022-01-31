@@ -7,7 +7,7 @@ This article goes over the different libraries available for building blockchain
 
 ## Core libraries
 
-At a high level, Substrate consists of libraries to build: a client, a runtime and the communication layer between the two. 
+At a high level, Substrate's core libraries consists of libraries to build: clients, runtimes and the communication layer between the two. 
 
 
 
@@ -25,7 +25,7 @@ At a high level, Substrate consists of libraries to build: a client, a runtime a
                                 │     │     │   Runtime  │
                                 └─────┴─────┴────────────┘
 
-> _NOTE: Diagram is a rough sketch. Each part is not meant to be interpreted as nested, rather that "primitives" enable communication between the Clients and Runtimes. Need to annotate diagram with below:_
+> _TODO: Diagram is a rough sketch. Each part is not meant to be interpreted as nested, rather that "primitives" enable communication between the Clients and Runtimes. Need to annotate diagram with below:_
 
 > - **Client**: Libraries that enable the client and networking layer, including consensus and block execution. 
 > - **Primitives**: Libraries responsible for communicating between the client and the runtime, creating the transaction pool and building blocks for the block executor.
@@ -45,15 +45,18 @@ For example, [`frame_support`](https://docs.substrate.io/rustdocs/latest/frame_s
 - `pallet_*`: a single FRAME module, of which exists an [existing collection](/frame-pallets) created for Polkadot and Kusama. 
 Other pallet libraries exist such as the [Open Runtime Module Library (ORML)](https://github.com/open-web3-stack/open-runtime-module-library).
 
+Although it is possible to build an alternative to [FRAME](./link-to-frame) using the primitives exposed by Substrate's core libraries, there has not yet been any significant community efforts to do so yet and FRAME remains the easiest and most reliable way to compose Substrate runtimes.
+
 ## SCALE codec
 
 SCALE (Simple Concatenated Aggregate Little-Endian) Codec is a lightweight, efficient, binary serialization and deserialization [codec](https://en.wikipedia.org/wiki/Codec).
+This is key to how runtimes and clients can communicate to eachother.
 
-It is designed for high-performance, copy-free encoding and decoding of data in resource-constrained execution contexts, like the [Substrate runtime](/v3/concepts/runtime). 
+It is designed for high-performance, copy-free encoding and decoding of data in resource-constrained execution contexts, like the [Substrate Wasm runtime](/v3/concepts/runtime). 
 It is not self-describing in any way and assumes the decoding context has all type knowledge about the encoded data.
+Front-end libraries maintained by Parity use the [`parity-scale-codec`](https://github.com/paritytech/parity-scale-codec) crate (a Rust implementation of the SCALE Codec) to encode and decode interactions between RPCs and the runtime.
 
-Substrate uses the [`parity-scale-codec`](https://github.com/paritytech/parity-scale-codec), a Rust implementation of the SCALE Codec. 
-This library and the SCALE codec are advantageous for Substrate and blockchain systems because:
+SCALE codec is advantageous for Substrate and blockchain systems because:
 
 - It is lightweight relative to generic serialization frameworks like [serde](https://serde.rs/), which add significant boilerplate that can bloat the size of the binary.
 - It does not use Rust `libstd` making it compatible with `no_std` environments that compile to Wasm, such as the Substrate runtime.
@@ -94,29 +97,28 @@ Footnotes:
 
 [^1]: Compact/general integers are encoded with the two least significant bits denoting the mode:
 
-    - `0b00`: single-byte mode; upper six bits are the LE encoding of the value (valid only for values
-    of 0-63).
-    - `0b01`: two-byte mode: upper six bits and the following byte is the LE encoding of the value
-    (valid only for values `64-(2**14-1)`).
-    - `0b10`: four-byte mode: upper six bits and the following three bytes are the LE encoding of the
-    value (valid only for values `(2**14)-(2**30-1)`).
-    - `0b11`: Big-integer mode: The upper six bits are the number of bytes following, plus four. The
-    value is contained, LE encoded, in the bytes following. The final (most significant) byte must be
-    non-zero. Valid only for values `(2**30)-(2**536-1)`.
+- `0b00`: single-byte mode; upper six bits are the LE encoding of the value (valid only for values
+of 0-63).
+- `0b01`: two-byte mode: upper six bits and the following byte is the LE encoding of the value
+(valid only for values `64-(2**14-1)`).
+- `0b10`: four-byte mode: upper six bits and the following three bytes are the LE encoding of the
+value (valid only for values `(2**14)-(2**30-1)`).
+- `0b11`: Big-integer mode: The upper six bits are the number of bytes following, plus four. The
+value is contained, LE encoded, in the bytes following. The final (most significant) byte must be
+non-zero. Valid only for values `(2**30)-(2**536-1)`.
 
 [^2]: Results are encoded as:
 
-    - `0x00` if the operation was successful, followed by the encoded value.
-    - `0x01` if the operation was unsuccessful, followed by the encoded error.
+- `0x00` if the operation was successful, followed by the encoded value.
+- `0x01` if the operation was unsuccessful, followed by the encoded error.
 
 [^3]: Options are encoded as:
 
-    - `0x00` if it is `None` ("empty" or "null").
-    - `0x01` followed by the encoded value if it is `Some`.
+- `0x00` if it is `None` ("empty" or "null").
+- `0x01` followed by the encoded value if it is `Some`.
+- Exception: in the case that the type is a boolean, then it is always one byte.
 
-    As an exception, in the case that the type is a boolean, then it is always one byte.
-
-The Parity SCALE Codec has been implemented in many other languages, including:
+SCALE Codec has been implemented in other languages, including:
 
 - Python: [`polkascan/py-scale-codec`](https://github.com/polkascan/py-scale-codec)
 - Golang: [`itering/scale.go`](https://github.com/itering/scale.go)
@@ -128,42 +130,28 @@ The Parity SCALE Codec has been implemented in many other languages, including:
 - Java: [`emeraldpay/polkaj`](https://github.com/emeraldpay/polkaj)
 - Ruby: [`itering/scale.rb`](https://github.com/itering/scale.rb)
 
-## Other libraries
+## Front-end libraries
 
-There are a number of language-specific client libraries that can be used to interact with the [Substrate framework](/link-to-architecture-page). 
-In general, the capabilities that these libraries expose are implemented on top of the Substrate remote procedure call (RPC) API.
-Although it is possible to build an alternative to [FRAME](./link-to-frame) using Substrate primitives, there has not yet been any significant community efforts to do so yet. 
+There are a number of client libraries that can be used to interact with [Substrate nodes](/link-to-architecture-page) to build application specific clients or front-ends.
+In general, the capabilities that these libraries expose are implemented on top of [Substrate remote procedure call (RPC) APIs](./frontend#RPC-APIs).
 
-### Rust
+### Parity maintained
 
-Parity maintains [`subxt`](https://github.com/paritytech/subxt), which is a Rust library specifically designed for submitting extrinsics to Substrate blockchains. 
+| Name | Description  | Language  | Use case  |   
+|---|---|---|---|
+| [Polkadot JS API](https://polkadot.js.org/docs/api) | A Javascript library for interacting with a Substrate chain. | Javascript | Applications that need to dynamically adapt to changes in a node, such as for block explorers or chain-agnostic interfaces. 
+| [Polkadot JS extension](https://polkadot.js.org/docs/extension/) | An API for interacting with a browser extension build with the Polkadot JS API. | Javascript | Browser extensions.
+| [`Substrate Connect`](https://paritytech.github.io/substrate-connect/) | A Javascript library for developers to build applications that act as their own light client for their target chain. It also provides a browser extension designed to connect to multiple chains from a single application (web or desktop browser).
+| [`subxt`](https://github.com/paritytech/subxt/) | Short for "submit extrinsics", `subxt` is a library that generates a statically typed Rust interface to interact with a node's RPC APIs based on a target chain's metadata. | Rust | Building lower level applications, such as non-browser graphic user interfaces, chain-specific CLIs or user facing applications that require type-safe communication between the node and the generated interface, preventing users from constructing transactions with bad inputs or submitting calls that don't exist. 
+| [`txwrapper`](https://github.com/paritytech/txwrapper) | A Javascript library for offline generation of Substrate transactions. | Javascript | Write scripts to generate signed transactions to a node, useful for testing and decoding transactions.
 
-The [the Substrate API Client](https://github.com/scs/substrate-api-client) is another Substrate client library written in Rust that is maintained by Supercomputing Systems; its API is more general-purpose than `subxt`.
-### JavaScript
+### Community maintained
 
-The Polkadot JS team maintains a rich set of tools for interacting with Substrate-based blockchains.
-Refer to [the main Polkadot JS page](../polkadot-js) to learn more about that suite of tools.
-
-Parity also maintains [`txwrapper`](https://github.com/paritytech/txwrapper), which is a Javascript library for offline generation of Substrate transactions.
-
-### Go
-
-[The Go Substrate RPC Client](https://github.com/centrifuge/go-substrate-rpc-client/) (GSRPC), is maintained by [Centrifuge](https://centrifuge.io/).
-
-### C#
-
-[Polkadot API DotNet](https://github.com/usetech-llc/polkadot_api_dotnet) is a Substrate RPC client library for .NET developers. 
-It is maintained by [Usetech](https://usetech.com/blockchain/).
-
-[SubstrateNetApi](https://github.com/dotmog/SubstrateNetApi) is a .NET Standard API ([nuget](https://www.nuget.org/packages/SubstrateNetApi)) allowing full Substrate integration in Unity3D for gaming development, [starter template project](https://github.com/darkfriend77/Unity3DExample). 
-It is maintained by [DOTMog Team](https://www.dotmog.com/).
-
-### C++
-
-[Usetech](https://usetech.com/blockchain/) also maintains [Polkadot API CPP](https://github.com/usetech-llc/polkadot_api_cpp), which is a C++ library for interacting with the Substrate RPC.
-
-### Python
-
-[py-substrate-interface](https://github.com/polkascan/py-substrate-interface) is a Python library for interacting with the Substrate RPC. 
-It supports a wide range of capabilities and powers the [Polkascan multi-chain block explorer](https://polkascan.io/). 
-This library is maintained by [Polkascan Foundation](https://polkascan.org/).
+| Name | Description  | Maintainer |
+|---|---|---|
+| [Go Substrate RPC Client](https://github.com/centrifuge/go-substrate-rpc-client/) | A Go library that provides APIs and types around Polkadot and any Substrate-based chain RPC calls. | [Centrifuge](https://centrifuge.io/) 
+| [Polkadot API DotNet](https://github.com/usetech-llc/polkadot_api_dotnet) | A Substrate RPC client library for .NET developers. |[Usetech](https://usetech.com/blockchain/)
+| [Polkadot API CPP](https://github.com/usetech-llc/polkadot_api_cpp) | A C++ library for interacting with the Substrate RPC. | [Usetech](https://usetech.com/blockchain/)
+| [Python Substrate Interface](https://github.com/polkascan/py-substrate-interface) | A Python library for interacting with the Substrate RPC interface. It supports a wide range of capabilities and powers the [Polkascan multi-chain block explorer](https://polkascan.io/). | [Polkascan Foundation](https://polkascan.org/)
+| [Substrate API Client](https://github.com/scs/substrate-api-client) | A general-purpose Substrate client Rust library. | [Supercomputing Systems](https://www.scs.ch/en/) 
+| [SubstrateNetApi](https://github.com/dotmog/SubstrateNetApi) | A .NET Standard API ([nuget](https://www.nuget.org/packages/SubstrateNetApi)) allowing full Substrate integration in Unity3D for game development. | [DOTMog](https://www.dotmog.com/)

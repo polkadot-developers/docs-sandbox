@@ -10,7 +10,7 @@ This article explains the process of querying a Substrate node and using the met
 
 ## Metadata system 
 
-Substrate runtimes include a sophisticated system that helps clients generate the metadata of a node by using a single RPC call.
+Substrate nodes provide an RPC call, `state_getMetadata`, that returns a complete description of all the types in the current runtime. Client applications use the metadata to interact with the node, to parse responses and format message payloads sent to the node.
 This includes information about a pallet's storage items, transactions, events, errors and constants.
 The current version (V14) differs significantly from its predecessors as it allows clients to generate information of the types used in the runtime.
 This means that if a runtime containts a pallet with some custom type, the type information will be included as part of the metadata returned.

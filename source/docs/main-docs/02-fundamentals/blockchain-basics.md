@@ -71,6 +71,14 @@ Most blockchains also enable network participants to submit and vote on proposal
 By submitting and voting on proposals—referenda—the blockchain community can determine how the blockchain evolves in an essentially democratic process.
 To participate in governance, however, most blockchains require users to maintain a significant stake of token in an account.
 
+## Applications running on a blockchain
+
+Applications that run on a blockchain—often referred to as decentralized applications or dApps—are typically written as **smart contracts**. 
+A smart contract is a program that executes transactions on behalf of users under specific conditions.
+Developers typically write smart contracts to run on a blockchain to ensure that the outcome of programmatically-executed transactions is recorded and can never be changed. 
+Traditionally, smart contracts don't access the blockchain directly and, instead, run using fixed rules and restrictions—for example, the consensus model, storage limitations, and fee structure—that are defined by the underlying blockchain.
+Smart contract developers often accept these limitations as a tradeoff that enables faster development time with fewer design decision.
+
 ## Where to go next
 
 All blockchains share some common characteristics. 

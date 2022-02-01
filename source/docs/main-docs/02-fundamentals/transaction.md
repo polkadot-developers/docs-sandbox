@@ -330,6 +330,40 @@ In particular, you should be familiar with how the executive module performs the
 * Execute the inherent and transaction extrinsics in a block
 * Finalize a block
 
+Here's a test code snippet for a building and executing a valid block:
+
+```rust
+	fn test_build_and_execute_block_success() {
+    // Create some inherents.
+		let xt1 = TestXt::new(Call::CustomPallet(custom_pallet::Call::inherent_call {}), None);
+    // Create some signed transaction.
+		let xt2 = TestXt::new(call_transfer(33, 0), sign_extra(1, 0, 0));
+
+		let header = new_test_ext(1).execute_with(|| {
+			// Build the block header.
+			Executive::initialize_block(&Header::new(
+				1,
+				H256::default(),
+				H256::default(),
+				[69u8; 32].into(),
+				Digest::default(),
+			));
+
+      // Apply all extrinsics.
+			Executive::apply_extrinsic(xt1.clone()).unwrap().unwrap();
+			Executive::apply_extrinsic(xt2.clone()).unwrap().unwrap();
+
+      // Finalize the block.
+			Executive::finalize_block()
+		});
+
+    // Execute the block
+		new_test_ext(1).execute_with(|| {
+			Executive::execute_block(Block::new(header, vec![xt1, xt2]));
+		});
+	}
+```
+
 ### Initialize a block
 
 To initialize a block, the executive module calls the `on_initialize` function in the System pallet and all other runtime pallets to execute any business logic defined to take

@@ -278,3 +278,5 @@ Learn how to integrate Substrate Connect in your applications [here](https://par
 ## Learn more
 - Learn how a transaction is formatted in Susbtrate 
 - Launch a front-end app using Substrate's front-end template 
+- Use a [QR code metadata generation tool](https://github.com/paritytech/metadata-portal) for offline signing devices
+- Decode a Substrate node with backwards-compatible metadata with [desub](https://github.com/paritytech/desub)

@@ -26,7 +26,7 @@ Similarly, the Ethereum repository was forked to create Quorum, POA Network, Kod
 
 ![Blockchain forks](../../img/tutorials/01-create-your-first-chain/forks.png)
 
-However, the existing blockchain platforms were not designed to allow for modification or customization.
+However, most blockchain platforms have not been designed to allow for modification or customization.
 As a result, building a new blockchain by forking has serious limitations.
 Before you explore how Substrate alleviates many of the limitations associated with other blockchain projects, it's important to understand some of the common properties that all blockchains share.
 By learning about how most blockchains operate, you'll be better prepared to see how Substrate provides alternatives and capabilities for building a blockchain best suited to your needs.  

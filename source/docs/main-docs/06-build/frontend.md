@@ -203,12 +203,13 @@ Substrate comes with the following APIs to interact with a node:
 
 ## Connecting to a node
 
-Querying a Substrate node can either be done by using a Hypertext Transfer Protocol (HTTP) or WebSocket (WS) based JSON-RPC client, however most applications would use a WS protocol.
-The main advantage of WS is that a single connection can be reused for many messages to and from a node, whereas a typical HTTP connection allows only for a single message from, and then response to the client at a time.
+Querying a Substrate node can either be done by using a Hypertext Transfer Protocol (HTTP) or WebSocket (WS) based JSON-RPC client.
+The main advantage of WS (used in most applications) is that a single connection can be reused for many messages to and from a node, whereas a typical HTTP connection allows only for a single message from, and then response to the client at a time.
 For this reason, if you want to subscribe to some RPC endpoint that could lead to multiple messages being returned to the client, you must use a websocket connection and not an HTTP one.
 Connecting via HTTP is commonly used for fetching data in off-chain workers-learn more about that [here]().
 
-An alternative (and still experimental) way to connect to a JSON-RPC  is by using `Smoldot`, which allows applications to spawn their own light clients and connect directly to the exposed JSON-RPC end-point.
+An alternative (and still experimental) way to connect to a Substrate node is by using `Substrate Connect`, which allows applications to spawn their own light clients and connect directly to the exposed JSON-RPC end-point.
+These applications would rely on in-browser local memory to establish a connection with the light client. 
 
 ## Start building 
 
@@ -217,7 +218,7 @@ Although you could use the [JSON-RPC](https://github.com/paritytech/jsonrpc) and
 - [subxt](./libraries#subxt): provides a way to create an interface for static front-ends built for specific chains. 
 - [Polkadot JS API](./libraries#polkadot-js): provides a library to build dynamic interfaces for any Substrate built blockchain.
 - [Substrate Connect](./libraries#substrate-connect): provides a library and a browser extension to build applications that connect directly with an in-browser light client created for its target chain. 
-As a library that uses the Polkadot JS API, Connect is designed for applications that need to connect to multiple chains, providing end users with a single experience when interacting with multiple chains for the same app.
+As a library that uses the Polkadot JS API, Connect is useful for applications that need to connect to multiple chains, providing end users with a single experience when interacting with multiple chains for the same app.
 
 <!-- TODO: Refactor content below: not sure where it should go. This is more how to use it / how it works.
 

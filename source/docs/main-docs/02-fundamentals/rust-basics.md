@@ -25,11 +25,12 @@ Some common patterns for using `cargo` when developing with Substrate include:
 
 - Generating source code documentation using [`cargo doc`](https://doc.rust-lang.org/cargo/commands/cargo-doc.html) for any pallet or runtime.
 - Running unit tests using [`cargo test`](https://doc.rust-lang.org/cargo/commands/cargo-test.html) for any runtime logic. 
-- Managing project dependencies using [`cargo update`](https://doc.rust-lang.org/cargo/commands/cargo-update.html) and `cargo edit`.
+- Managing project dependencies using [`cargo update`](https://doc.rust-lang.org/cargo/commands/cargo-update.html) and [`cargo edit`](https://crates.io/crates/cargo-edit).
 - Using [`cargo tree`](https://doc.rust-lang.org/cargo/commands/cargo-tree.html) for resolving dependency issues.
 - Using [`cargo remote`](https://crates.io/crates/cargo-remote) to speed up compile times by using a remote machine.
 
-The complete list of cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
+You might have noticed that `cargo remote` and `cargo edit` are not built-in to cargo, and you need to `cargo install` them manually. 
+The complete list of such cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
 
 [**Crates.io**](https://crates.io/) is Rust's community managed package registry. 
 Any Rust developer can publish their crates there for others to use in their projects. 
@@ -55,14 +56,14 @@ _TODO: Make actual diagram illustrating that everything is generic and made conc
  │  Generic library |  ---> made concrete --->    │  Runtime  │
  --------------------
 Having Substrate as generic as possible leaves maximum flexibility, where generics resolve into whatever the user defines them to resolve as.
-Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utxo-on-substrate/) for a demonstration of how these paradigms make Substrate flexible and modular.
+Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utxo-on-substrate/) for a demonstration of how these paradigms make Substrate flexible and modular. <!-- TODO: That blogpost is great, but it uses Substrate macros that has been superseeded since then by derive macros. -->
 
 #### Configuration traits
 
 A common use of abstractions in Susbtrate is the use of the [`Config` trait from `frame_system`](https://docs.substrate.io/rustdocs/latest/frame_system/pallet/trait.Config.html) when developing [pallets](./link-todo).
 This is the trait responsible for declaring the types that are commonly used in developing Substrate runtimes.
 With it there is no need to duplicate code that declares a type that's used in several places, such as `AccountId`.
-Instead, any pallet-which is coupled to `frame_system::Config` by definintion-can refer to an `AccountId` type by using the generic `T`:
+Instead, any pallet-which is coupled to `frame_system::Config` by definition-can refer to an `AccountId` type by using the generic `T`:
 
 ```rust
 T::AccountId;

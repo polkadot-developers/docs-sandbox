@@ -1,45 +1,15 @@
-Transactions in Substrate can be considered as any piece of data to be included in a block.
-They can be one of 3 distinct types, all of which fall under a broader category called  "extrinsics"-i.e. any information that originates from _outside_ a runtime.
-These are:
+_This article provides details explaining how transactions are ordered, verified and then broadcasted to the network before being added to the canonical chain of blocks._
+_This is useful for parachain builders seeking to acquire mental model of the lifecycle of a transaction in Substrate, useful for understanding why transactions are constructed the way they are and how transaction pools work._
 
-* **Signed transactions**: must contain the signature of an account sending an inbound request to execute some runtime call.
-  With a signed transaction, the account used to submit the request typically pays a transaction fee and must sign it using the account's private key.
-* **Unsigned transactions**: do not identify the sender of the inbound request and do not require any signature.
-  With an unsigned transaction, there's no economic deterrent to prevent spam or replay attacks, so custom logic is required to protect the network from these types of transactions being misused.
-* **Inherents**: are a special type of unsigned transaction made by block authors which carry information required to build a block such as timestamps, storage proofs and uncle blocks.
-
-## Transaction lifecylce
-
-Understanding how signed and unsigned transactions are formatted, validated and executed provides an important foundation on the design of the extrinsic types and behaviors available in Substrate.
+A Substrate node can process two types of inbound transactions: either signed (submitted by some external account) or unsigned (submitted by some pallet or priviledged account).
+The diagram below shows the lifecycle of a transaction that's submitted to a network and processed by an authoring node.
 Any signed or unsigned transaction that's sent to a [non-authoring node]() will just be gossiped to other nodes in the network and enter their transaction pool until it is received by an authoring node.
 
 [ maybe diagram here ? ]
 
-### Extrinsics in a block produced locally
+When an authoring node receives a request to include a transaction in the chain, it will check if the transaction is valid and place it in order of transaction priority to include it in the block it broadcasts to the rest of the network.
+The other nodes receiving this block will then verify that it's properly constructed and once a majority reach consensus, the block is executed and state transitions are applied in the runtime.
 
-If a signed or unsigned transaction is included in a block produced by the local node, its lifecycle follows a path like this:
-
-1. Some node listens for transactions on the network.
-1. The node receives a JSON-RPC request for a signed transaction.
-1. The transaction gets formatted in the runtime, with its corresponding function call, signature, nonce, tip and additional information.
-1. Some runtime API is used for the client to verify that the transaction meets its requirements and is valid.
-1. Only if the transaction is valid will it be put in a transaction queue ready for block authors.
-1. Once in the ready queue, the same runtime API is used to order the transaction according to some priority factor.
-1. The node uses transactions in this queue to construct a block and propagate it to peers over the network.
-
-Notice that transactions are not removed from the ready queue when blocks are authored, but removed _only_ on block import.
-This is due to the possibility that a recently-authored block might not make it into the canonical chain.
-Inherents don't follow the same execution path: they are included in every block without fail.
-
-### Extrinsics in a block received from network
-
-1. The node receives notification of the new block.
-1. Other nodes also construct this block and publish it to the network.
-1. A 2/3 majority of nodes reach consensus that this block is part of the canonical chain.
-1. All other nodes on the network receive and build the block.
-1. All transactions in that block are executed and state changes are updated in runtime storage.
-
-## Validating and queuing transactions
 
 As discussed in [Consensus](), a majority of nodes in the network must agree on the state of the blockchain to continue securely adding blocks.
 To reach consensus, two-thirds of the nodes must agree on the order of the transactions executed and the resulting state change. 
@@ -47,13 +17,10 @@ To prepare for consensus, transactions are first validated and queued on the loc
 This is where all signed and unsigned transactions that have been received by a local node are placed before they get broadcast to the rest of the network.
 Before including a transaction in a block, nodes must first determine which transactions are valid and in what order of priority it should be included.
 
-### Validating transactions
+## Transactions waiting to be verified
 
-A runtime defines rules that determine the validity of any transaction type. 
-It translates this information by tagging transactions with special fields to help nodes determine whether a transaction is valid or not.
-This tagging system gives nodes just enough information to know whether a transaction provides the data required by the runtime.
-
-Using these runtime-defined rules, the local node's transaction pool checks that the transactions received meets specific conditions and whether it should be included in a block or not.
+A set of rules defined in the runtime helps the transaction pool check whether a transaction is valid or not.
+Using these checks, a node's transaction pool verifies that the transactions it receives meets specific conditions to know whether or not to include it in the block.
 
 For example, the transaction pool might perform the following checks to determine whether a transaction meets certain requirements:
 
@@ -64,11 +31,10 @@ For example, the transaction pool might perform the following checks to determin
 After the initial validity check, the transaction pool periodically checks whether existing transactions in the pool are still valid.
 If a transaction is found to be invalid or has expired, it is dropped from the pool.
 
-The transaction pool only deals with the validity of the transaction and the ordering of valid transaction that are placed in a transaction queue.
-All other transaction details—including handling for fees, accounts, or signatures—are defined by the runtime using the `validate_transaction` function.
-For more detailed information about validating transactions, see the [`validate_transaction`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html#method.validate_transaction) runtime API method.
+The transaction pool only deals with the validity of the transaction and the ordering of valid transactions placed in a transaction queue.
+Specific details on how the validation mechanism works—including handling for fees, accounts, or signatures—can be found in the [`validate_transaction`](/rustdocs/latest/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html#method.validate_transaction) method.
 
-### Adding valid transactions to a transaction queue
+## Adding valid transactions to a transaction queue
 
 If a transaction is identified as valid, the transaction pool moves the transaction into a queue. 
 There are two separate transaction queues for valid transactions.
@@ -83,15 +49,14 @@ It's possible to design a custom runtime to remove the transaction ordering requ
 However, a runtime without strict transaction ordering would allow full nodes to implement different strategies for propagating transactions and including them in blocks. 
 ### Invalid transactions
 
-When a transaction cannot be added to a block at all, the runtime will return an `Invalid` error 
-Transactions could be invalid for one of the following reasons:
+In some cases, when a transaction is too large, or doesn't contain a valid signature for example, it get rejected and won't be added to the block.
+This could happen for the following reasons:
 
-- The transaction was already included in a block (`Stale`).
-- The transaction's signature is invalid (`BadProof`).
-- The transaction does not fit in the current block (`ExhaustsResources`). 
-This implies that it could be valid for the next one.
+- The transaction in the queue is stale, as it's already been included in a block so it will be dropped from the verifying queue.
+- The transaction's signature is invalid, so it will immediately be rejected.
+- The transaction is too large to fit in the current block, so it will be put back in a queue for a new verification round.
 
-## Transaction dependency and priority
+## Transactions ordered by priority
 
 If a node is the next block author, it will order transactions from high to low priority for the next block until it reaches the block's weight or length limit.
 
@@ -107,203 +72,7 @@ Some scenarios:
 - 2 transactions from _different_ senders (with `nonce=0`): `priority` is needed to determine which transaction is more important and should be included in the block first. 
 - 2 transactions from the _same_ sender with an identical `nonce`: only one transaction can be included in the block, so only the transaction with the higher fee will be put in the transaction pool.
 
-## Transaction formats
-
-The way the format of an extrinsic is desgined in Substrate takes into account the metadata it should expose as well as any additional information required to verify that a transaction is valid.
-This provides a means of checking the requirements for an extrinisic to be valid and correctly constructed, which is done in the runtime by formatting any extrinsic as either unchecked, checked or opaque. 
-
-- Unchecked: signed transactions that require some validation check before they can be accepted in the transaction pool.
-Any unchecked extrinsic contains the signature for the data being sent plus some extra data.
-- Checked: inherent extrinsics which by definition don't require signature verification. 
-Instead, they carry information on where the extrinsic comes from and some extra data.
-- Opaque: used for cases when an extrinsic hasn't yet been committed to a format but can still be decoded. 
-
-Extra data can be any additional information that would be useful to attach to a transaction or inherent.
-For example, the nonce of the transaction, or the tip for the block author.
-This information is provided by a [specialized extensions](#signed-extensions) that help determine the validity and ordering of extrinsics before they get included in a block.
-
-A signed transaction call could look like:
-
-```rust
-node_runtime::UncheckedExtrinsic::new_signed(
-		function.clone(),                                      // some call
-		sp_runtime::AccountId32::from(sender.public()).into(), // some sending account
-		node_runtime::Signature::Sr25519(signature.clone()),   // the account's signature
-		extra.clone(),                                         // the signed extensions 
-	)
-```
-
-## How transactions are constructed 
-
-Substrate defines its transaction formats generically to allow developers to implement custom ways to define valid transactions. 
-In a runtime built with FRAME however (assuming transaction version 4), a transaction must be constructed by submitting the following encoded data:
-
-`<signing account ID> + <signature> + <additional data>`
-
-When submitting a signed transaction, the signature is constructed by signing:
-
-- The actual call, composed of:
-  - The index of the pallet.
-  - The index of the function call in the pallet. 
-  - The address and balance of the sender. 
-  
-- Some extra information, verified by the signed extensions of the transaction:
-  - What's the era for this transaction, i.e. how long should this call last in the transaction pool before it gets discarded?
-  This can either be `Mortal` or `Immortal`.
-  - The nonce, i.e. many prior transactions have occurred from this account?
-  This helps protect against replay attacks or accidental double-submissions.
-  - The tip amount paid to the block producer to help incentive it to include this transaction in the block.
-
-Then, some additional data that's not part of what gets signed is required, which includes:
-
-  - The spec version and the transaction version. 
-  This ensures the transation is being submitted to a compatible runtime.
-  - The genesis hash. This ensures that the transaction is valid for the correct chain.
-  - The block hash. This corresponds to the hash of the checkpoint block, which enables the signature to verify that the transaction doesn't execute on the wrong fork, by checking against the block number provided by the era information.
-
-The SCALE encoded data is then signed (i.e. (`call`, `extra`, `additional`)) and the signature, extra data and call data is attached in the correct order and SCALE encoded, ready to send off to a node that will verify the signed payload.
-In order to minimize the size of the signed transaction if a payload is longer than 256 bytes, it gets hashed and the hashed value is what gets signed and serialized.
-
-This process can be broken down into the following steps:
-
-1. Construct the unsigned payload.
-1. Create a signing payload.
-1. Sign the payload.
-1. Serialize the signed payload.
-1. Submit the serialized transaction.
-
-The final result has the following bit-fields:
-
-`0x + [ 1 ] + [ 2 ] + [ 3 ] + [ 4 ] + [ 5 ]`
-
-where:
-
-- `[1]` is a `u8` containing the compact encoded length of the encoded data.
-- `[2]` is a `u8` containing 1 byte for the transaction version ID.
-- `[3]` is a `u8` containing 1 bit to indicate whether the transacton is signed.
-- `[4]` is a `[u8; 32]` containing the signature, if signed. If unsigned this is just a `0; u8`.
-- `[5]` is a `u128` containing the encoded call data.
-
-The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
-For instance, an application will know that a `(u8, u8, u8, [u8; 32], u128)` type will encode to the correct bytes to represent the call it wants to make. 
-If a call doesn't need to be signed, the application knows to pre-prend a `None` signature to it (`0; u8`). 
-
-<!-- TODO: How are inherents constructed? -->
-
-**Example:**
-
-Balances transfer from Bob to Dave: Bob sends `42` units to Dave.
-
-[ TODO: polkadotjs apps screenshot ]
-
-* Encoded call data: `0x050000306721211d5404bd9da88e0204360a1a9ab8b87c66c1bc2fcdd37f3c2222cc20a8`
-* Encoded call hash: `0x52f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
-* Signed call: `0xf4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce88`
-* Compact endcoded length of encoded data: `4a`
-
-* Resulting extrinsic: `0x4a100f4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce8852f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
-
-Submitting the resulting constructed extrinsic via RPC returns:
-
-```json
-{
-  dispatchInfo: {
-    weight: 195,952,000
-    class: Normal
-    paysFee: Yes
-  }
-  events: [
-    {
-      phase: {
-        ApplyExtrinsic: 1
-      }
-      event: {
-        method: Withdraw
-        section: balances
-        index: 0x0508
-        data: [
-          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
-          125,000,141
-        ]
-      }
-      topics: []
-    }
-    {
-      phase: {
-        ApplyExtrinsic: 1
-      }
-      event: {
-        method: Transfer
-        section: balances
-        index: 0x0502
-        data: [
-          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
-          5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy
-          42
-        ]
-      }
-      topics: []
-    }
-    {
-      phase: {
-        ApplyExtrinsic: 1
-      }
-      event: {
-        method: ExtrinsicSuccess
-        section: system
-        index: 0x0000
-        data: [
-          {
-            weight: 195,952,000
-            class: Normal
-            paysFee: Yes
-          }
-        ]
-      }
-      topics: []
-    }
-  ]
-  status: {
-    InBlock: 0x6543a4d4b44f5acc9ad111f0218296f1da5a5493599431ce9eecb55ed0a4d3fb
-  }
-}
-```
-
-## Signed extensions
-
-Substrate provides the concept of **signed extensions** to extend an extrinsic with additional data, provided by the [`SignedExtension`](/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html) trait.
-
-The transaction queue regularly calls signed extensions to keep checking that a transaction is valid before it gets put in the ready queue. 
-This is a useful safeguard for verifying that transactions won't fail in a block.
-They are commonly used to enforce some validation, spam and replay protection logic needed by the transaction pool.
-
-By default in FRAME, a signed extension can hold any of the following types:
-
-- `AccountId`: to encode the sender's identity.
-- `Call`: to encode the pallet call to be dispatched. This data is used to calculate transaction fees.
-- `AdditionalSigned`: to handle any additional data to go into the signed payload. This makes it possible to attach any custom logic prior to dispatching a transaction.
-- `Pre`: to encode the information that can be passed from before a call is dispatch to after it gets dispatched.
-
-FRAME's [system pallet](todo) provides a set of [useful `SignedExtensions`](https://docs.substrate.io/rustdocs/latest/frame_system/index.html#signed-extensions) out of the box.
-
-### Practical examples
-
-An important signed extension for validating transactions is `CheckSpecVersion`.  
-It provides a way for the sender to provide the spec version as a signed payload attached to the transaction.
-Since the spec version is already known in the runtime, the signed extension can perform a simple check to verify that the spec versions match.
-If they don't, the transaction fail before it gets put in the transaction pool.
-
-Other examples include the signed extensions used to calculate transaction priority.
-These are:
-
-- `CheckWeight`: sets the value for priority to `0` for all dispatch classes.
-- `ChargeTransactionPayment`: calculates the overall priority, modifying the priority value accordingly.
-
-The priority depends on the dispatch class and the amount of tip-per-weight or tip-per-length (whatever is more limiting) the sender is willing to pay.
-Transactions without a tip use a minimal tip value of `1` for priority calculations to make sure that not all transactions end up having a priority of `0`. 
-The consequence of this is that "smaller" transactions are preferred over "larger" ones.
-
-## Executing transactions and producing blocks 
+## Block is imported and added to the chain
 <!-- 
 TODO: 
 which explains how blocks are build and executed
@@ -400,7 +169,4 @@ The `on_idle` function also passes through the remaining weight of the block to 
 
 - Learn about the origin system for different extrinsic types
 - Learn more about how transactions are encoded
-- Learn how to configure transaction fees for your chain
 - Learn about how block execution works
-- Submit offline transactions using `tx-wrapper` 
-- Submit transactions using `sidecar`

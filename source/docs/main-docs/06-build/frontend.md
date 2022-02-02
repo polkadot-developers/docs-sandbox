@@ -213,7 +213,7 @@ These applications would rely on in-browser local memory to establish a connecti
 
 ## Start building 
 
-Parity maintains the following libraries built on top of the [JSON-RPC API](https://github.com/paritytech/jsonrpc) for interacting with Substrate runtimes:
+Parity maintains the following libraries built on top of the [JSON-RPC API](https://github.com/paritytech/jsonrpc) for interacting with a Substrate node:
 
 - [subxt](./libraries#subxt): provides a way to create an interface for static front-ends built for specific chains. 
 - [Polkadot JS API](./libraries#polkadot-js): provides a library to build dynamic interfaces for any Substrate built blockchain.

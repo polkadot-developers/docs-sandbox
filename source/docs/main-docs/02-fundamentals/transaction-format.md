@@ -1,0 +1,204 @@
+_This article describes in detail what the format of an extrinsic (in particular signed and unsigned transactions) looks like in Substrate._
+_This is particularly useful for understanding how the transaction pool checks incoming tranactions._
+_Parachain builders will find this useful for customizing how their transactions are formatted as well as writing client applications that need to adhere to a chosen format._
+
+The way the format of an extrinsic is desgined in Substrate takes into account the metadata it should expose as well as any additional information required to verify that a transaction is valid.
+This provides a means of checking the requirements for an extrinisic to be valid and correctly constructed, which is done in the runtime by formatting any extrinsic as either unchecked, checked or opaque. 
+
+- Unchecked: signed transactions that require some validation check before they can be accepted in the transaction pool.
+Any unchecked extrinsic contains the signature for the data being sent plus some extra data.
+- Checked: inherent extrinsics which by definition don't require signature verification. 
+Instead, they carry information on where the extrinsic comes from and some extra data.
+- Opaque: used for cases when an extrinsic hasn't yet been committed to a format but can still be decoded. 
+
+Extra data can be any additional information that would be useful to attach to a transaction or inherent.
+For example, the nonce of the transaction, or the tip for the block author.
+This information is provided by a [specialized extensions](#signed-extensions) that help determine the validity and ordering of extrinsics before they get included in a block.
+
+A signed transaction call could look like:
+
+```rust
+node_runtime::UncheckedExtrinsic::new_signed(
+		function.clone(),                                      // some call
+		sp_runtime::AccountId32::from(sender.public()).into(), // some sending account
+		node_runtime::Signature::Sr25519(signature.clone()),   // the account's signature
+		extra.clone(),                                         // the signed extensions 
+	)
+```
+
+## How transactions are constructed 
+
+Substrate defines its transaction formats generically to allow developers to implement custom ways to define valid transactions. 
+In a runtime built with FRAME however (assuming transaction version 4), a transaction must be constructed by submitting the following encoded data:
+
+`<signing account ID> + <signature> + <additional data>`
+
+When submitting a signed transaction, the signature is constructed by signing:
+
+- The actual call, composed of:
+  - The index of the pallet.
+  - The index of the function call in the pallet. 
+  - The address and balance of the sender. 
+  
+- Some extra information, verified by the signed extensions of the transaction:
+  - What's the era for this transaction, i.e. how long should this call last in the transaction pool before it gets discarded?
+  This can either be `Mortal` or `Immortal`.
+  - The nonce, i.e. many prior transactions have occurred from this account?
+  This helps protect against replay attacks or accidental double-submissions.
+  - The tip amount paid to the block producer to help incentive it to include this transaction in the block.
+
+Then, some additional data that's not part of what gets signed is required, which includes:
+
+  - The spec version and the transaction version. 
+  This ensures the transation is being submitted to a compatible runtime.
+  - The genesis hash. This ensures that the transaction is valid for the correct chain.
+  - The block hash. This corresponds to the hash of the checkpoint block, which enables the signature to verify that the transaction doesn't execute on the wrong fork, by checking against the block number provided by the era information.
+
+The SCALE encoded data is then signed (i.e. (`call`, `extra`, `additional`)) and the signature, extra data and call data is attached in the correct order and SCALE encoded, ready to send off to a node that will verify the signed payload.
+In order to minimize the size of the signed transaction if a payload is longer than 256 bytes, it gets hashed and the hashed value is what gets signed and serialized.
+
+This process can be broken down into the following steps:
+
+1. Construct the unsigned payload.
+1. Create a signing payload.
+1. Sign the payload.
+1. Serialize the signed payload.
+1. Submit the serialized transaction.
+
+The final result has the following bit-fields:
+
+`0x + [ 1 ] + [ 2 ] + [ 3 ] + [ 4 ] + [ 5 ]`
+
+where:
+
+- `[1]` is a `u8` containing the compact encoded length of the encoded data.
+- `[2]` is a `u8` containing 1 byte for the transaction version ID.
+- `[3]` is a `u8` containing 1 bit to indicate whether the transacton is signed.
+- `[4]` is a `[u8; 32]` containing the signature, if signed. If unsigned this is just a `0; u8`.
+- `[5]` is a `u128` containing the encoded call data.
+
+The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
+For instance, an application will know that a `(u8, u8, u8, [u8; 32], u128)` type will encode to the correct bytes to represent the call it wants to make. 
+If a call doesn't need to be signed, the application knows to pre-prend a `None` signature to it (`0; u8`). 
+
+<!-- TODO: How are inherents constructed? -->
+
+**Example:**
+
+Balances transfer from Bob to Dave: Bob sends `42` units to Dave.
+
+[ TODO: polkadotjs apps screenshot ]
+
+* Encoded call data: `0x050000306721211d5404bd9da88e0204360a1a9ab8b87c66c1bc2fcdd37f3c2222cc20a8`
+* Encoded call hash: `0x52f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
+* Signed call: `0xf4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce88`
+* Compact endcoded length of encoded data: `4a`
+
+* Resulting extrinsic: `0x4a100f4c7bf707e5fee3e7d9938c4a0b27fabf72fa7c1c154cacb02cb74bd1874d219e57a15856884545f0e4c59d79184eb238272a9aab0a03c13edc65774f0a8ce8852f197be55b1fcd3bd866f19aab6da02a18fd4ee034292e8c9c3b245939eda71`
+
+Submitting the resulting constructed extrinsic via RPC returns:
+
+```json
+{
+  dispatchInfo: {
+    weight: 195,952,000
+    class: Normal
+    paysFee: Yes
+  }
+  events: [
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: Withdraw
+        section: balances
+        index: 0x0508
+        data: [
+          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+          125,000,141
+        ]
+      }
+      topics: []
+    }
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: Transfer
+        section: balances
+        index: 0x0502
+        data: [
+          5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+          5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy
+          42
+        ]
+      }
+      topics: []
+    }
+    {
+      phase: {
+        ApplyExtrinsic: 1
+      }
+      event: {
+        method: ExtrinsicSuccess
+        section: system
+        index: 0x0000
+        data: [
+          {
+            weight: 195,952,000
+            class: Normal
+            paysFee: Yes
+          }
+        ]
+      }
+      topics: []
+    }
+  ]
+  status: {
+    InBlock: 0x6543a4d4b44f5acc9ad111f0218296f1da5a5493599431ce9eecb55ed0a4d3fb
+  }
+}
+```
+
+## Signed extensions
+
+Substrate provides the concept of **signed extensions** to extend an extrinsic with additional data, provided by the [`SignedExtension`](/rustdocs/latest/sp_runtime/traits/trait.SignedExtension.html) trait.
+
+The transaction queue regularly calls signed extensions to keep checking that a transaction is valid before it gets put in the ready queue. 
+This is a useful safeguard for verifying that transactions won't fail in a block.
+They are commonly used to enforce some validation, spam and replay protection logic needed by the transaction pool.
+
+By default in FRAME, a signed extension can hold any of the following types:
+
+- `AccountId`: to encode the sender's identity.
+- `Call`: to encode the pallet call to be dispatched. This data is used to calculate transaction fees.
+- `AdditionalSigned`: to handle any additional data to go into the signed payload. This makes it possible to attach any custom logic prior to dispatching a transaction.
+- `Pre`: to encode the information that can be passed from before a call is dispatch to after it gets dispatched.
+
+FRAME's [system pallet](todo) provides a set of [useful `SignedExtensions`](https://docs.substrate.io/rustdocs/latest/frame_system/index.html#signed-extensions) out of the box.
+
+### Practical examples
+
+An important signed extension for validating transactions is `CheckSpecVersion`.  
+It provides a way for the sender to provide the spec version as a signed payload attached to the transaction.
+Since the spec version is already known in the runtime, the signed extension can perform a simple check to verify that the spec versions match.
+If they don't, the transaction fail before it gets put in the transaction pool.
+
+Other examples include the signed extensions used to calculate transaction priority.
+These are:
+
+- `CheckWeight`: sets the value for priority to `0` for all dispatch classes.
+- `ChargeTransactionPayment`: calculates the overall priority, modifying the priority value accordingly.
+
+The priority depends on the dispatch class and the amount of tip-per-weight or tip-per-length (whatever is more limiting) the sender is willing to pay.
+Transactions without a tip use a minimal tip value of `1` for priority calculations to make sure that not all transactions end up having a priority of `0`. 
+The consequence of this is that "smaller" transactions are preferred over "larger" ones.
+
+
+## Learn more
+
+- Submit offline transactions using `tx-wrapper` 
+- Submit transactions using `sidecar`
+- Learn how to configure transaction fees for your chain

@@ -70,7 +70,7 @@ For more detailed information about validating transactions, see the [`validate_
 
 ### Adding valid transactions to a transaction queue
 
-If a transaction is identified as valid, the transaction pool moves the transaction into a queue. 
+If a transaction is identified as valid, the transaction **pool** moves the transaction into a **queue**. 
 There are two separate transaction queues for valid transactions.
 
 * The **ready queue**: contains transactions that can be included in a new pending block.

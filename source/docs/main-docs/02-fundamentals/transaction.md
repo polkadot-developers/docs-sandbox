@@ -42,7 +42,7 @@ Inherents don't follow the same execution path: they are included in every block
 ## Validating and queuing transactions
 
 As discussed in [Consensus](), a majority of nodes in the network must agree on the state of the blockchain to continue securely adding blocks.
-To reach consensus, two-thirds of the nodes must agree on the order of the transactions executed and the resulting state change. 
+To reach consensus, two-thirds of the nodes must agree on the relevant block.
 To prepare for consensus, transactions are first validated and queued on the local node in a **transaction pool**.
 This is where all signed and unsigned transactions that have been received by a local node are placed before they get broadcast to the rest of the network.
 Before including a transaction in a block, nodes must first determine which transactions are valid and in what order of priority it should be included.

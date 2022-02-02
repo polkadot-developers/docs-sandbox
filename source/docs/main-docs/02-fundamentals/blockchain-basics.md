@@ -1,80 +1,95 @@
 # Blockchain basics
 
-Blockchain software enables individual computers—called nodes—to communicate with each other to form a decentralized peer-to-peer (P2P) network.
-To ensure the security of the data on the chain and the ongoing progress of the chain, the nodes use some form of consensus to agree on the state of data in each block of data and the order in which the blocks are processed.
+A blockchain is a decentralized ledger that records transactions in a sequence of encrypted blocks that are immutable and distributed across a network of connected computers.
+
+In a blockchain network, individual computers—called nodes—communicate with each other to form a decentralized peer-to-peer (P2P) network.
+There is no central authority that controls the network and each node stores a copy of the  blocks that make up the canonical chain.
+
+In most cases, users interact with a blockchain by initiating transaction requests. 
+The transactions are gossiped to other nodes on the network and assembled into a block by a block author.
+To ensure the security of the data on the chain and the ongoing progress of the chain, the nodes use some form of consensus to agree on the state of the data in each block and the order in which transactions are processed.
 
 ## What is a blockchain node?
 
-At a high level, a blockchain node consists of the following core components:
+At a high level, all blockchain nodes require the following core components:
 
-- [Storage](../architecture#storage)
-- [Peer-to-peer networking](https://libp2p.io)
-- [Consensus](../consensus)
-- [Transaction handling](../transaction)
-- [Runtime](/v3/concepts/runtime) (or a "state transition function")
+- Data storage for the state changes recorded as a result of transactions.
+- Peer-to-peer networking for decentralized communication between nodes.
+- Consensus methodology to protect against malicious activity and ensure the ongoing progress of the chain.
+- Logic for ordering and processing incoming transactions.
+- Cryptography for signing and verifying the signatures associated with transactions.
+- An execution environment for authoring and finalizing blocks.
 
-Because of the complexity involved in building these components, most blockchain projects are forked from an existing blockchain project.
-For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namecoin, and Bitcoin Cash. Similarly, the Ethereum repository was forked to create Quorum, POA Network, KodakCoin, and Musicoin.
+Because of the complexity involved in building the core components that a blockchain requires, most blockchain projects are based on an existing blockchain project and start with a hard fork of an existing project repository.
+For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namecoin, and Bitcoin Cash. 
+Similarly, the Ethereum repository was forked to create Quorum, POA Network, KodakCoin, and Musicoin.
 
 ![Blockchain forks](../../img/tutorials/01-create-your-first-chain/forks.png)
 
-However, the existing blockchain platforms were not designed to allow for modification.
+However, the existing blockchain platforms were not designed to allow for modification or customization.
 As a result, building a new blockchain by forking has serious limitations.
+Before you explore how Substrate alleviates many of the limitations associated with other blockchain projects, it's important to understand some of the common properties that all blockchains share.
+By learning about how most blockchains operate, you'll be better prepared to see how Substrate provides alternatives and capabilities for building a blockchain best suited to your needs.  
 
-## State machines and handling conflicts
+## State transitions and conflicts
 
-A blockchain runtime is a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine). 
-It has some internal state, and state transition function that allows it to transition from its current state to a future state. 
-In most runtimes there are states that have valid transitions to multiple future states, but a single transition must be selected.
+A blockchain is essentially a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine). 
+At any point in time, the blockchain has a current internal state.
+As inbound transactions are executed, they result in changes to state so the blockchain must transition from its current state to a new state. 
+However, there can be multiple valid transitions that would result in different future states, and the blockchain must select a single state transition that can be agreed upon.
+To agree on the state after a transition, all operations within a blockchain must be deterministic.
+For the chain to progress successfully, a majority of the nodes must agree on all of the state transitions, including:
 
-Blockchains must agree on:
+- The initial state of the chain, called the genesis state or genesis block.
+- The series of state transitions that result from executed transactions that are recorded in each block.
+- A final state for the block to be included in the chain.
 
-- Some initial state, called "genesis".
-- A series of state transitions, each called a "block".
-- A final (current) state.
+In centralized networks, a central authority can choose between mutually exclusive state transitions by recording the changes to state transition in the order it sees them, and choosing the first of the competing alternatives when a conflict arises. 
+In a decentralized network, the nodes see transactions in different orders, so they must use a more elaborate method to select transactions and choose between conflicting state transition. 
 
-In order to agree on the resulting state after a transition, all operations within a blockchain's [state transition function](/v3/concepts/runtime) must be deterministic.
+The method that a blockchain uses to batch transactions into blocks and to select which node can submit a block to the chain is called the blockchain's consensus model or consensus algorithm. 
+The most commonly-used consensus model is called the proof-of-work consensus model. 
+With the proof of work consensus model, the node that completes a computational problem first has the right to submit a block to the chain.
 
-In centralized systems, the central authority chooses among mutually exclusive alternatives by recording state transitions in the order it sees them, and choosing the first of the competing alternatives when a conflict arises. 
-In decentralized systems, the nodes will see transactions in different orders, and thus they must use a more elaborate method to exclude transactions. 
-As a further complication, blockchain networks strive to be fault tolerant, which means that they should continue to provide consistent data even if some participants are not following the rules.
+For a blockchain to be fault tolerant and provide a consistent view of state even if some nodes are compromised by malicious actors or network outages, most consensus models require at least two-thirds of the nodes agree on state at all time. 
+This two-thirds majority ensure that the network is fault tolerant and can withstand ome network participants behaving badly, regardless of whether the behavior is intentional or accidental.
 
-Blockchains batch transactions into blocks and have some method to select which participant has the right to submit a block. 
-For example, in a proof-of-work chain, the node that finds a valid proof of work first has the right to submit a block to the chain.
+## Blockchain economics
 
-## What is Substrate?
+All blockchains require resources—processors, memory, storage, and network bandwidth—to perform operations.
+The computers that participate in the network—the nodes that produce blocks—provide these resources to blockchain users.
+The nodes create a distributed, decentralized network that serves the needs of a community of participants.
 
-Substrate is an open source, modular, and extensible framework for building blockchains.
+To support a community and make a block chain sustainable, most blockchains require users to pay for the network resources they use in the form of transaction fees.
+The payment of transaction fees requires user identities to be associated with accounts that hold assets of some type.
+Blockchains typically use tokens to represent the value of assets in an account and network participants purchase tokens outside of the chain through an exchange.
+Network participants can then deposit the tokens to create a stake of funds that enable them to pay for transactions.
 
-Substrate is designed to be flexible and allow innovators to design and build a blockchain network that meets their needs.
-It provides all the core components you need to build a customized blockchain node.
+## Blockchain governance
+
+Most blockchains also enable network participants to submit and vote on proposals that affect network operations or the blockchain community.
+By submitting and voting on proposals—referenda—the blockchain community can determine how the blockchain evolves in an essentially democratic process.
+To participate in governance, however, most blockchains require users to maintain a significant stake of token in an account.
 
 ## Where to go next
 
-Explore the following resources to learn more.
+All blockchains share some common characteristics. 
+Substrate—while not a blockchain itself—is a blockchain builders' toolkit with a modular framework of components to create a custom blockchain. 
+With Substrate, you can take the common blockchain components—like storage and consensus and cryptography—and combine them to use the functions they provide as-is or modify them to suit the purpose of your project. 
 
-#### Tell me (read related topics)
+You can explore the following resources to learn more.
 
+#### Tell me
+
+* [why Substrate?]()
 * [Fundamentals](./index.md)
-* 
-* 
+* [Node architecture]()
+* [Network topologies]()
 
-#### Guide me (related tutorials)
+#### Guide me
 
 * [Build a local blockchain](../../tutorials/01-build-local-blockchain.md)
-* [Simulate a two-node network](../../tutorials/02-simulate-network.md)
-* [Start a private network](../../tutorials/03-private-network.md)
-
-#### Show me (related video content)
-
-* 
-* 
-* 
-
-#### Teach me (how to)
-
-* 
-* 
-* 
+* [Simulate a network](../../tutorials/02-simulate-network.md)
+* [Start a trusted validator network](../../tutorials/03-private-network.md)
 
 If you prefer to explore code directly, you can start building in the Developer Playground and consult the API reference to get details about the Rust crates you use.

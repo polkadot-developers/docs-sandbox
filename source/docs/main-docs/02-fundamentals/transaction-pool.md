@@ -46,7 +46,7 @@ There are two separate transaction queues for valid transactions.
   For example, a transaction may have a `nonce` that is too high for its account, in which case the transaction will wait in the future queue until the valid preceding transactions are included in the chain, after which it will be either dropped or reconsidered.
   
 It's possible to design a custom runtime to remove the transaction ordering requirements.
-However, a runtime without strict transaction ordering would allow full nodes to implement different strategies for propagating transactions and including them in blocks. 
+Learn more on how to do this in the [design section]().
 ### Invalid transactions
 
 In some cases, when a transaction is too large, or doesn't contain a valid signature for example, it get rejected and won't be added to the block.

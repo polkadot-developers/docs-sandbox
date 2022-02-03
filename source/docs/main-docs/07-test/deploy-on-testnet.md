@@ -1,5 +1,3 @@
-# Deploying on a testnet
-
 A typical parachain project will undergo several network testing phases before it is ready for a production environment.
 Projects that are ready to deploy their chain to a live testnet are highly recommended to create and maintain their own testnet before connecting to one.
 Here's what the progression from starting as a solo chain to deploying on a parachain test network looks like:
@@ -8,25 +6,13 @@ Here's what the progression from starting as a solo chain to deploying on a para
 - Use Polkadot launch to create a local test network with multiple relay chain nodes and parachain nodes.
 - Deploy on Rococo, the community live test network.
 
-### Tools
-
-Cumulus exists to help convert a solo chain into a parachain designed to connect to the Polkadot relay chain.
+**Cumulus** exists to help convert a solo chain into a parachain designed to connect to the Polkadot relay chain.
 Any solo chain must use Cumulus to become a parachain compatibile with Polkadot, Kusama and Rococo.
 Using Cumulus also makes it easy to set up a local test network for parachains and eventually connect to Rococo.
 
-Polkadot launch is a tool for launching a test network with several parachain collator nodes already connected to it. 
+**Polkadot launch** is a tool for launching a test network with several parachain collator nodes already connected to it. 
 This makes it a valuable tool for creating a testnet to connect to and test cross-chain interactions.
 It is designed for projects who have already updated their chains to parachains using Cumulus and are looking to bootstrap their own local test networks.
-
-### Checklist
-
-Things to be mindful of when setting up a test network and connecting to it:
-
-- [ ] Reserve a unique para ID, choosing an integer greater than `2000`. 
-- [ ] Your parachain genesis state starts at block 0. It is not possible to connect a parachain with any previous state to a relay chain.
-- [ ] Make sure that the para ID for your parachain is the same in the chain spec of both the relay chain and your parachain. You can verify this by checking that the genesis head of the parathread you create matches the genesis head from your relay chain node.
-- [ ] After you modify a plain chain spec with a new para ID for example, make sure to generate the new raw chain spec, name it appropriately and discard the plain chain spec to avoid potential confusion.
-- [ ] For better security, verify that the chain specification for your relay chain has a minimum of 2 relay chain nodes per collator node. 
 
 ### Connecting to Rococo
 
@@ -48,6 +34,15 @@ The long-term plan is to make it a community-driven process via the chain's gove
 Note that on Rococo, para ID numbers `0-999` are reserved for [system parachains](https://wiki.polkadot.network/docs/learn-common-goods#system-level-chains) and `1000-1999` are reserved for [public utility parachains](https://wiki.polkadot.network/docs/learn-common-goods#public-utility-chains).
 Only numbers `2000` and above that aren't already reserved can be used for community parachains.
 
+### Checklist
+
+Things to be mindful of when setting up a test network and connecting to it:
+
+- [ ] Reserve a unique para ID, choosing an integer greater than `2000`. 
+- [ ] Your parachain genesis state starts at block 0. It is not possible to connect a parachain with any previous state to a relay chain.
+- [ ] Make sure that the para ID for your parachain is the same in the chain spec of both the relay chain and your parachain. You can verify this by checking that the genesis head of the parathread you create matches the genesis head from your relay chain node.
+- [ ] After you modify a plain chain spec with a new para ID for example, make sure to generate the new raw chain spec, name it appropriately and discard the plain chain spec to avoid potential confusion.
+- [ ] For better security, verify that the chain specification for your relay chain has a minimum of 2 relay chain nodes per collator node. 
 ## Learn how 
 
 - Follow this guide on converting your solo chain to a parachain

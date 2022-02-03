@@ -20,14 +20,13 @@ At a high level, all blockchain nodes require the following core components:
 - Cryptography for signing and verifying the signatures associated with transactions.
 - An execution environment for authoring and finalizing blocks.
 
-Because of the complexity involved in building the core components that a blockchain requires, most blockchain projects are based on an existing blockchain project and start with a hard fork of an existing project repository.
-For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namecoin, and Bitcoin Cash. 
+
+Because of the complexity involved in building the core components a blockchain requires, most blockchains start with a complete copy of an existing blockchain repository—a fork—so that developers can modify existing code to add new features instead of writing everything from scratch.
+For example, the Bitcoin repository was forked to create Litecoin, ZCash, Namecoin and Bitcoin Cash.
 Similarly, the Ethereum repository was forked to create Quorum, POA Network, KodakCoin, and Musicoin.
 
-![Blockchain forks](../../img/tutorials/01-create-your-first-chain/forks.png)
-
-However, the existing blockchain platforms were not designed to allow for modification or customization.
-As a result, building a new blockchain by forking has serious limitations.
+However, most blockchain platforms are not designed to allow for modification or customization.
+As a result, building a new blockchain by forking has serious limitations, including limitations such as scalability that are inherent in the originating blockchain code.
 Before you explore how Substrate alleviates many of the limitations associated with other blockchain projects, it's important to understand some of the common properties that all blockchains share.
 By learning about how most blockchains operate, you'll be better prepared to see how Substrate provides alternatives and capabilities for building a blockchain best suited to your needs.  
 
@@ -70,6 +69,15 @@ Network participants can then deposit the tokens to create a stake of funds that
 Most blockchains also enable network participants to submit and vote on proposals that affect network operations or the blockchain community.
 By submitting and voting on proposals—referenda—the blockchain community can determine how the blockchain evolves in an essentially democratic process.
 To participate in governance, however, most blockchains require users to maintain a significant stake of token in an account.
+
+## Applications running on a blockchain
+
+Applications that run on a blockchain—often referred to as decentralized applications or dApps—are typically written as **smart contracts**. 
+
+A smart contract is a program that runs on a blockchain and executes transactions on behalf of users under specific conditions.
+Developers can write smart contracts to ensure that the outcome of programmatically-executed transactions is recorded and can never be changed. 
+Yet, with smart contracts alone, developers don't have access to some underlying blockchain functionality—such as the consensus, storage or transaction layers—and instead, abide by a chain's fixed rules and restrictions.
+Smart contract developers often accept these limitations as a tradeoff that enables faster development time with fewer core design decisions to make.
 
 ## Where to go next
 

@@ -19,10 +19,10 @@ This makes it simple and easy to ensure that your contract code functions as exp
 Learn more [here](https://paritytech.github.io/ink-docs/basics/contract-testing/).
 - Because ink! follows Rust standards, tools like [`rustfmt`](https://github.com/rust-lang/rustfmt) and [`rust-analyzer`](https://github.com/rust-analyzer/rust-analyzer) already work out of the box.
 
-<AccentButton
-  text={`Start the ink! workshop`}
-  link={`/tutorials/v3/ink-workshop/pt1`}
-/>
+Virtual machines, such as EVM or Wasm, can support different programming languages to write smart contracts.
+For example, Solidity can be used for both EVM and Wasm environments using purpose built compilers.
+With the contracts pallet as the execution environment, any language can be used so long as it compiles to Wasm, [ink!]() being the most widely supported language.
+See [some examples](https://paritytech.github.io/ink-docs/examples/) on how to write a smart contract using ink!.
 
 ### Features
 
@@ -181,8 +181,7 @@ cargo +nightly test
 
 ### Examples
 
-- Follow a
-  [this guide](/how-to-guides/v3/pallet-design/contracts-pallet) to learn how to add the Contracts pallet to your FRAME runtime.
+- Follow a [this guide](/how-to-guides/v3/pallet-design/contracts-pallet) to learn how to add the Contracts pallet to your FRAME runtime.
 
 ### References
 
@@ -201,3 +200,4 @@ cargo +nightly test
 - To view the reference documentation for the EVM pallet, see https://docs.rs/pallet_evm and https://docs.rs/fp-evm/.
   
 - To view the reference documentation fir SputnikVM's `evm` crate, see https://docs.rs/evm/.
+- Start the [ink! workshop](/tutorials/v3/ink-workshop/pt1).

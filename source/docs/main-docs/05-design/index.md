@@ -3,131 +3,83 @@ Sub-section: Runtime design
 Type: conceptual 
 Index: 1
 
-<!-- _Notes to docs team: This artice aims to describe the concepts around developing Substrate runtimes._
-_This should be the entry point for anyone developing with substrate, whereby this content conceptually describes the ways one can create application specific business logic for a substrate chain._ -->
-# Designing your runtime
+_This article describes ways to create the application logic of your blockchain._
+_This is important for parachain builders to understand why they are building pallets and what it implies, also giving insight on the value of using pallets vs. smart contracts._
 
-TODO: Improve this section's write-up based on these guiding questions.
+You've got an application that requires a blockchain and you've started sketching out its components but you're not sure whether you should use smart contracts or write your own pallets. 
+What should you do?
+The truth is that if you're here it's probably because you're writing a blockchain from scratch and don't really care much about smart contracts.
+You're here because you plan on building a solo-chain that may one day become a parachain or a standalone network running its own validators and consensus mechanism.
+Being here you'll quickly learn that in order to build your application-specific chain you'll need to write pallets and not smart contracts.
+This page will explain different ways to design and compose your runtimes, contrasting pallet development with smart contract development and providing considerations for those of you sketching out your application logic.
 
-Scenario: I want to understand what components I need to consider when designing my runtime. I'd then like to prototype my idea, or jump right into using existing pallets and creating my own. This is the lay of the land before I get there.
+## Application design
 
-- At a HL, what does it mean to design a runtime? What are the different components I should focus on?
-- For a team getting started, what's a good way to prototype a chain's logic? What factors would they need to consider?
-- How can I determine whether my prototype is a good canadidate to become a chain in the first place? Where should I go with my prototype if not? 
-- Now that I know I want to design a parachain, what's my next step?
-- Can you explain how having full control of the blockchain relates to how I can design my chain?
-- What sort of decisions must I make before thinking about my user facing application logic (i.e. perhaps more on the network level)?
-- @Shawn: maybe this highlevel section would benefit from a diagram showing the life cycle of a parachain from its inception phase to production, with the phases we reccomend in between.
+The runtime is the actual logic and application of the blockchain, and really designing the runtime is just like designing an application.
+As a runtime engineer, you have full control of the underlying logic that each node on your network will run, giving you full access to improve the performance of the nodes of your network as well as every storage item across all of your pallets, which you can modify and control.
 
 Application logic in Substrate-based blockchains can be expressed in the form of:
 
 - Specialized [pallets](/todo): each pallet performs a special task, serving the business logic needs of the blockchain. 
 - Smart contracts: application logic is specified in smart contracts that target a specific execution environment.
+This would require a chain designed for anyone to deploy thier own applications to.
 - A combination of both pallets and smart contracts: application logic is executed by both smart contracts and task-specific pallets.
 
-Runtime development using specialized pallets or smart contracts each provide solutions designed to solve different problems. 
-There is likely some amount of overlap in the kinds of problems each one can solve, but there is also a clear set of problems suited for only one of the two. 
-To give just one example in each category:
-
-- **Runtime development:** Building a privacy layer on top of transactions in your blockchain.
-- **Smart contract development:** Introducing multi-signature wallets over the currency of your blockchain.
-- **Use case specific:** Building a gaming dApp which may need to build up a community of users (smart contract), or may need to scale to millions of transactions a day (runtime pallet development).
+Substrate chains can provide smart contract functionality, but even then are still defined by the pallets that their runtimes are composed of.
+In this sense, comparing smart contract development to pallet developement is comparing apples to oranges.
 
 ## Runtime development
-Runtime development has the intention of producing lean, performant, and fast nodes. 
-
-You have full control of the underlying logic that each node on your network will run. 
-You have full access to each and every storage item across all of your pallets, which you can modify and control.
-
-This level of control comes with greater responsibility.
-Runtime engineers have much more responsibility for writing robust and correct code, than those deploying Smart Contracts.
-Incorrect logic or poor error handling could brick your chain. 
 
 As a runtime engineer, you must provide the protections for the overhead of transactions reverting and implicitly introduce any fee system to the computation of the nodes your chain runs on. 
 This means while you are developing runtime functions, you must correctly assess and apply fees to different parts of your runtime logic so that it will not be abused by malicious actors.
+Because pallets gives low level access to your entire blockchain, runtime engineers must be vigilant with handling things like fees and permissions, errors and safe arithmetic operations. 
+Smart contracts on the other hand have built-in economic incentives which pallets don't have out of the box.
 
-**Substrate Runtime Development:**
+Learn about best practices for designing your pallet [here]().
 
-- Provides low level access to your entire blockchain.
-- Removes the overhead of built-in safety for performance,
-  giving developers increased flexibility at the cost of increased responsibility.
-- Raises the entry bar for developers, where developers are
-  not only responsible for writing working code but must constantly check to avoid writing broken code.
-- Has no inherent economic incentives to repel bad actors.
-## Smart contracts in Substrate
-In order to use smart contracts in a Substrate node, the runtime must be specially configured.
-Smart contract compatible runtimes use specialized pallets that define the types of execution environment an application requires. 
-This could be the [EVM pallet](/pallet-todo-link), for example, used in Ethereum compatible Substrate-based chains.
-Another example is the [Contracts pallet](/pallet-todo-link) which provides a way to execute Wasm contracts written in a specialized language called ink!. See [some examples](https://paritytech.github.io/ink-docs/examples/) on how to write a smart contract in ink!.  
+In order to use smart contracts in a Substrate node, the runtime must be configured with a specialized pallet that define the type of execution environments the application requires. 
+This could be the [EVM pallet](/pallet-todo-link), for example, used in Ethereum compatible Substrate-based chains, or the [contracts pallet](/pallet-todo-link) which provides a way to execute Wasm contracts written in a specialized language called ink!. 
 
-Other community projects aiming to provide easy ways to integrate smart contract capabilities also exist.
-Refer to [this section](./todo) of the awesome Subtrate repository to learn about them. 
+Learn more about the different [smart contract pallets]() you can implement in your runtimes.
 
-In all cases, the architecture of a Substrate node with smart contract capabilities will look like this:
+## Considerations
 
-_(TODO: Diagramify with points below)_
+Here's a non-exhaustive list of questions you might want to ask yourself when designing your runtimes:
 
-- Any node will have some pallet (or collection of pallets) that will implement the smart contract execution environment.
-- This could be any VM, for example the EVM or a Wasm execution environment, or both.
-- The contract code and programming language used depends on the target environment of the pallet. For example ink! for the Contracts pallet, or anything that can compile to Wasm and [exposes the interface required by the Contracts pallet](https://github.com/paritytech/substrate/tree/master/frame/contracts#interface-exposed-to-contracts).
+- What is the purpose of your application? Who are the different users of your chain? 
+- How do you envision your blockchain to scale? How many users and transactions per second? 
+- What attack vectors exist for your pallet?
+- How will you implement on-chain governance? 
 
-Any single type of virtual machine or execution environment, such as EVM or Wasm, can support different programming languages to write smart contracts.
-For example, Solidity can be used for both EVM and Wasm environments using purpose built compilers.
-With the contracts pallet as the execution environment, it is possible to use any language that can compile to Wasm.
+### Pallets vs. smart contracts
 
-A traditional smart contract platform allows users to publish additional logic on top of some core blockchain logic. 
-Because smart contract logic can be published by anyone, including malicious actors and inexperienced developers, there are a number of intentional safe guards built around these public smart contract platform.
+Pallet engineers have much more responsibility for writing robust and correct code, than those writing smart contracts.
+Incorrect logic or poor error handling in a pallet could brick your chain, whereas smart contract execution is protected by the safeguards provided by the execution environment they use.
 
-Some examples are:
+Both pallet development and smart contract development provides ways for users to interact with a runtime, each of which optimize for different problems.
+There is likely some amount of overlap in the kinds of problems each one can solve best, but there is also a clear set of problems suited for only one of the two. 
+Here are some examples for each category and one that would include both:
 
-- **Fees**: Ensuring that contract execution incurs fees for the computation and storage it forces on the computers running it, so it can't abuse block creators.
+- **Pallet development:** Building a privacy layer on top of the transaction layer of your blockchain.
+- **Smart contract development:** Introducing multi-signature wallets over the currency of your blockchain.
+- **Hybrid:** Building a gaming dApp which may need to build up a community of users (smart contract), or may need to scale to millions of transactions a day (runtime pallet development).
 
-- **Sandbox**: A contract is not able to modify core blockchain storage or the storage of other contracts directly. It's power is limited to only modifying it's own state, and the ability to make outside calls to other contracts or runtime functions.
-
-- **Storage Deposit**: A contract takes up space on the blockchain, and should be charged for taking up space on the hard drives of the nodes. This ensures that people don't take advantage of "free, unlimited storage."
-
-- **Reversion**: A contract can be prone to logical errors. The expectations of a contract developer are low, so extra overhead is added to support reverting transactions when they fail, so no state is updated when things go wrong.
-
-These different overheads makes running contracts slower and more costly, but attractive to certain developers.
-
-Contracts allow your community to extend and develop on top of your runtime logic without needing to go through the process of on-chain runtime upgrades. 
-It can even be used as a testing ground for future runtime changes, but done in a way that isolates your network from any of the growing pains or errors which might occur.
-
-**Substrate Smart Contracts:**
-
-- Are inherently safer to the network.
-- Have built in economic incentives against abuse.
-- Have computational overhead to support graceful failures in logic.
-- Have a lower bar to entry for development.
-- Enable fast-pace community interaction through a playground to write new logic.
-
-## Prototyping 
-
-TODO: Improve this section's write-up based on these guiding questions.
-
-- How should I take my business application idea to a prototype or POC?
-- In what scenario would I want to create a prototype with smart contracts?
-- What should I be thinking about in the prototype phase?  
-- What does bringing my smart contracts dapp prototype look like in the form of pallets? Any tips on how to break up my application's logic?
-- What's an example of a prototype? (mapping high level application logic to pallets and pallet functions)
-## Considerations and comparisions
-
-There are a few considerations to be made when composing runtimes with pallets, smart contracts or both.
-A main one is the cost associated with building using each approach. 
+For parachain developers, most of the application specific logic will be in the form of pallets in the runtime. 
+In most cases, smart contracts are an additional feature of a chain, enabled by a specialized pallet that handles the execution environment for the target smart contract interface.
+In this way, smart contracts chains are optimized by pallet configurations, making them a narrow sub-set of solutions for customizing runtimes.
 
 Deploying a contract is a relatively simple and easy process because you take advantage of the existing network. 
 The only costs to you are the fees which you pay to deploy and maintain your contract.
 
-Setting up your own blockchain, on the other hand, incurs the cost of building a community who find value in the service you provide, or the additional costs associated with establishing a private network with the overhead of a Cloud computing-based architecture and general network maintenance.
+Setting up your own blockchain, on the other hand, incurs the cost of building a community who find value in the service you provide, or the additional costs associated with establishing a private network with the overhead of a cloud computing-based architecture and general network maintenance.
 
-While it's hard to address every scenario, in general, runtime development is most favorable for applications that require higher degrees of flexibility and adaptability. For example, applications that require the accommodation of different types of users or multiple layers of governance. The table below is meant to help inform your decisions on which approach to use based on different situations.
+While it's hard to address every scenario, in general, pallet development is most favorable for applications that require higher degrees of flexibility and adaptability. 
+For example, applications that require accomodating different types of users or multiple layers of governance. 
+The table below is meant to help inform your decisions on which approach to use based on different situations.
 
-| Runtime Development | Smart Contract | Use Case Specific |
+| Pallet development | Smart Contract | Use Case Specific |
 |---------------------|:---------------|:------------------|
 | Privacy Layer  <br>Feeless Token <br>Light-Client Bridge <br> Decentralized Exchange <br>Oracles <br>Stable Coin| Multi-signature Wallet <br> Data services <br> Simple fundraiser | Small scale gaming dApp (contract) <br>Large scale gaming dApp (runtime) <br> Community driven Decentralized Autonomous Organizations (DAO)(contract)<br> Protocol driven Decentralized Autonomous Organizations (DAO)(runtime) <br> Community driven treasury(contract)<br> Protocol driven treasury (runtime)                |
-
-> **NOTE:** If you are building on Polkadot, you can also [deploy smart contracts on its parachain](https://wiki.polkadot.network/docs/en/build-smart-contracts). 
-See [The Polkadot Wiki](https://wiki.polkadot.network/docs/build-build-with-polkadot#what-is-the-difference-between-building-a-parachain-a-parathread-or-a-smart-contract) for a comparison between developing on a parachain, parathread, and smart contracts.
 
 ## Where to go next
 
@@ -139,6 +91,7 @@ Explore the following resources to learn more.
 * [Smart contract pallets](./smart-contract-pallets)
 * [Storage design](./storage-design)
 * [Economic models](./economic-models) 
+* See [The Polkadot Wiki](https://wiki.polkadot.network/docs/build-build-with-polkadot#what-is-the-difference-between-building-a-parachain-a-parathread-or-a-smart-contract) for a comparison between developing on a parachain, parathread, and smart contracts.
 
 #### Guide me 
 * Build a proof of existence blockchain

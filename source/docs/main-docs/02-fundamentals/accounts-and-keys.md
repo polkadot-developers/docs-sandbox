@@ -4,75 +4,7 @@ This is important to for runtime engineers, parachain devops teams and node oper
 ---
 
 Using the SS58 account ID format, Substrate uses multiple sets of public/private key pairs to represent participants of the network, including validators, nominators and normal users.
-
-## Acount keys
-
-As an example, the Substrate node uses a Nominated Proof-of-Stake (NPoS) algorithm to select validators. 
-Validators and nominators may hold significant amounts of funds, so Substrate's [Staking pallet](/v3/runtime/frame#staking) introduces account abstractions that help keep funds as secure as possible.
-
-These abstractions are:
-
-- **Stash keys**: a stash account is meant to hold large amounts of funds. 
-Its private key should be as secure as possible in a cold wallet.
-- **Controller keys**: a controller account signals choices on behalf of the stash account, like payout preferences, but should only hold a minimal amount of funds to pay transaction fees. 
-Its private key should be secure as it can affect validator settings, but will be used somewhat regularly for validator maintenance.
-- **Session keys**: these are "hot" keys kept in the validator client and used for signing certain validator operations. They should never hold funds.
-
-A key pair can represent an account and control funds, like normal accounts that you would expect from other blockchains. 
-In the context of Substrate's [Balances pallet](/rustdocs/latest/pallet_balances/index.html), these accounts must have a minimum amount (an "existential deposit") to exist in storage.
-
-Account keys are defined generically and made concrete in the runtime.
-
-To continue with our example of stash and controller accounts, the keys to these accounts are distinguished by their intended use, not by any underlying cryptographic difference. 
-When creating stash or controller keys, all cryptography supported for normal account keys are also supported.
-
-### Stash keys
-
-The stash keys are the public/private key pair that defines a stash account. 
-This account is like a "savings account" in that you should not make frequent transactions from it. 
-Therefore, its private key should be treated with the utmost security, for example protected in a safe or layers of hardware security.
-
-Since the stash key is kept offline, it designates a controller account to make non-spending decisions with the weight of the stash account's funds. 
-It can also designate a Proxy account to vote in governance on its behalf.
-
-### Controller keys
-
-The controller keys are the public/private key pair that defines a controller account. 
-In the context of Substrate's NPoS model, the controller key will signal one's intent to validate or nominate.
-
-The controller key is used to set preferences like the rewards destination and, in the case of validators, to set their Session keys. 
-The controller account only needs to pay transaction fees, so it only needs a minimal amount of funds.
-
-The controller key can never be used to spend funds from its stash account. 
-However, actions taken by the controller can result in slashing, so it should still be well secured.
-
-<!-- Todo: make list of known key types: https://github.com/paritytech/substrate/blob/9d1790636e55a3456bdab91ff2d0e059878d3c42/primitives/core/src/crypto.rs#L1102-L1126. -->
-
-### Session keys 
-
-Substrate provides the [Session pallet](/rustdocs/latest/pallet_session/index.html) for validators to manage their session keys.
-
-Session keys are "hot keys" that are used by validators to sign consensus-related messages. 
-They are not meant to be used to control funds and should only be used for signing messages. 
-They can be changed regularly; your controller only needs to create new session keys by signing a session's public key and broadcasting this certificate via an extrinsic. 
-Session keys are also defined generically and made concrete in the runtime.
-
-To create a Session key, validator operators must attest that a key acts on behalf of their stash account (stake) and nominators. 
-To do so, they create a new session key by signing the key with their controller key. 
-Then, they inform the chain that this key represents their controller key by publishing the Session certificate in a transaction on the chain.
-#### Generation and use
-
-As a node operator, you can generate session keys using the RPC call [`author_rotateKeys`](/rustdocs/latest/sc_rpc/author/trait.AuthorApi.html#tymethod.rotate_keys).
-You will then need to register the new keys on chain using a [`session.setKeys`](/rustdocs/latest/pallet_session/struct.Module.html#method.set_keys) transaction.
-
-For increased security, session keys should be changed every session. 
-This can be done by creating new session keys, putting the session's public keys into an extrinsic, and applying this extrinsic on chain.
-
-Since session keys are hot keys that must be kept online, the individual keys should **not** be used to control funds. 
-All the logic for handling session keys is in the Substrate client, primitives, and Session pallet. 
-If one of the Session keys is compromised, the attacker could commit slashable behavior.
-
-Learn [how sessions keys are implemented](./05-design/implementation-details#session-keys) in Substrate.
+See the list of known key types [here](https://github.com/paritytech/substrate/blob/9d1790636e55a3456bdab91ff2d0e059878d3c42/primitives/core/src/crypto.rs#L1102-L1126).
 
 ## SS58 format 
 
@@ -144,6 +76,73 @@ Invalid phrase/URI given
 ```
 
 For verifying or creating SS58 addresses in your JavaScript projects, you can utilize the functions provided from the [`ui-keyring` library](https://polkadot.js.org/docs/ui-keyring/start/init) in the PolkadotJS API.
+
+## Acount keys
+
+The most common use of different account keys is found in the nominated proof-of-stake (NPoS) algorithm to select validators. 
+Validators and nominators may hold significant amounts of funds, so Substrate's [Staking pallet](/v3/runtime/frame#staking) handles some account abstractions that help keep funds as secure as possible.
+
+These abstractions are:
+
+- **Stash keys**: a stash account is meant to hold large amounts of funds. 
+Its private key should be as secure as possible in a cold wallet.
+- **Controller keys**: a controller account signals choices on behalf of the stash account, like payout preferences, but should only hold a minimal amount of funds to pay transaction fees. 
+Its private key should be secure as it can affect validator settings, but will be used somewhat regularly for validator maintenance.
+- **Session keys**: these are "hot" keys kept in the validator client and used for signing certain validator operations. These should never hold funds.
+
+A key pair can represent an account and control funds, like normal accounts that you would expect from other blockchains. 
+In the context of Substrate's [Balances pallet](/rustdocs/latest/pallet_balances/index.html), these accounts must have a minimum amount (an "existential deposit") to exist in storage.
+
+In Substrate, account keys are defined generically and made concrete in the runtime.
+The keys to these accounts are distinguished by their intended use, not by any underlying cryptographic difference. 
+When creating stash or controller keys, all cryptography supported for normal account keys are also supported.
+
+### Stash keys
+
+The stash keys are the public/private key pair that defines a stash account. 
+This account is like a "savings account" in that you should not make frequent transactions from it. 
+Therefore, its private key should be treated with the utmost security, for example protected in a safe or layers of hardware security.
+
+Since the stash key is kept offline, it designates a controller account to make non-spending decisions with the weight of the stash account's funds. 
+It can also designate a Proxy account to vote in governance on its behalf.
+
+### Controller keys
+
+The controller keys are the public/private key pair that defines a controller account. 
+In the context of Substrate's NPoS model, the controller key will signal one's intent to validate or nominate.
+
+The controller key is used to set preferences like the rewards destination and, in the case of validators, to set their Session keys. 
+The controller account only needs to pay transaction fees, so it only needs a minimal amount of funds.
+
+The controller key can never be used to spend funds from its stash account. 
+However, actions taken by the controller can result in slashing, so it should still be well secured.
+
+### Session keys 
+
+Substrate provides the [Session pallet](/rustdocs/latest/pallet_session/index.html) for validators to manage their session keys.
+
+Session keys are "hot keys" that are used by validators to sign consensus-related messages. 
+They are not meant to be used to control funds and should only be used for signing messages. 
+They can be changed regularly; your controller only needs to create new session keys by signing a session's public key and broadcasting this certificate via an extrinsic. 
+Session keys are also defined generically and made concrete in the runtime.
+
+To create a Session key, validator operators must attest that a key acts on behalf of their stash account (stake) and nominators. 
+To do so, they create a new session key by signing the key with their controller key. 
+Then, they inform the chain that this key represents their controller key by publishing the Session certificate in a transaction on the chain.
+
+#### Generation and use
+
+As a node operator, you can generate session keys using the RPC call [`author_rotateKeys`](/rustdocs/latest/sc_rpc/author/trait.AuthorApi.html#tymethod.rotate_keys).
+You will then need to register the new keys on chain using a [`session.setKeys`](/rustdocs/latest/pallet_session/struct.Module.html#method.set_keys) transaction.
+
+For increased security, session keys should be changed every session. 
+This can be done by creating new session keys, putting the session's public keys into an extrinsic, and applying this extrinsic on chain.
+
+Since session keys are hot keys that must be kept online, the individual keys should **not** be used to control funds. 
+All the logic for handling session keys is in the Substrate client, primitives, and Session pallet. 
+If one of the Session keys is compromised, the attacker could commit slashable behavior.
+
+Learn [how sessions keys are implemented](./05-design/implementation-details#session-keys) in Substrate.
 
 ## Learn more
 

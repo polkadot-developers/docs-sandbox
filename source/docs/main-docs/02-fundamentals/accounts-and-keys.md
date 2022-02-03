@@ -1,7 +1,5 @@
----
-This article goes over the SS58 format used in Substarte chains and different types of keys used by various participants in Substrate networks.
-This is important to for runtime engineers, parachain devops teams and node operators, to understand differnt key types and where to use them.
----
+_This article goes over the SS58 format used in Substrate chains and different types of keys used by various participants in Substrate networks. This is important for runtime engineers, parachain devops teams and node operators, to understand different key types, how to generate them and where to use them._
+
 
 Using the SS58 account ID format, Substrate uses multiple sets of public/private key pairs to represent participants of the network, including validators, nominators and normal users.
 See the list of known key types [here](https://github.com/paritytech/substrate/blob/9d1790636e55a3456bdab91ff2d0e059878d3c42/primitives/core/src/crypto.rs#L1102-L1126).

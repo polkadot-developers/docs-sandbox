@@ -9,6 +9,8 @@ Scenario: I have my application logic broken up into the pallets my runtime will
 
 [WIP]
 
+- pallets that manipulate data, like blog posts. Best practices for storing only the hash on chain.
+
 ## FRAME primitives
 
 Substrate comes with an opinionated toolkit for building runtimes in Rust called FRAME.

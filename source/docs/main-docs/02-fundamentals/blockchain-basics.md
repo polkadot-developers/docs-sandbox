@@ -73,10 +73,11 @@ To participate in governance, however, most blockchains require users to maintai
 ## Applications running on a blockchain
 
 Applications that run on a blockchain—often referred to as decentralized applications or dApps—are typically written as **smart contracts**. 
-A smart contract is a program that executes transactions on behalf of users under specific conditions.
-Developers typically write smart contracts to run on a blockchain to ensure that the outcome of programmatically-executed transactions is recorded and can never be changed. 
-Traditionally, smart contracts don't access the blockchain directly and, instead, run using fixed rules and restrictions—for example, the consensus model, storage limitations, and fee structure—that are defined by the underlying blockchain.
-Smart contract developers often accept these limitations as a tradeoff that enables faster development time with fewer design decision.
+
+A smart contract is a program that runs on a blockchain and executes transactions on behalf of users under specific conditions.
+Developers can write smart contracts to ensure that the outcome of programmatically-executed transactions is recorded and can never be changed. 
+Yet, with smart contracts alone, developers don't have access to some underlying blockchain functionality—such as the consensus, storage or transaction layers—and instead, abide by a chain's fixed rules and restrictions.
+Smart contract developers often accept these limitations as a tradeoff that enables faster development time with fewer core design decisions to make.
 
 ## Where to go next
 

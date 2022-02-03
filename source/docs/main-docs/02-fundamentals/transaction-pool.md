@@ -1,5 +1,5 @@
 _This article provides details explaining how transactions are ordered, verified and then broadcasted to the network before being added to the canonical chain of blocks._
-_This is useful for parachain builders seeking to acquire mental model of the lifecycle of a transaction in Substrate, useful for understanding why transactions are constructed the way they are and how transaction pools work._
+_This is useful for parachain builders seeking to acquire a mental model of the lifecycle of a transaction in Substrate, useful for understanding why transactions are constructed the way they are and how transaction pools work._
 
 A Substrate node can process two types of inbound transactions: either signed (submitted by some external account) or unsigned (submitted by some pallet or priviledged account).
 The diagram below shows the lifecycle of a transaction that's submitted to a network and processed by an authoring node.
@@ -73,25 +73,12 @@ Some scenarios:
 - 2 transactions from the _same_ sender with an identical `nonce`: only one transaction can be included in the block, so only the transaction with the higher fee will be put in the transaction pool.
 
 ## Block is imported and added to the chain
-<!-- 
-TODO: 
-which explains how blocks are build and executed
-
-`BlockBuilder_build_inherents` is first passed to include inherents -> then other extrinsics go to to pool and then -> `BlockBuilder_append_extrinsic` adds both types of extrinsics to build the block. -->
 
 After valid transactions are placed in the transaction queue, a separate **executive module** orchestrates how transactions are executed to produce a block.
 The executive module is not a typical pallet that provides specific functionality to the runtime.
 Instead, the executive module acts as the orchestration layer that calls functions in the runtime modules and handles the execution of those functions in the proper order as defined in the runtime business logic.
 
-The executive module provides functions to:
-
-* Check transaction validity.
-* Initialize a block.
-* Apply extrinsics.
-* Execute a block.
-* Finalize a block.
-* Start an off-chain worker.
-
+The executive module provides functions to check transaction validity, build, finalize and execute blocks.
 As a runtime developer, it's important to understand how the executive module interacts with the system pallet and other pallets you use to compose the business logic for your blockchain.
 In particular, you should be familiar with how the executive module performs the following operations:
 
@@ -99,48 +86,48 @@ In particular, you should be familiar with how the executive module performs the
 * Execute the inherent and transaction extrinsics in a block
 * Finalize a block
 
-Here's a test code snippet for a building and executing a valid block:
+For a block to be correctly built, the inherents need to be applied first followed by the rest of the valid extrinsics in the transaction pool.
+Here's a test code snippet for a building and executing a valid block using the executive module:
 
 ```rust
-	fn test_build_and_execute_block_success() {
-    // Create some inherents.
-		let xt1 = TestXt::new(Call::CustomPallet(custom_pallet::Call::inherent_call {}), None);
-    // Create some signed transaction.
-		let xt2 = TestXt::new(call_transfer(33, 0), sign_extra(1, 0, 0));
+fn test_build_and_execute_block_success() {
+	// Create some inherents.
+	let xt1 = TestXt::new(Call::CustomPallet(custom_pallet::Call::inherent_call {}), None);
+	// Create some signed transaction.
+	let xt2 = TestXt::new(call_transfer(33, 0), sign_extra(1, 0, 0));
 
-		let header = new_test_ext(1).execute_with(|| {
-			// Build the block header.
-			Executive::initialize_block(&Header::new(
-				1,
-				H256::default(),
-				H256::default(),
-				[69u8; 32].into(),
-				Digest::default(),
-			));
+	let header = new_test_ext(1).execute_with(|| {
+		// Build the block header.
+		Executive::initialize_block(&Header::new(
+			1,
+			H256::default(),
+			H256::default(),
+			[69u8; 32].into(),
+			Digest::default(),
+		));
 
-      // Apply all extrinsics.
-			Executive::apply_extrinsic(xt1.clone()).unwrap().unwrap();
-			Executive::apply_extrinsic(xt2.clone()).unwrap().unwrap();
+		// Apply all extrinsics.
+		Executive::apply_extrinsic(xt1.clone()).unwrap().unwrap();
+		Executive::apply_extrinsic(xt2.clone()).unwrap().unwrap();
 
-      // Finalize the block.
-			Executive::finalize_block()
-		});
+		// Finalize the block.
+		Executive::finalize_block()
+	});
 
-    // Execute the block
-		new_test_ext(1).execute_with(|| {
-			Executive::execute_block(Block::new(header, vec![xt1, xt2]));
-		});
-	}
+	// Execute the block.
+	new_test_ext(1).execute_with(|| {
+		Executive::execute_block(Block::new(header, vec![xt1, xt2]));
+	});
+}
 ```
 
 ### Initialize a block
 
-To initialize a block, the executive module calls the `on_initialize` function in the System pallet and all other runtime pallets to execute any business logic defined to take
-place before transactions are executed. 
+To initialize a block, the executive module calls the `on_initialize` function in the System pallet and all other runtime pallets to execute any business logic defined to take place before transactions are executed. 
 The System pallet `on_initialize` function is always executed first.
 The remaining pallets are called in the order they are defined in the `construct_runtime!` macro.
 
-After all of the pallet `on_initialize` functions have been executed, the executive module checks the parent hash in the block header and the extrinsics trie root to verify that the information is correct.
+After all of the pallet `on_initialize` functions have been executed, the executive module checks the parent hash in the block header and the trie root of all extrinsics to verify that the information is correct.
 
 ### Executing extrinsics
 
@@ -159,10 +146,9 @@ If an extrinsic fails after an event is emitted, the event is not be reverted.
 ### Finalizing a block
 
 After all queued extrinsics have been executed, the executive module calls into each pallet's `on_idle` and `on_finalize` functions to perform any final business logic that should take place at the end of the block. 
-The modules are again executed in the order that they are defined in the `construct_runtime!` macro, but in this case, the `on_finalize` function in the system pallet is executed last.
+The pallets are again executed in the order that they are defined in the `construct_runtime!` macro, but in this case, the `on_finalize` function in the system pallet is executed last.
 
 After all of the `on_finalize` functions have been executed, the executive modulate checks that the digest and storage root in the block header match what was calculated when the block was initialized.
-
 The `on_idle` function also passes through the remaining weight of the block to allow for execution based on the usage of the blockchain.
 
 ## Learn more
@@ -170,3 +156,4 @@ The `on_idle` function also passes through the remaining weight of the block to 
 - Learn about the origin system for different extrinsic types
 - Learn more about how transactions are encoded
 - Learn about how block execution works
+- Watch the Seminar about the [lifecycle of a transaction](https://www.youtube.com/watch?v=3pfM0GOp02c)

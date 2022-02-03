@@ -20,14 +20,13 @@ At a high level, all blockchain nodes require the following core components:
 - Cryptography for signing and verifying the signatures associated with transactions.
 - An execution environment for authoring and finalizing blocks.
 
-Because of the complexity involved in building the core components that a blockchain requires, most blockchain projects are based on an existing blockchain project and start with a hard fork of an existing project repository.
-For example, the Bitcoin repository was forked to create: Litecoin, ZCash, Namecoin, and Bitcoin Cash. 
+
+Because of the complexity involved in building the core components a blockchain requires, most blockchains start with a complete copy of an existing blockchain repository—a fork—so that developers can modify existing code to add new features instead of writing everything from scratch.
+For example, the Bitcoin repository was forked to create Litecoin, ZCash, Namecoin and Bitcoin Cash.
 Similarly, the Ethereum repository was forked to create Quorum, POA Network, KodakCoin, and Musicoin.
 
-![Blockchain forks](../../img/tutorials/01-create-your-first-chain/forks.png)
-
-However, most blockchain platforms have not been designed to allow for modification or customization.
-As a result, building a new blockchain by forking has serious limitations.
+However, most blockchain platforms are not designed to allow for modification or customization.
+As a result, building a new blockchain by forking has serious limitations, including limitations such as scalability that are inherent in the originating blockchain code.
 Before you explore how Substrate alleviates many of the limitations associated with other blockchain projects, it's important to understand some of the common properties that all blockchains share.
 By learning about how most blockchains operate, you'll be better prepared to see how Substrate provides alternatives and capabilities for building a blockchain best suited to your needs.  
 

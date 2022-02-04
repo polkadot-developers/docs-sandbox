@@ -2,7 +2,7 @@ Section: Build
 Sub-section: Build process
 Type: reference + conceptual
 
-This article describes what happens under the hood when building a Substrate node.
+This article describes what happens under the hood when building and executing a Substrate node.
 
 Relevant context:
 
@@ -23,12 +23,12 @@ node-template-runtime devhub/latest (...)
 
 So what happens when `cargo build --release` is executed in the directory of a Substrate node template?
 
-At a very high level, this command builds the project it is being called in with [optimized artifacts](https://doc.rust-lang.org/cargo/commands/cargo-build.html#compilation-options).
+At a very high level, this command builds the project in it's local directory with [optimized artifacts](https://doc.rust-lang.org/cargo/commands/cargo-build.html#compilation-options), meaning that the output executable has gone through some post-processing.
 These artifacts then result in the final executable program that enables launching a chain with the following command:
 `./target/release/node-template --dev`.
 
-During the build process, the runtime Wasm binary goes through 3 different stages, whereby each stage depicts the various steps in the build process.
-The initial Wasm runtime is built in the first stage of the build cycle and embedded into the client.
+During the build process, the runtime Wasm binary goes through 3 different stages, each containing the various steps involved in the build process.
+In the first stage of the build cycle, the initial Wasm runtime is built in and embedded into the client.
 Once the program is compiled and executed, the compressed Wasm binary is placed in on-chain storage at the [`:code`](https://docs.substrate.io/rustdocs/latest/sp_storage/well_known_keys/constant.CODE.html) storage key. 
 When a chain is launched, its genesis state is initialized by using the embedded Wasm in the chainspec from the native runtime by default.
 
@@ -73,6 +73,27 @@ There is no need for using any other of the Wasm artifacts.
 
 See the [README for the Wasm builder](https://github.com/paritytech/substrate/blob/master/utils/wasm-builder/README.md).
 
+## Execution 
+
+Once a runtime is built and a chain is launched, the Substrate client proposes which runtime execution environment should be used. 
+This is controlled by the execution strategy, which can be configured for the different parts of the blockchain execution process. 
+The strategies are listed in the [`ExecutionStrategy` enum](/rustdocs/latest/sp_state_machine/enum.ExecutionStrategy.html):
+
+- `NativeWhenPossible`: Execute with native build (if available, WebAssembly otherwise).
+- `AlwaysWasm`: Only execute with the WebAssembly build.
+- `Both`: Execute with both native (where available) and WebAssembly builds.
+- `NativeElseWasm`: Execute with the native build if possible; if it fails, then execute with WebAssembly.
+
+All strategies respect the runtime version, meaning if the native and Wasm runtime versions differ, the Wasm runtime is chosen.
+These are configurable using Substrate's [CLI](./link-to-build-cli).
+
+The Wasm representation of the Substrate runtime is considered the canonical runtime and will always be preferred by block authoring nodes.
+Because this Wasm runtime is placed in the blockchain's storage, the network must come to consensus about this binary which can easily be verified for consistency across all syncing nodes.
+
+The native runtime will only be used by the executor when it is chosen as the execution strategy and it is compatible with the requested runtime version (see [Runtime Versioning](/v3/runtime/upgrades#runtime-versioning)).
+
+Note: a Wasm runtime always executes in a 32-bit environment with a configurable memory limit (up to 4 GB).
+
 ## Build options
 
 It can make sense to compile the Wasm binary only, if for example you are just trying to provide an upgraded Wasm to perform a forkless upgrade. 
@@ -86,8 +107,8 @@ However, when starting a chain in developer mode at block 0, it uses the embedde
 There are several ways to configure a chain to meet the requirements of your needs:
 
 - `SKIP_WASM_BUILD` - Skips building any Wasm binary. This is useful when only native should be recompiled.
-                      If this is the first run and there doesn't exist a Wasm binary, this will set both variables to `None`.
+    If this is the first run and there doesn't exist a Wasm binary, this will set both variables to `None`.
 
-- Use [this script](https://github.com/paritytech/substrate/blob/master/.maintain/build-only-wasm.sh) to build the no_std Wasm binary only. 
+- Use [this script](https://github.com/paritytech/substrate/blob/master/.maintain/build-only-wasm.sh) to build the `no_std` Wasm binary only. 
 
-- Use the [wasm-runtime-overrides] CLI flag to load the Wasm from the filesystem.
+- Use the [wasm-runtime-overrides]() CLI flag to load the Wasm from the filesystem.

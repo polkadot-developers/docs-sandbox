@@ -31,6 +31,7 @@ It defines what transactions are valid and invalid and determines how the chain'
 
 The client on the other hand, or everything part of the node that's outside the runtime, is responsible for handling peer discovery, transaction pools, consensus and answering RPC calls from the outside world. 
 While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
+
 Communication of this sort is made possible by runtime APIs and host functions.
 
 ### Runtime APIs and host functions
@@ -57,7 +58,7 @@ There are ongoing discussions about removing the native runtime altogether to en
 Refer to this open [issue](https://github.com/paritytech/substrate/issues/7288) for more details. 
 Learn more about the [build process of a Substrate runtime]().
 
-## Executor
+### Executor
 
 As core part of the client, the [executor](/v3/getting-started/glossary#executor) is responsible for dispatching and executing calls into the Substrate runtime.
 It's role is also to determine which runtime to use after a runtime is upgraded.

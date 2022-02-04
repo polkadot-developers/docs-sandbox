@@ -12,7 +12,10 @@ This article explains the process of querying a Substrate node and using the met
 
 Substrate nodes provide an RPC call, `state_getMetadata`, that returns a complete description of all the types in the current runtime. Client applications use the metadata to interact with the node, to parse responses and format message payloads sent to the node.
 This includes information about a pallet's storage items, transactions, events, errors and constants.
-The current version (V14) differs significantly from its predecessors as it allows clients to generate information of the types used in the runtime.
+The current metadata version (V14) differs significantly from its predecessors as it contains much richer type information. 
+Polkadot uses V14 metadata starting from [runtime spec version 9110](https://polkascan.io/polkadot/runtime/9110) at [block number 7229126](https://polkadot.subscan.io/block/7229126) and Kusama from [runtime spec version 9111](https://polkascan.io/kusama/runtime/9111), at [block number 9625129](https://kusama.subscan.io/block/9625129).
+This is useful to know for developers who intend to interact with runtimes that use older metadata versions.
+Refer to [this document](https://gist.github.com/ascjones/0d81a4c44e84cacd9f714cd34a6de823) for a migration guide from V13 to V14.
 This means that if a runtime containts a pallet with some custom type, the type information will be included as part of the metadata returned.
 This rich metadata system is made possible by both the [`frame-metadata`](https://docs.substrate.io/rustdocs/latest/frame_metadata/index.html) and [`scale-info`](https://docs.rs/scale-info/latest/scale_info/) crates which all Substrate runtimes using the latest system have.
 

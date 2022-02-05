@@ -1,5 +1,6 @@
 # Rust compiler and toolchain
 
+Rust is a modern, type sound, and performant programming language that can be compiled to WebAssembly (WASM).
 Substrate requires you to install the Rust compiler and use the Rust toolchain to interact with Rust-based programs and tools.
 
 This guide uses <https://rustup.rs> installer and the `rustup` tool to manage the Rust toolchain.
@@ -25,12 +26,6 @@ rustup target add wasm32-unknown-unknown --toolchain nightly
 
 Now the best way to ensure that you have successfully prepared a computer for Substrate
 development is to follow the steps in [our first tutorial](/tutorials/v3/create-your-first-substrate-chain).
-
-<Message
-  type={`yellow`}
-  title={`Information`}
-  text={`For more details on _why_ these dependencies are used, and for _troubleshooting_ errors building the template, read on.`}
-/>
 
 ## Troubleshooting Substrate builds
 
@@ -83,20 +78,10 @@ runtimes. You will need to configure your Rust compiler to use
 [`nightly` builds](https://doc.rust-lang.org/book/appendix-07-nightly-rust.html) to allow you to
 compile Substrate runtime code to the Wasm target.
 
-<Message
-  type={`yellow`}
-  title={`Information`}
-  text={`There are upstream issues in Rust that need to be resolved before all of Substrate can use
-the stable Rust toolchain.
-[This is our tracking issue](https://github.com/paritytech/substrate/issues/1252)
-if you're curious as to why and how this will be resolved.`}
-/>
-
 #### Latest nightly for Substrate `master`
 
-Developers who are building Substrate _itself_ should always use the latest bug-free versions of
-Rust stable and nightly. This is because the Substrate codebase follows the tip of Rust nightly,
-which means that changes in Substrate often depend on upstream changes in the Rust nightly compiler.
+Developers who are building Substrate _itself_ should always use the latest bug-free versions of Rust stable and nightly. 
+This is because the Substrate codebase follows the tip of Rust nightly, which means that changes in Substrate often depend on upstream changes in the Rust nightly compiler.
 To ensure your Rust compiler is always up to date, you should run:
 
 ```bash
@@ -105,17 +90,9 @@ rustup update nightly
 rustup target add wasm32-unknown-unknown --toolchain nightly
 ```
 
-<br />
-<Message
-  type={`gray`}
-  title={`Note`}
-  text={`It may be necessary to occasionally rerun \`rustup update\` if a change in the upstream Substrate
-codebase depends on a new feature of the Rust compiler. When you do this, both your nightly
-and stable toolchains will be pulled to the most recent release, and for nightly, it is
-generally _not_ expected to compile WASM without error (although it very often does).
-Be sure to [specify your nightly version](#specifying-nightly-version) if you get WASM build errors
-from \`rustup\` and [downgrade nightly as needed](#downgrading-rust-nightly).`}
-/>
+It may be necessary to occasionally rerun `rustup update` if a change in the upstream Substrate codebase depends on a new feature of the Rust compiler. 
+When you do this, both your nightly and stable toolchains are pulled to the most recent release, and for nightly, it is generally _not_ expected to compile WASM without error (although it very often does).
+Be sure to [specify your nightly version](#specifying-nightly-version) if you get WASM build errors from `rustup` and [downgrade nightly as needed](#downgrading-rust-nightly).
 
 #### Rust nightly toolchain
 
@@ -148,14 +125,7 @@ project should use for Wasm compilation:
 WASM_BUILD_TOOLCHAIN=nightly-<yyyy-MM-dd> cargo build --release
 ```
 
-<br />
-<Message
-  type={`yellow`}
-  title={`Information`}
-  text={`Note that this only builds _the runtime_ with the specified nightly. The rest of project will be
-compiled with **your default toolchain**, i.e. the latest installed stable toolchain.`}
-/>
-
+Note that this only builds _the runtime_ with the specified nightly. The rest of project will be compiled with **your default toolchain**, i.e. the latest installed stable toolchain.
 ### Downgrading Rust nightly
 
 If your computer is configured to use the latest Rust nightly and you would like to downgrade to a

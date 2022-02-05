@@ -1,17 +1,18 @@
 # Rust compiler and toolchain
 
-Rust is a modern, type sound, and performant programming language that can be compiled to WebAssembly (WASM).
-Substrate requires you to install the Rust compiler and use the Rust toolchain to interact with Rust-based programs and tools.
+Rust is a modern, type sound, and performant programming language that provides a rich feature set for building complex systems.
+The language also has an active developer community and a growing ecosystem of sharable libraries called **crates**.
 
-This guide uses <https://rustup.rs> installer and the `rustup` tool to manage the Rust toolchain.
-First install and configure `rustup`:
+Rust is the core language used to build Substrate-based blockchains, so if you intend to do Substrate development, you need to be familiar with the Rust programming language, compiler, and toolchain management.
 
-```bash
-# Install
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-# Configure
-source ~/.cargo/env
-```
+If you are just getting started with Rust, you should bookmark [The Rust Programming Language](https://doc.rust-lang.org/book/) and refer to other [Learn Rust](https://www.rust-lang.org/learn) resources on the Rust website to guide you.
+However, there are a few important points to be aware of as you prepare your development environment.
+
+The core tools in the Rust **toolchain** are the `rustc` compiler, the `cargo` build and package manager, and the `rustup` toolchain manager.
+At any given point in time, there can multiple versions of Rust available. 
+For example, there are release channels for stable, beta, and nightly builds.
+You use the `rustup` program to manage the builds available in your environment and the versions of the toolchain programs that are used with different Rust builds.
+
 
 Configure the Rust toolchain to default to the latest stable version, add nightly and the nightly wasm target:
 
@@ -22,10 +23,6 @@ rustup update nightly
 rustup target add wasm32-unknown-unknown --toolchain nightly
 ```
 
-## Test your set-up
-
-Now the best way to ensure that you have successfully prepared a computer for Substrate
-development is to follow the steps in [our first tutorial](/tutorials/v3/create-your-first-substrate-chain).
 
 ## Troubleshooting Substrate builds
 

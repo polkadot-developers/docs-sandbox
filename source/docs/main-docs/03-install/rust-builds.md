@@ -1,3 +1,5 @@
+<!-- TODO Manage expectations about build times on lower-spec hardware. Define that practical dev environment requirements are higher than just for running a node  -->
+
 # Rust compiler and toolchain
 
 Rust is a modern, type sound, and performant programming language that provides a rich feature set for building complex systems.
@@ -16,6 +18,7 @@ You use the `rustup` program to manage the builds available in your environment 
 The `rustc` compiler enables you to build binaries for different architectures, referred to as **targets**. 
 Targets are identified by a string that specifies the kind of output the compiler should produce.
 This feature is important because Substrate is compiled to both a native Rust binary and a WebAssembly target.
+
 WebAssembly is a portable binary format that can be executed on any modern computer hardware and through any browser accessing the internet.
 The WebAssembly (Wasm) target enables Substrate to produce portable blockchain runtimes.
 For more information about how these binaries are used, see [Build process](../06-build/build-process.md).

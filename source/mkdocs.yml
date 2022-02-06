@@ -4,7 +4,7 @@ site_name: Substrate Doc Sandbox
 #docs_dir: 'docs-sandbox'
 
 # Copyright
-copyright: 'Copyright &copy; 2021. All rights reserved.'
+copyright: 'Copyright &copy; 2021-2022. All rights reserved.'
 
 # Configuration
 theme:
@@ -21,7 +21,7 @@ theme:
 
 # Navigation
 nav:
-   - 'Welcome to Substrate': 'index.md'
+   - 'index.md'
    - 'Quick start': 'quickstart.md'
    - 'Docs':
         - main-docs/index.md
@@ -29,28 +29,49 @@ nav:
         - 'Fundamentals': 
              - 'main-docs/02-fundamentals/index.md'
              - 'Blockchain basics': 'main-docs/02-fundamentals/blockchain-basics.md'
-             - 'Substrate node architecture': 'main-docs/02-fundamentals/architecture.md'
+             - 'Node architecture': 'main-docs/02-fundamentals/architecture.md'
              - 'Consensus': 'main-docs/02-fundamentals/consensus.md'
-             - 'Rust': 'main-docs/02-fundamentals/rust-basics.md'
+             - 'Nodes and networks': 'main-docs/02-fundamentals/node-and-network-types.md'
+             - 'Accounts and keys': 'main-docs/02-fundamentals/accounts-and-keys.md'
+             - 'Transaction lifecycle': 'main-docs/02-fundamentals/transaction-lifecyle.md'
+             - 'State transitions and storage': 'main-docs/02-fundamentals/state-transitions-and-storage.md'
+             - 'Offchain operations': 'main-docs/02-fundamentals/offchain-operations.md'
+             - 'Substrates Rust': 'main-docs/02-fundamentals/rust-basics.md'
         - 'Install': 
              - 'main-docs/03-install/index.md'
              - 'Rust compiler and toolchain': 'main-docs/03-install/rust-builds.md'
              - 'Linux': 'main-docs/03-install/linux.md'
              - 'macOS': 'main-docs/03-install/macos.md'
              - 'Windows': 'main-docs/03-install/windows.md'
-             - 'Substrate and runtime tools': 'main-docs/03-install/other-tools.md'
-        - 'Explore': 'main-docs/04-explore/explore.md'
+             - 'Developer tools': 'main-docs/03-install/other-tools.md'
+             - 'Troubleshoot common issues': 'main-docs/03-install/troubleshooting.md'
+        - 'Explore': 
+             - 'main-docs/04-explore/explore.md'
         - 'Design': 
-             - 'main-docs/05-design/index.md'
-             - 'Smart contract or runtime development': 'main-docs/05-design/runtime-or-smart-contracts/index.md'
+             - 'Designing your runtime logic': 'main-docs/05-design/index.md'
+             - 'Pallet design': 'main-docs/05-design/pallet-design.md'
+             - 'Smart contract pallets': 'main-docs/05-design/smart-contract-pallets.md'
+             - 'Storage design decisions': 'main-docs/05-design/storage-design.md'
+             - 'Economic models': 'main-docs/05-design/economic-models.md'
         - 'Build': 
-             - 'main-docs/06-build/libraries.md'
-             - 'main-docs/06-build/tools.md'
-             - 'main-docs/06-build/build-process.md'
-             - 'main-docs/06-build/custom-pallets.md'
-             - 'main-docs/06-build/frontend.md'
-        - 'Test': 'main-docs/07-test/test.md'
-        - 'Deploy': 'main-docs/08-deploy/deploy.md'
+             - 'Introduction to libraries': 'main-docs/06-build/libraries.md'
+             - 'Build process': 'main-docs/06-build/build-process.md'
+             - 'Create custom pallets': 'main-docs/06-build/custom-pallets.md'
+             - 'Front-end development': 'main-docs/06-build/frontend.md'
+             - 'Best practices': 'main-docs/06-build/best-practices.md'
+        - 'Test': 
+             - 'main-docs/07-test/test.md'
+             - 'Benchmark': 'main-docs/07-test/benchmark.md'
+             - 'Unit testing': 'main-docs/07-test/unit-testing.md'
+             - 'Debug': 'main-docs/07-test/debug.md'
+             - 'Deploy on a testnet': 'main-docs/07-test/deploy-on-testnet.md'
+        - 'Deploy': 
+             - 'main-docs/08-deploy/deploy.md'
+             - 'Validators': 'main-docs/08-deploy/validators.md'
+             - 'Networking basics': 'main-docs/08-deploy/networking-basics.md'
+             - 'Finality': 'main-docs/08-deploy/finality.md'
+             - 'Genesis construction': 'main-docs/08-deploy/genesis.md'
+             - 'Protecting your network from attacks': 'main-docs/08-deploy/attacks.md'
         #- 'Migrate': 'main-docs/08-deploy/migrate.md'
         #- 'Monitor': 'main-docs/08-deploy/monitor.md'
         #- 'Operate': 'main-docs/08-deploy/operate.md'
@@ -60,12 +81,14 @@ nav:
         #- 'Retire': 'main-docs/retire.md'
    - 'Tutorials':
         - tutorials/index.md
-        - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
-        - 'Simulate a network': 'tutorials/02-simulate-network.md'
-        - 'Start a trusted validator network': 'tutorials/03-private-network.md'
+        - 'Get started':
+             - 'Build a local blockchain': 'tutorials/01-build-local-blockchain.md'
+             - 'Simulate a network': 'tutorials/02-simulate-network.md'
+             - 'Start a trusted validator network': 'tutorials/03-private-network.md'
         #- 'Grant permissions to specific nodes in a network': 'tutorials/04-permissions.md
         #- 'Monitor a network and view node metrics': 'tutorials/05-monitor.md
-        - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
+        - 'Work with pallets':
+             - 'Add a simple pallet to the runtime': 'tutorials/07-add-a-pallet.md'
         #- 'Configure the contracts pallet': 'tutorials/contracts-pallet.md'
         #- 'Write a smart contract with ink!': 'tutorials/ink-contract.md'
         - 'Create a custom pallet using macros': 'tutorials/custom-pallet.md'
@@ -76,11 +99,19 @@ nav:
         #- 'Connect a Substrate blockchain to Ethereum': 'tutorials/connect-to-evm.md'
    - 'Reference':
         - 'reference/index.md'
+        - 'Command-line tools':
+             - 'reference/command-line-tools/index.md'
+             - 'node-template': 'reference/command-line-tools/node-template.md'
+             - 'subkey': 'reference/command-line-tools/subkey.md'
+             - 'memory-profiler': 'reference/command-line-tools/memory-profiler.md'
         - 'FRAME pallets': 'reference/frame-pallets.md'
+        - 'Macros': 'reference/macros.md'
         - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'
-        - 'How-to quick reference guides': 
+        - 'How-to reference guides': 
              - 'reference/how-to-guides/index.md'
-        - 'Polkadot-JS': 'reference/polkadot-js.md'
+             - 'Basics': 'reference/how-to-guides/basics.md'
+             - 'Pallet design': 'reference/how-to-guides/pallet-design.md'
+        - 'Polkadot-JS API': 'reference/polkadot-js.md'
         - 'Client libraries': 'reference/client-lib.md'
         - 'Glossary': 'reference/glossary.md'
    - 'Community': 
@@ -89,5 +120,5 @@ nav:
         - 'Site builder guidelines': 'community/site-building.md'
         - 'How-to topic template': 'https://github.com/substrate-developer-hub/substrate-docs/blob/main/static/assets/contribute-templates/how-to-template.md/"target="_blank'
         - 'Bounties': 'community/bounty.md'
-   - 'Dropbox': 'faq-dropbox/index.md'
-   - 'Playground': 'https://docs.substrate.io/playground/"target="_blank'
+   #- 'Dropbox': 'faq-dropbox/index.md'
+   #- 'Playground': 'https://docs.substrate.io/playground/"target="_blank'

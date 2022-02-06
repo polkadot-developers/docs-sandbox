@@ -1,5 +1,5 @@
 ---
-title: Simulate a two-node network
+title: Simulate a network
 slug: /tutorials/02-simulate-network
 version: '3.0'
 section: tutorials

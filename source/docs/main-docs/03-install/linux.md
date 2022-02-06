@@ -25,7 +25,7 @@ Because the blockchain requires standard cryptography to support the generation 
 
 ## Install required packages and Rust
 
-To install the Rust compiler and toolchain on Linux:
+To install the Rust toolchain on Linux:
 
 1. Log on to your computer and open a terminal shell.
 
@@ -81,7 +81,7 @@ To install the Rust compiler and toolchain on Linux:
 
     The command displays output similar to the following:
 
-    ```bash
+    <pre>
     Default host: x86_64-unknown-linux-gnu
     rustup home:  /home/subdocs/.rustup
     
@@ -96,7 +96,7 @@ To install the Rust compiler and toolchain on Linux:
     
     stable-x86_64-unknown-linux-gnu (default)
     rustc 1.58.1 (db9d1b20b 2022-01-20)
-    ```
+    </pre>
 
 ## Compile a Substrate node
 

@@ -4,7 +4,7 @@ site_name: Substrate Doc Sandbox
 #docs_dir: 'docs-sandbox'
 
 # Copyright
-copyright: 'Copyright &copy; 2021. All rights reserved.'
+copyright: 'Copyright &copy; 2021-2022. All rights reserved.'
 
 # Configuration
 theme:
@@ -43,9 +43,8 @@ nav:
              - 'Linux': 'main-docs/03-install/linux.md'
              - 'macOS': 'main-docs/03-install/macos.md'
              - 'Windows': 'main-docs/03-install/windows.md'
-             - 'Versioning and upgrades': 'main-docs/03-install/versioning-and-upgrades.md'
              - 'Developer tools': 'main-docs/03-install/other-tools.md'
-             - 'Troubleshoot common issues': 'main-docs/03-install/troubleshoot.md'
+             - 'Troubleshoot common issues': 'main-docs/03-install/troubleshooting.md'
         - 'Explore': 
              - 'main-docs/04-explore/explore.md'
         - 'Design': 

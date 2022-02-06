@@ -20,7 +20,7 @@ You can install Rosetta on your macOS computer by opening the Terminal applicati
 
 `softwareupdate --install-rosetta`
 
-## Install Homebrew
+### Install Homebrew
 
 In most cases, you should use Homebrew to install and manage packages on macOS computers.
 If you don't already have Homebrew installed on your local computer, you should download and install it before continuing.
@@ -127,3 +127,40 @@ To install `openssl` and the Rust toolchain on macOS:
     stable-x86_64-apple-darwin (default)
     rustc 1.58.1 (db9d1b20b 2022-01-20)
     </pre>
+
+## Compile a Substrate node
+
+Now that you have Rust installed and the Rust toolchains configured for Substrate development, you are ready to finish setting up your development environment by cloning the Substrate **node template** files and compiling a Substrate node.
+
+The node template provides a working environment that includes all of the most common features you need to build a blockchain without any extraneous modules or tools. 
+To ensure that the node template offers a relatively stable working environment for you to experiment with, the recommended best practice is to clone Substrate node template from the Substrate Developer Hub  repository, rather than from the core Substrate repository.
+
+To compile the Substrate node template:
+
+1. Clone the node template repository by running the following command:
+    
+    ```bash
+    git clone https://github.com/substrate-developer-hub/substrate-node-template
+    ```
+
+1. Change to the root of the node template directory by running the following command:
+    
+    ```bash
+    cd substrate-node-template
+    ```
+
+1. Switch to the version of the repository that has the `latest` tag by running the following command:
+    
+    ```bash
+    git checkout latest
+    ```
+
+1. Compile the node template by running the following command:
+    
+    ```bash
+    cargo build --release
+    ```
+
+    Because of the number of packages required, compiling the node can take several minutes.
+
+After the build completes successfully, your local computer is ready for Substrate development activity.

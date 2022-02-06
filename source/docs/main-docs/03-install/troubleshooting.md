@@ -1,4 +1,4 @@
-# Troubleshooting common issues
+# Troubleshoot Rust issues
 
 If compiling the [Substrate node template](https://github.com/substrate-developer-hub/substrate-node-template) fails, the problem is most likely to be caused by how Rust is configured in your development environment.
 This section suggests how you can diagnose and fix configuration issues.

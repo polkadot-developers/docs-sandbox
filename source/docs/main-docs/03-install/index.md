@@ -15,4 +15,4 @@ For additional information about installing and upgrading the Rust compiler and 
 * [Rust compiler and toolchain](./rust-builds.md)
 * [Node template or full node]()
 * [Developer tools](./other-tools.md)
-* [Troubleshooting common issues](./)
+* [Troubleshooting common issues](./troubleshooting.md)

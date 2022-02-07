@@ -36,7 +36,7 @@ To install the Rust toolchain on Linux:
     For example, on Ubuntu, you might run a command similar to the following:
     
     ```bash
-    sudo apt install --assume-yes git clang curl libssl-dev llvm libudev-dev
+    sudo apt install --assume-yes git clang curl libssl-dev
     ```
 
 1. Download the `rustup` installation program and use it to install Rust by running the following command:

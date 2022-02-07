@@ -6,7 +6,7 @@ You can use the `node-template` program to perform the following tasks:
 
 ## Basic command usage
 
-The basic syntax for running `subkey` commands is:
+The basic syntax for running `node-template` commands is:
 
 ```
 node-template [subcommand] [FLAGS] [OPTIONS]
@@ -38,114 +38,42 @@ You can use the following optional flags with the `node-template` command.
 | `--eve` | Adds the session keys for the predefined `Eve` account to the local keystore. This flag is equivalent to running the node using `--name eve --validator` as command-line options.
 | `--ferdie` | Adds the session keys for the predefined `Ferdie` account to the local keystore. This flag is equivalent to running the node using `--name ferdie --validator` as command-line options.
 | `--force-authoring` | Enables block authoring even if the node is offline.
+| `-h`, `--help` | Displays usage information.
 | `--ipfs-server` | Joins the IPFS network and serve transactions over bitswap protocol
 | `--kademlia-disjoint-query-paths` | Requires iterative Kademlia distributed hash table (DHT) queries to use disjointed paths. This option increases resiliency in the presence of potentially adversarial nodes. See the S/Kademlia paper for more information on the high level design as well as its security improvements.
 | `--light` | Runs the node in light client mode (experimental).
 | `--no-grandpa` | Disables the GRANDPA voter if the node is running as a validator mode.If the node is not running as a validator, the option disables the GRANDPA observer.
-| `-h`, `--help` | Displays usage information.
+| `--no-mdns` | Disables mDNS discovery. By default, the network uses mDNS to discover other nodes on the local network. This option disables discovery and is automatically applied if you start the node using the `--dev` option.
+| `--no-private-ipv4` | Prevents connecting to private IPv4 addresses (as specified in [RFC1918](https://tools.ietf.org/html/rfc1918)), unless the address was passed with the `--reserved-nodes` or `--bootnodes` option. This setting is enabled by default for chains that are marked as "live" in their chain specifications.
+| `--no-prometheus` | Disables the exposure of a Prometheus endpoint for receiving metrics. By default, metrics are exported to a Prometheus endpoint.
+| `--no-telemetry` | Disables connecting to the Substrate telemetry server. Telemetry is enabled for global chains by default.
+| `--one` | Provides a shortcut for specifying `--name One --validator` to add session keys for `One` to the keystore.
+| `--password-interactive` | Enables you to specify the password for connecting to the keystore interactively in the terminal shell.
+| `--prometheus-external` | Exposes the Prometheus exporter on all interfaces. The default is local.
+| `--reserved-only` | Specifies whether to only synchronize the chain with reserved nodes. This option also disables automatic peer discovery. TCP connections might still be established with non-reserved nodes. In particular, if you are a validator, your node might still connect to other validator nodes and collator nodes regardless of whether they are defined as reserved nodes.
+| `--rpc-external` | Listens to all RPC interfaces. Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy server to filter out dangerous methods. More details: <https://github.com/paritytech/substrate/wiki/Public-RPC>. Use `--unsafe-rpc-external` to suppress the warning if you understand the risks.
+| `--storage-chain` | Enables storage chain mode. If you set this option, each transaction is stored separately in the transaction database column and is only referenced by hash in the block body column.
+| `--tmp` | Runs a temporary node. This option creates a temporary directory to store the blockchain configuration. The temporary directory is automatically deleted when you stop the node. The directory is random per process execution. This directory is used as a base path that includes the node database, node key, and the keystore.
+| `--two` | Provides a shortcut for specifying `--name Two --validator` to add session keys for `Two` to the keystore.
+| `--unsafe-pruning` | Forces the node to start with unsafe pruning settings. When running as a validator, it is highly recommended to disable state pruning (that is, archive) which is the default. The node will refuse to start as a validator if pruning is enabled unless this option is set.
+| `--unsafe-rpc-external` | Listens to all RPC interfaces. This option is the same as `--rpc-external`.
+| `--unsafe-ws-external` | Listens to all Websocket interfaces. This option is the same as `--ws-external` but doesn't warn you about it.
+| `--validator` | Starts the node with the authority role and enables it to actively participate in any consensus task that it can (for example, depending on availability of local keys).
 | `-V`, `--version` | Displays version information.
+| `--ws-external` | Listens to all Websocket interfaces. Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy server to filter out dangerous methods. More details: <https://github.com/paritytech/substrate/wiki/Public-RPC>. Use `--unsafe-ws-external` to suppress the warning if you understand the risks.
 
-FLAGS:
+### Options
 
+You can use the following options with the `node-template` command.
 
---no-mdns | Disable mDNS discovery. By default, the network will use mDNS to discover other nodes on the local network. This disables it. Automatically implied when using --dev.
---no-private-ipv4 | Always forbid connecting to private IPv4 addresses (as specified in [RFC1918](https://tools.ietf.org/html/rfc1918)), unless the address was passed with `--reserved-nodes` or `--bootnodes`. Enabled by default for chains marked as "live" in their chain specifications
---no-prometheus | Do not expose a Prometheus exporter endpoint. Prometheus metric endpoint is enabled by default.
-        --no-telemetry                     
-            Disable connecting to the Substrate telemetry server.
-            
-            Telemetry is on by default on global chains.
-        --one                              
-            Shortcut for `--name One --validator` with session keys for `One` added to keystore
-
-        --password-interactive             
-            Use interactive shell for entering the password used by the keystore
-
-        --prometheus-external              
-            Expose Prometheus exporter on all interfaces.
-            
-            Default is local.
-        --reserved-only                    
-            Whether to only synchronize the chain with reserved nodes.
-            
-            Also disables automatic peer discovery.
-            
-            TCP connections might still be established with non-reserved nodes. In particular, if you are a validator
-            your node might still connect to other validator nodes and collator nodes regardless of whether they are
-            defined as reserved nodes.
-        --rpc-external                     
-            Listen to all RPC interfaces.
-            
-            Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy server to
-            filter out dangerous methods. More details: <https://github.com/paritytech/substrate/wiki/Public-RPC>. Use
-            `--unsafe-rpc-external` to suppress the warning if you understand the risks.
-        --storage-chain                    
-            Enable storage chain mode
-            
-            This changes the storage format for blocks bodies. If this is enabled, each transaction is stored separately
-            in the transaction database column and is only referenced by hash in the block body column.
-        --tmp                              
-            Run a temporary node.
-            
-            A temporary directory will be created to store the configuration and will be deleted at the end of the
-            process.
-            
-            Note: the directory is random per process execution. This directory is used as base path which includes:
-            database, node key and keystore.
-        --two                              
-            Shortcut for `--name Two --validator` with session keys for `Two` added to keystore
-
-        --unsafe-pruning                   
-            Force start with unsafe pruning settings.
-            
-            When running as a validator it is highly recommended to disable state pruning (i.e. 'archive') which is the
-            default. The node will refuse to start as a validator if pruning is enabled unless this option is set.
-        --unsafe-rpc-external              
-            Listen to all RPC interfaces.
-            
-            Same as `--rpc-external`.
-        --unsafe-ws-external               
-            Listen to all Websocket interfaces.
-            
-            Same as `--ws-external` but doesn't warn you about it.
-        --validator                        
-            Enable validator mode.
-            
-            The node will be started with the authority role and actively participate in any consensus task that it can
-            (e.g. depending on availability of local keys).
-    -V, --version                          
-            Prints version information
-
-        --ws-external                      
-            Listen to all Websocket interfaces.
-            
-            Default is local. Note: not all RPC methods are safe to be exposed publicly. Use an RPC proxy server to
-            filter out dangerous methods. More details: <https://github.com/paritytech/substrate/wiki/Public-RPC>. Use
-            `--unsafe-ws-external` to suppress the warning if you understand the risks.
-
-OPTIONS:
-    -d, --base-path <PATH>                                       
-            Specify custom base path
-
-        --bootnodes <ADDR>...                                    
-            Specify a list of bootnodes
-
-        --chain <CHAIN_SPEC>                                     
-            Specify the chain specification.
-            
-            It can be one of the predefined ones (dev, local, or staging) or it can be a path to a file with the
-            chainspec (such as one exported by the `build-spec` subcommand).
-        --database <DB>
-            Select database backend to use [possible values: rocksdb, paritydb-experimental]
-
-        --db-cache <MiB>                                         
-            Limit the memory the database cache can use
-
-        --offchain-worker <ENABLED>
-            Should execute offchain workers on every block.
-            
-            By default it's only enabled for nodes that are authoring new blocks. [default: WhenValidating]
-            [possible values: Always, Never, WhenValidating]
+| Option | Description
+| ------ | -----------
+| `-d`, `--base-path <PATH>` | Specifies a custom base path.
+| `--bootnodes <ADDR>... ` | Specifies a list of boot nodes.
+| --chain <CHAIN_SPEC> | Specifies the chain specification to use. You can set this option using a predefined chain specification name, such as `dev`, `local`, or `staging`or you can specify the path to a file that contains the chain specification, for example, the chain specification generated by using the `build-spec` subcommand.
+| `--database <DB>` | Selects the database backend to use [possible values: rocksdb, paritydb-experimental].
+| `--db-cache <MiB>` | Limits the memory the database cache can use
+| `--offchain-worker <ENABLED>` | Should execute offchain workers on every block. By default, it's only enabled for nodes that are authoring new blocks. [default: WhenValidating] [possible values: Always, Never, WhenValidating].
         --execution <STRATEGY>
             The execution strategy that should be used by all execution contexts [possible values: Native,
             Wasm, Both, NativeElseWasm]

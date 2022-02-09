@@ -3,8 +3,7 @@
 If a signed or unsigned transaction is included in a block produced by the local node, its lifecycle follows a path like this:
 
 1. Some node listens for transactions on the network.
-1. The node receives a JSON-RPC request for a signed transaction.
-1. The transaction gets formatted in the runtime, with its corresponding function call, signature, nonce, tip and additional information.
+1. The node receives an RPC request for a signed transaction.
 1. Some runtime API is used for the client to verify that the transaction meets its requirements and is valid.
 1. Only if the transaction is valid will it be put in a transaction queue ready for block authors.
 1. Once in the ready queue, the same runtime API is used to order the transaction according to some priority factor.

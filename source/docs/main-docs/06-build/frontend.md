@@ -2,25 +2,27 @@ Section: Build
 Sub-section: Front-end development
 Type: reference 
 
-Application development against Substrate runtimes encompasses building user-facing interfaces such as browser and desktop applications, as well as client applications for specific hardware requirements, such as hardware wallets.
+Most applications that run on a Substrate blockchain require some form of front-end or user-facing interface—such as a browser, desktop, mobile, or hardware client—that enables users or other programs to access and modify the data that the blockchain stores.
+For example, you might develop a browser-based application for interactive gaming or a hardware-specific application to implement a hardware wallet.
 Different libraries exist to build these types of applications, depending on your needs.
-This article explains the process of querying a Substrate node and using the metadata it exposes in order to provide background knowledge to help inform these decisions, or to help developers create application specific libraries.
+This article explains the process of querying a Substrate node and using the metadata it exposes to help you understand how you can use the metadata when creating front-end client applications and using client-specific libraries.
 
 
 ## Metadata system 
 
-Substrate nodes provide an RPC call, `state_getMetadata`, that returns a complete description of all the types in the current runtime. Client applications use the metadata to interact with the node, to parse responses and format message payloads sent to the node.
-This includes information about a pallet's storage items, transactions, events, errors and constants.
+Substrate nodes provide an RPC call, `state_getMetadata`, that returns a complete description of all the types in the current runtime. 
+Client applications use the metadata to interact with the node, to parse responses, and to format message payloads sent to the node.
+This metadata includes information about a pallet's storage items, transactions, events, errors, and constants.
 The current metadata version (V14) differs significantly from its predecessors as it contains much richer type information. 
-This means that if a runtime containts a pallet with some custom type, the type information will be included as part of the metadata returned.
+If a runtime includes a pallet with a custom type, the type information is included as part of the metadata returned.
 Polkadot uses V14 metadata starting from [runtime spec version 9110](https://polkascan.io/polkadot/runtime/9110) at [block number 7229126](https://polkadot.subscan.io/block/7229126) and Kusama from [runtime spec version 9111](https://polkascan.io/kusama/runtime/9111), at [block number 9625129](https://kusama.subscan.io/block/9625129).
 This is useful to know for developers who intend to interact with runtimes that use older metadata versions.
 Refer to [this document](https://gist.github.com/ascjones/0d81a4c44e84cacd9f714cd34a6de823) for a migration guide from V13 to V14.
 
-This rich metadata system is made possible by the [`scale-info`](https://docs.rs/scale-info/latest/scale_info/) crate, used to get runtime type information at build time.
+The current metadata schema uses the [`scale-info`](https://docs.rs/scale-info/latest/scale_info/) crate to get type information for the pallets in the runtime when you compile a node.
 
-In order to actually send and receive transactions to and from the node, front-end APIs must implement a [SCALE codec library](./libraries#SCALE-Codec) to encode and decode RPC payloads.
-The general flow of how metadata is generated, exposed and used to make and receive calls from the runtime:
+The current implementation of the metadata requires front-end APIs to use the [SCALE codec library](./libraries#SCALE-Codec) to encode and decode RPC payloads to send and receive transactions.
+The following steps summarize how metadata is generated, exposed, and used to make and receive calls from the runtime:
 
 - Callable pallet functions, as well as types, parameters and documentation are exposed by the runtime.
 - The `frame-metadata` crate describes the structure in which the information about how to communicate with the runtime will be provided. 

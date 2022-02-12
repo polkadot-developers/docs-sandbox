@@ -2,8 +2,8 @@ _This article describes in detail what the format of an extrinsic (in particular
 _This is particularly useful for understanding how the transaction pool checks incoming tranactions._
 _Parachain builders will find this useful for customizing how their transactions are formatted as well as writing client applications that need to adhere to a chosen format._
 
-The way the format of an extrinsic is desgined in Substrate takes into account the metadata it should expose as well as any additional information required to verify that a transaction is valid.
-This provides a means of checking the requirements for an extrinisic to be valid and correctly constructed, which is done in the runtime by formatting any extrinsic as either unchecked, checked or opaque. 
+Extrinsics normally contain a signature, some data to describe if the extrinsic has passed some validity checks and a reference to the pallet and call that it is intended for.
+This format provides a way for applications to ensure the requirements for an extrinisic are met and correctly constructed. 
 
 - Unchecked: signed transactions that require some validation check before they can be accepted in the transaction pool.
 Any unchecked extrinsic contains the signature for the data being sent plus some extra data.

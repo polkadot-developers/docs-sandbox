@@ -104,6 +104,7 @@ nav:
              - 'node-template': 'reference/command-line-tools/node-template.md'
              - 'subkey': 'reference/command-line-tools/subkey.md'
              - 'memory-profiler': 'reference/command-line-tools/memory-profiler.md'
+             - 'subxt-cli': 'reference/command-line-tools/subxt-cli.md'
         - 'FRAME pallets': 'reference/frame-pallets.md'
         - 'Macros': 'reference/macros.md'
         - 'Rust API': 'https://docs.substrate.io/rustdocs/"target="_blank'

@@ -73,7 +73,7 @@ where:
 - `[1]` contains the compact encoded length in bytes of all of the following data. Learn how compact encoding works using [SCALE](). 
 - `[2]` is a `u8` containing 1 byte to indicate whether the transaction is signed or unsigned (1 bit), and the encoded transaction version ID (7 bits).
 - `[4]` if a signature is present, this field contains an account ID, an SR25519 signature and some extra data. If unsigned this field contains 0 bytes.
-- `[5]` is the encoded call data. This comprises of 1 byte denoting the pallet to call into, 1 byte denoting the call to make in that pallet, and then as many bytes as needed to encode the arguments expected by that call.
+- `[4]` is the encoded call data. This comprises of 1 byte denoting the pallet to call into, 1 byte denoting the call to make in that pallet, and then as many bytes as needed to encode the arguments expected by that call.
 
 The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
 For instance, an application will know that a `(u8, u8, u8, [u8; 32], u128)` type will encode to the correct bytes to represent the call it wants to make. 

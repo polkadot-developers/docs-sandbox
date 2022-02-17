@@ -76,7 +76,7 @@ where:
 - `[4]` is the encoded call data. This comprises of 1 byte denoting the pallet to call into, 1 byte denoting the call to make in that pallet, and then as many bytes as needed to encode the arguments expected by that call.
 
 The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
-For instance, an application will know that a `(u8, u8, u8, [u8; 32], u128)` type will encode to the correct bytes to represent the call it wants to make. 
+An application will know how to correctly encode a transaction by using the metadata types and transaction format.
 If a call doesn't need to be signed, the application knows to pre-prend a `None` signature to it (`0; u8`). 
 
 <!-- TODO: How are inherents constructed? -->

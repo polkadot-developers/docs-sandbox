@@ -1,16 +1,9 @@
 # Choosing a development platform for your project
 
-Cover the main tenets:
-
-* Flexible (extensible, customizable, adaptable)
-* Open source
-* Multi-chain interoperability
-* Future proof upgradeability
-
 Scalability
 
-Ease of development < > technical freedom and control
-Technical freedom < > burden of responsibility
+Freedom to innovate outside of the restricted confines of smart contract platforms technical freedom and control
+Technical freedom and burden of responsibility
 
 Evaluate: Is the Substrate / Polkadot vision right for your project/business model?
 Evaluate: Is Substrate / Polkadot the right tool for the requirements of your project/business model?

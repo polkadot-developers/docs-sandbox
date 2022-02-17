@@ -94,7 +94,7 @@ Balances transfer from Bob to Dave: Bob sends `42` units to Dave.
 
 * Resulting extrinsic: `0x2d028400cebf28ce763780c72973e16ddb0b86c33f8868d37ef0eb95691b416f838e7e6201a05bdb6cdfaf0a7fa47b73eace5f3ad03d3395544210fb10a2c3d31865d4db587f45b71b185059411dd95c28943842748035bf089e553b1e5869d2bf599eaa82d5030000050000306721211d5404bd9da88e0204360a1a9ab8b87c66c1bc2fcdd37f3c2222cc20a8`
 
-Submitting the resulting constructed extrinsic via RPC returns:
+Submitting the resulting constructed extrinsic via RPC returns this decoded metadata:
 
 ```json
 {

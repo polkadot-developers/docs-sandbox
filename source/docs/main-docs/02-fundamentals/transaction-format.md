@@ -77,7 +77,7 @@ where:
 
 The way applications know how to construct a transaction correctly is provided by the [metadata interface](./frontend#metadata).
 An application will know how to correctly encode a transaction by using the metadata types and transaction format.
-If a call doesn't need to be signed, the application knows to pre-prend a `None` signature to it (`0; u8`). 
+If a call doesn't need to be signed, then the first bit in [2] will be 0 and so an application will know not to try decoding a signature.
 
 <!-- TODO: How are inherents constructed? -->
 

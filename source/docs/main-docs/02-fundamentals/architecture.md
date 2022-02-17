@@ -32,16 +32,6 @@ It defines what transactions are valid and invalid and determines how the chain'
 The client on the other hand, or everything part of the node that's outside the runtime, is responsible for handling peer discovery, transaction pools, consensus and answering RPC calls from the outside world. 
 While performing these tasks, the outer node sometimes needs to query the runtime for information, or provide information to the runtime. 
 
-Communication of this sort is made possible by runtime APIs and host functions.
-
-### Runtime APIs and host functions
-
-A **host function** is a function that is expressed outside of the runtime whose job is to provide data required by the runtime, like providing hardware information about a node or network status.
-A **runtime API** provides a way to query information about the runtime, useful to make calls for querying a runtime's metadata or querying some storage item.
-
-Although designed to be constraint-free, any Substrate runtime must implement a runtime API for basic block execution and runtime versioning (see: [`Core`](/rustdocs/latest/sp_api/trait.Core.html)) and another for providing metadata to external applications (see: [`Metadata`](/rustdocs/latest/sp_api/trait.Metadata.html)).
-Other [runtime APIs]() are available out of the box.
-
 Learn more about [availble runtime APIs](./link-todo-design) in Substrate.
 
 ### Wasm runtimes

@@ -2,13 +2,13 @@ Section: Fundamentals
 Sub-section: Rust basics
 Type: reference 
 
-_The goal of this article is to explain how Substrate uses Rust to achieve what it provides._
-_In doing so, it explains how Substrate uses no_std and why, and what it has to do with compiling to Wasm_.
+_The goal of this article is to go over some of Rust's programming paradigms and how they're used in Substrate._
+_In doing so, it explains how Substrate uses no_std and why and the role of generics in Substrate runtimes_.
 
 As a modern programming language, Rust provides a high degree of performance, type safety and memory efficiency.
-The Rust compiler helps developers be confident in the code they write, making it harder to write code with memory or concurency bugs.
-This is mostly owed to its type system which solves such issues at compile time.
-Among other characteristics this section will see, it's a language which gives Substrate a powerful edge that other languages don't offer.
+The Rust compiler helps developers be confident in the code they write, making it difficult to write code with memory or concurency bugs.
+This is mostly owed to Rust's strongly typed system which solves memory safety issues or mismatched type issues at compile time, meaning before the code could ever be executed.
+Among other characteristics this section will see, it's a language that gives Substrate a powerful edge for creating mission critical software in constrained environments.
 
 Useful context:
 
@@ -16,47 +16,14 @@ Useful context:
 - [How rustup works](https://rust-lang.github.io/rustup/concepts/index.html)
 - [Why Rust?](https://www.parity.io/blog/why-rust) 
 
-### Cargo and crates.io
-
-[**Cargo**](https://doc.rust-lang.org/cargo/guide/why-cargo-exists.html) is Rust's package management tool. 
-It comes with a [number of different types of commands](https://doc.rust-lang.org/cargo/commands/index.html) for running tests, building documentation, benchmarks and more. 
-
-Some common patterns for using `cargo` when developing with Substrate include:
-
-- Generating source code documentation using [`cargo doc`](https://doc.rust-lang.org/cargo/commands/cargo-doc.html) for any pallet or runtime.
-- Running unit tests using [`cargo test`](https://doc.rust-lang.org/cargo/commands/cargo-test.html) for any runtime logic. 
-- Managing project dependencies using [`cargo update`](https://doc.rust-lang.org/cargo/commands/cargo-update.html) and [`cargo edit`](https://crates.io/crates/cargo-edit).
-- Using [`cargo tree`](https://doc.rust-lang.org/cargo/commands/cargo-tree.html) for resolving dependency issues.
-- Using [`cargo remote`](https://crates.io/crates/cargo-remote) to speed up compile times by using a remote machine.
-
-You might have noticed that `cargo remote` and `cargo edit` are not built-in to cargo, and you need to `cargo install` them manually. 
-The complete list of such cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
-
-[**Crates.io**](https://crates.io/) is Rust's community managed package registry. 
-Any Rust developer can publish their crates there for others to use in their projects. 
-This is useful to make Substrate components accessible to developers and for developers to easily reuse existing modules in their projects.
-
 ### Programming paradigms
 
-[**Types, traits and generics**](https://doc.rust-lang.org/book/ch10-00-generics.html).
-
-Reading: 
-- https://doc.rust-lang.org/book/ch10-00-generics.html
-
 Rust has a sophisticated [trait system](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html) that helps developers make use of Substrate’s many layers of abstractions.
-The core features available to build abstractions are owed to Rust's system of traits and generics.
+The core features available to build these layers of abstraction are owed to Rust's system of traits and generics.
 
-Generics allow Substrate to exist as a sort of template for writing runtimes.
-They use traits to encapsulate the set of operations that can be performed on a generic type. 
+[Rust generics](https://doc.rust-lang.org/book/ch10-00-generics.html) allow Substrate to exist as a sort of template for writing runtimes, by using traits to encapsulate the set of operations that can be performed on a generic type. 
 For developers, this system  makes it possible to extend domain specific logic by defining custom behavior using traits and type bounds.
-
- --------------------	
-_TODO: Make actual diagram illustrating that everything is generic and made concrete in the runtime._
-
- │  Generic library |  ---> made concrete --->    │  Runtime  │
- --------------------
-Having Substrate as generic as possible leaves maximum flexibility, where generics resolve into whatever the user defines them to resolve as.
-Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utxo-on-substrate/) for a demonstration of how these paradigms make Substrate flexible and modular. <!-- TODO: That blogpost is great, but it uses Substrate macros that has been superseeded since then by derive macros. -->
+The fact that Substrate is as generic as possible leaves maximum flexibility, where generics resolve into whatever the user defines them to resolve as.
 
 #### Configuration traits
 
@@ -106,12 +73,15 @@ With this paradigm, we can define a struct or enum and its associated traits and
 
 For example, the enum `Runtime` is passed as a parameter to [`SubstrateWeight`](https://docs.substrate.io/rustdocs/latest/frame_system/weights/struct.SubstrateWeight.html):
 
-```text
+```rust
 SubstrateWeight<T> --> SubstrateWeight<Runtime>
 ```
 
-This exemplifies that so long as the constraints of that trait are satisfied, the generic `T` will resolve to fit the functionality it's targeting.
+So long as the constraints of that trait are satisfied, the generic `T` will resolve to fit the whatever it's targeting.
 In this case, `Runtime` implements all the required traits required to satisfy `SubstrateWeight<T>`.
+The purpose here is to present how generics are used in Substrate, giving a fundamental design example in FRAME. 
+It's also possible to use generics to implement different underlying behaviors of their associated traits.
+Refer to the [UTXO implementation with Substrate](https://www.parity.io/blog/utxo-on-substrate/) for an example of using these idioms to build a Bitcoin-like blockchain.
 
 #### Common traits
 
@@ -125,22 +95,46 @@ When building with FRAME, so long as this associated type adheres to the trait b
 For example, [`pallet_staking`](https://docs.substrate.io/rustdocs/latest/pallet_staking/trait.Config.html) has an associated type `Currency` whose trait bound is [`LockableCurrency`](https://docs.substrate.io/rustdocs/latest/frame_support/traits/tokens/currency/trait.LockableCurrency.html). 
 Given that [`pallet_balances`](https://docs.substrate.io/rustdocs/latest/pallet_balances/index.html) implements this trait, any runtime that includes the balances pallet can make the generic associated type concrete assigning it the balances pallets' runtime instance.
 
+#### Metaprogramming 
 
-[**Metaprogramming**](https://doc.rust-lang.org/book/ch19-06-macros.html). 
-Substrate uses "metaprogramming" in how macros are used throughout its libraries.
-This allows developers building with Substrate to write code that writes code, avoiding the need to write duplicate code.
-For example, [FRAME uses macros](https://docs.substrate.io/v3/runtime/macros/) to alleviate the need to write the heavy lifting code that is required for a pallet to integrate into a runtime. 
+Substrate uses [metaprogramming](https://doc.rust-lang.org/book/ch19-06-macros.html) in how macros are used throughout its libraries.
+[FRAME uses macros](https://docs.substrate.io/v3/runtime/macros/) to alleviate the need to write the heavy lifting code that is required for a pallet to integrate into a runtime. 
 Similarly, [ink!](https://paritytech.github.io/ink-docs/) uses macros to handle common type creations and functions.
+
+Macros allows developers building with Substrate to write code that writes code, avoiding the need to write duplicate code and enforcing checks on how code is written.
+For example, the `#[frame_system::pallet]` macro required in all FRAME pallets, prevents developers from compiling pallets that don't correctly implement certain attributes.
 
 ### Webassembly 
 
-[**Webassembly**](https://webassembly.org/). Rust compiles to executable Wasm (Webassembly) byte code, enabling Substrate runtimes to also compile to Wasm. 
+Rust compiles to executable [Wasm (Webassembly)](https://webassembly.org/) byte code, enabling Substrate runtimes to also compile to Wasm. 
+This enables Substrate nodes to run from any Wasm compatible web browser or Wasm execution environment. 
 Beyond being a powerful "next-generation web" technology, for Substrate, having Wasm at the core of its design means a few very specific things:
 
-- **Upgradability**. First and foremost, Wasm is a key piece of technology for [forkless runtime upgrades](https://docs.substrate.io/v3/runtime/upgrades/).
-- **Portability**. Relay chain validators use Wasm to execute any new parachain block to verify that they can actually execute it and get the same results.
-- **Smart contract compatibility**. Any Smart Contract that compiles to Wasm can be executed by a compatible Substrate node. See a [list of key advantages of having Wasm smart contracts](https://paritytech.github.io/ink-docs/why-webassembly-for-smart-contracts).
+- **Upgradability**. First and foremost, Wasm is a key piece of technology enabling [forkless runtime upgrades](https://docs.substrate.io/v3/runtime/upgrades/).
+- **Portability**. Relay chain validators use Wasm to execute new parachain blocks and verify that they can get the same results.
+- **Smart contract compatibility**. Any Smart Contract that compiles to Wasm can be executed by a compatible Substrate node. 
+See a [list of key advantages of having Wasm smart contracts](https://paritytech.github.io/ink-docs/why-webassembly-for-smart-contracts).
 - **Light-client ready**. Wasm is also a key piece in how all Substrate chains are [light-client ready out of the box](https://paritytech.github.io/substrate-connect/#wasm-light-clients). 
+
+### Cargo and crates.io
+
+[**Cargo**](https://doc.rust-lang.org/cargo/guide/why-cargo-exists.html) is Rust's package management tool. 
+It comes with a [number of different types of commands](https://doc.rust-lang.org/cargo/commands/index.html) for running tests, building documentation, benchmarks and more. 
+
+Some common patterns for using `cargo` when developing with Substrate include:
+
+- Generating source code documentation using [`cargo doc`](https://doc.rust-lang.org/cargo/commands/cargo-doc.html) for any pallet or runtime.
+- Running unit tests using [`cargo test`](https://doc.rust-lang.org/cargo/commands/cargo-test.html) for any runtime logic. 
+- Managing project dependencies using [`cargo update`](https://doc.rust-lang.org/cargo/commands/cargo-update.html) and [`cargo edit`](https://crates.io/crates/cargo-edit).
+- Using [`cargo tree`](https://doc.rust-lang.org/cargo/commands/cargo-tree.html) for resolving dependency issues.
+- Using [`cargo remote`](https://crates.io/crates/cargo-remote) to speed up compile times by using a remote machine.
+
+You might have noticed that `cargo remote` and `cargo edit` are not built-in to cargo, and you need to `cargo install` them manually. 
+The complete list of such cargo plugins can be found [here](https://crates.io/categories/development-tools::cargo-plugins).
+
+[**Crates.io**](https://crates.io/) is Rust's community managed package registry. 
+Any Rust developer can publish their crates there for others to use in their projects. 
+This is useful to make Substrate components accessible to developers and for developers to easily reuse existing modules in their projects.
 
 ## Build environments
 
@@ -150,13 +144,13 @@ There are two classes of embedded programming environemnts: hosted environments 
 
 Hosted environments assume basic system integration primitives such as a file and memory management system (e.g. [POSIX](https://en.wikipedia.org/wiki/POSIX)) and rely on the [Rust standard library](https://doc.rust-lang.org/std/#the-rust-standard-library).
 In bare metal environments, the compiled program makes no assumption about its target environment. 
-This requires exclusively using the [Rust core library](https://doc.rust-lang.org/core/) for such programs and telling the compiler to ignore the standard library entirely.
+This requires such programs to exclusively use the [Rust core library](https://doc.rust-lang.org/core/) and telling the compiler to ignore the standard library entirely.
 
 For Substrate, having a bare metal environment option is a major contribution to enabling platform agnostic runtimes. 
 
 ### Compiling to `no_std` vs. `std`
 
-Since a Substrate runtime is designed to be platform-agnostic, all runtime specific code is required to build with `no_std`.
+Since a Substrate runtime is designed for Wasm execution, all runtime specific code is required to build with `no_std`.
 This is done by including a default crate feature, `std` and using the [`cfg_attr` and `cfg` attributes](http://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/conditional-compilation.html) as a switch to disable `std` in favor of `no_std` where needed. 
 
 Notice that in the Substrate node template, any file that's part of the node's runtime logic (such as `runtime/src/lib.rs` and `pallets/template/src/lib.rs`) will include:
@@ -202,12 +196,13 @@ The result is that it can run on any type of 32-bit CPU.
 However, the "unknown" parts of this Wasm target enforces the notion of making zero assumptions about the target environment, which is a key design decision in Substrate.
 
 It is also worth mentioning that there is `std` support for Substrate's Wasm target. 
-But this is not something that Wasm runtimes in Substrate support as it could open up unwanted errors.
+But this is not something that Wasm runtimes in Substrate support as it could open up unwanted errors such as leaking `std` code into Wasm environments, which will cause the system to panic.
 In addition, the `wasm32-unknown-unknown` target architecture and `no_std` have the same fundamental assumptions, making `no_std` a natural fit.
+
 Rust `std` features are generally not compatible with the intended constraints of a Wasm runtime.
 For example, developers who attempt operations that are not allowed in the runtime, such as printing some text using `std`, could at worst cause the runtime to panic and terminate immediately.
 
-In general, relying only the `no_std` implementation of `wasm32-unknown-unknown` ensures that:
+In general, relying only on the `no_std` implementation of `wasm32-unknown-unknown` ensures that:
 
 - A Substrate runtime is deterministic.
 - A Substrate runtime is platform agnostic.
@@ -219,6 +214,7 @@ Wasm runtime compilation uses [Wasm builder](https://docs.substrate.io/rustdocs/
 This is because the `wasm32-unknown-unknown` relies on [experimental features of Rust](https://doc.rust-lang.org/unstable-book/the-unstable-book.html).
 Over time, features will likely be promoted to stable.
 Subscribe to [this tracking issue](https://github.com/paritytech/substrate/issues/1252) for updates and read more about the [build process](./build-process) to understand how a Substrate node is cross-compiled.
+
 ## Resources
 
 - [**Cargo and crates.io**](https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html)

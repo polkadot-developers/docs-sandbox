@@ -20,7 +20,6 @@ Its key features include:
 - The encoded result also contains information on the network information.
 - A checksum is used to detect any typographical errors, making it helpful when users make errors in address inputs.
 
-
 The basic format conforms to the concatenated byte series of the address type, the address and checksum, all passed into a base-58 encoder:
 
 ```text
@@ -29,19 +28,17 @@ base58encode ( concat ( <address-type>, <address>, <checksum> ) )
 
 The `base58encode` function is implemented exactly as defined in Bitcoin and IPFS (see this [wiki](https://en.wikipedia.org/wiki/Base58)), using the same alphabet as both.
 
-
-
-## For wallet users 
+## For end users 
 
 From a single public key, you can derive different account types for different registered networks.
 The table below shows the different addresses derived from Alice's well known public key.
 
-### Derived addresses from Alice's public key
+#### Table: Derived addresses from Alice's public key
 
 
 | Address type | Address | Prefix |
 | ------------ | ------ | ---------- |
-| Public key (hex) | 0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d | 
+| Public key (hex) | 0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d | n/a |
 | Genereic Substrate chain (SS58)| 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY | 42 |
 | H160 (EVM compatible) | 0xd43593c715Fdd31c61141ABd04a99FD6822c8558 | n/a |
 | Polkadot (SS58)| 15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5 | 0 | 
@@ -70,15 +67,14 @@ Learn how you can support a custom SS58 prefix without needing to register it in
 
 ## Generating addresses
 
-The most direct way to verify and generate addresses in Substrate is by using the [Subkey](/v3/tools/subkey) `inspect` subcommand, 
+The most direct way to verify and generate addresses in Substrate is by using the [Subkey](/v3/tools/subkey) `inspect` subcommand.
 This command accepts either the seed phrase for an account, a hex-encoded private key, or an SS58 address as the input URI.
 If the input is a valid address, it will return a list containing the corresponding public key (hex), account ID and SS58 values.
 
 Subkey assumes that an address is based on a public/private keypair.
-In the case of inspecting an address, it will return the 32 byte account ID.
-Not all addresses in Substrate-based networks are based on keys.
+In the case of inspecting an address, it will return the 32 bytes of the account ID.
 
-If you input a valid SS58 value, Subkey will also return a network ID/version value that indicates for which network the address has been encoded.
+If you input a valid SS58 value, Subkey will also return a network ID/version value that indicates which network the address has been encoded for.
 
 ```bash
 # A valid address.
@@ -101,67 +97,31 @@ For verifying or creating SS58 addresses in your JavaScript projects, you can ut
 A key pair can represent an account and control funds, like any typical accounts you would expect in other blockchains. 
 In Substrate, we can enforce rules over how specific key pairs behave, including specifying custom cryptographic schemes, how dust accounts are managed or specifying special accounts only accessible to certain functions or pallets like on-chain treasuries.
 
-
 This section outlines some common key types and their features.
-If you're looking to learn more about account types in FRAME, [read this article]().
-
 In Substrate, account keys are defined generically and made concrete in the runtime.
 The keys to these accounts are distinguished by their intended use, not by any underlying cryptographic difference.
+
+If you're looking to learn more about account types in FRAME, [read this article]().
+
+### Nominated Proof of Stake systems
+
 The nominated proof-of-stake (NPoS) algorithm has the most common use for different account keys.
-Since validators and nominators may hold significant amounts of funds, Substrate's [Staking pallet](/v3/runtime/frame#staking) handles some account abstractions that help keep funds as secure as possible.
+Since node operators (such as validators and nominators) may hold significant amounts of funds, Substrate's [Staking pallet](/v3/runtime/frame#staking) handles some account abstractions that help keep funds as secure as possible.
 These are:
 
 - **Stash keys**: a stash account is meant to hold large amounts of funds. 
 Its private key should be as secure as possible in a cold wallet.
 - **Controller keys**: a controller account signals choices on behalf of the stash account, like payout preferences, but should only hold a minimal amount of funds to pay transaction fees. 
 Its private key should be secure as it can affect validator settings, but should be easily available for validator maintenance.
-- **Session keys**: these are "hot" keys kept in the validator client and used for signing certain validator operations. These should never hold funds.
+- **Session keys**: these are "hot" keys kept in the validator client and used for signing certain validator operations. 
+Session keys should never hold funds.
 
 When creating stash or controller keys, all cryptography supported for normal account keys are also supported.
 
-### Stash keys
-
-The stash keys are the public/private key pair that defines a stash account. 
-This account is like a "savings account" in that you should not make frequent transactions from it. 
-Therefore, its private key should be treated with the utmost security, for example protected in a safe or layers of hardware security.
-
-Since the stash key is kept offline, it designates a controller account to make non-spending decisions with the weight of the stash account's funds. 
-It can also designate a Proxy account to vote in governance on its behalf.
-
-### Controller keys
-
-The controller keys are the public/private key pair that defines a controller account. 
-In the context of Substrate's NPoS model, the controller key will signal one's intent to validate or nominate.
-
-The controller key is used to set preferences like the rewards destination and, in the case of validators, to set their Session keys. 
-The controller account only needs to pay transaction fees, so it only needs a minimal amount of funds.
-
-The controller key can never be used to spend funds from its stash account. 
-However, actions taken by the controller can result in slashing, so it should still be well secured.
-
-### Session keys 
-
-Substrate provides the [Session pallet](/rustdocs/latest/pallet_session/index.html) for validators to manage their session keys.
-
-Session keys are "hot keys" that are used by validators to sign consensus-related messages. 
-They are not meant to be used to control funds and should only be used for signing messages. 
-They can be changed regularly; your controller only needs to create new session keys by signing a session's public key and broadcasting this certificate via an extrinsic. 
-Session keys are also defined generically and made concrete in the runtime.
-
-To create a Session key, validator operators must attest that a key acts on behalf of their stash account (stake) and nominators. 
-To do so, they create a new session key by signing the key with their controller key. 
-Then, they inform the chain that this key represents their controller key by publishing the Session certificate in a transaction on the chain.
-
-#### Generation and use
-
-As a node operator, you can generate session keys using the RPC call [`author_rotateKeys`](/rustdocs/latest/sc_rpc/author/trait.AuthorApi.html#tymethod.rotate_keys).
-You will then need to register the new keys on chain using a [`session.setKeys`](/rustdocs/latest/pallet_session/struct.Module.html#method.set_keys) transaction.
-
-For increased security, session keys should be changed every session. 
-This can be done by creating new session keys, putting the session's public keys into an extrinsic, and applying this extrinsic on chain.
-
-Since session keys are hot keys that must be kept online, the individual keys should **not** be used to control funds. 
-All the logic for handling session keys is in the Substrate client, primitives, and Session pallet. 
-If one of the Session keys is compromised, the attacker could commit slashable behavior.
+| Key type | Description | Usage | Generation | 
+| -------- | ----------- | ----- | ---------- |
+| Stash keys | The stash keys are the public/private key pair that defines a stash account, serving as a savings account for validators. These should be kept offline, in cold storage for increased security. | A stash account should not be used to make frequent transactions. Since it is kept offline, it would designate a controller account to make non-spending decisions or a proxy account to vote in governance on its behalf. | ??? |
+| Controller keys | The controller keys define a controller account to signal one's intent to validate or nominate, set preferences like the rewards destination and, in the case of validators, to set their session keys. | A controller account only needs to pay transaction fees, so it only needs a minimal amount of funds and can never be used to spend funds from its stash account. Actions taken by the controller can result in slashing, so it should still be well secured. | ???? |
+| Session keys | Session keys are "hot keys" used by validators to sign consensus-related messages and are not meant to be used to control funds. They are also defined generically in the [Session pallet](/rustdocs/latest/pallet_session/index.html) and made concrete in the runtime. To create a Session key, validator operators must attest that a key acts on behalf of their stash account (stake) and nominators. To do so, they create a new session key by signing the key with their controller key. Then, they inform the chain that this key represents their controller key by publishing the Session certificate in a transaction on the chain. | Generate and register the new keys on chain using a [`session.setKeys`](/rustdocs/latest/pallet_session/struct.Module.html#method.set_keys) transaction. Session keys should be changed every session. | `author_rotateKeys`](/rustdocs/latest/sc_rpc/author/trait.AuthorApi.html#tymethod.rotate_keys) RPC call. |
 
 Learn [how sessions keys are implemented](./05-design/implementation-details#session-keys) in Substrate.

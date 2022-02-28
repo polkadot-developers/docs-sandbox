@@ -3,6 +3,10 @@
 This article goes over how addresses in Substrate chains are derived using the SS58 format and what this implies for end users and network developers. 
 It then outlines some different types of common network keys.
 
+Any account in Substrate is just a public key of some length of bits.
+Substrate allows developers to define what type of key a runtime should expect as well as different abstractions over a key pair.
+To learn more about how this works in FRAME, read [this article](./accounts-in-FRAME.md).
+
 ## SS58 address format
 
 In the multi-chain world, users should be able to use one public address across different chains.

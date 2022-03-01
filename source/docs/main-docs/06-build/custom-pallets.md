@@ -2,6 +2,7 @@ Section: Build
 Sub-section: Create pallets
 Type: reference 
 
+TODO: WIP
 ## Create custom pallets
 
 Writing a pallet is the first step towards composing custom runtime logic. 
